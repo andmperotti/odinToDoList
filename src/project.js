@@ -1,3 +1,5 @@
+import Todo from './todo.js'
+
 export default class{
     constructor(name, description, identifier=0){
         this.name = name;
@@ -5,9 +7,10 @@ export default class{
         this.todos = []
         this.identifier = identifier
     }
-
-    // createTodo(name, dueDate, priority, description, notes=[], checklist=[]){
-    //     this.todos.push({name, dueDate, priority, description, notes, checklist})
-    // }
-
+    deleteTodo(id){
+        let todoIndex = this.todos.indexOf({identifier:id})
+    }
+    changeNonArrayProjectProp(prop, val){
+        this.prop = val
+    }
 }
