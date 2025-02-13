@@ -3,7 +3,7 @@ export default class{
         this.text = text;
         this.checked = false
     }
-    checkItem(){
-        this.checked = false
+    toggleCheck(){
+        this.checked = this.checked===true ? false : true;
     }
 }
