@@ -6,7 +6,11 @@ export default class{
         this.description = description;
         this.notes = notes;
         this.checklist = checklist
+        this.completed = false
     }
 
-    
+    //delete todo
+    //complete todo
+    //change todo property
+    //
 }
