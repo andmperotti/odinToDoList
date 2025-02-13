@@ -17,22 +17,22 @@ export default class{
         this.completed = this.completed===true ? false:true;
     }
     //change todo property value (not an arrays)
-    changeNonArrayProps(prop, val){
-        this.prop = val
+    changeNonArrayProps(todoProp, newVal){
+        this.todoProp = newVal
     }
 
     //create checklist item, by calling constructor and pushing return object into array of checklist property
-    createChecklistItem(text){
-        this.checklist.push(new Checklist(text))
+    createChecklistItem(descriptionText){
+        this.checklist.push(new Checklist(descriptionText))
     }
     //delete checklist item
-    deleteChecklistItem(checkIdentifier){
-        let identifierIndex = this.checklist.indexOf({identifier: checkIdentifier})
+    deleteChecklistItem(checklistIdentifier){
+        let identifierIndex = this.checklist.indexOf({identifier: checklistIdentifier})
         this.checklist.splice(identifierIndex, identifierIndex)
     }
     //delete note item
-    deleteNoteItem(noteValue){
-        let noteIndex = this.notes.indexOf(notevalue)
+    deleteNoteItem(noteElementString){
+        let noteIndex = this.notes.indexOf(noteElementString)
         this.notes.splice(noteIndex, noteIndex)
     }
 }
