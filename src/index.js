@@ -1,2 +1,3 @@
-import todoApp from './todoApp.js'
+import { todoApp } from './todoApp.js'
 
+window.todoApp = todoApp
