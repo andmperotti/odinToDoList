@@ -6,8 +6,8 @@ export default class{
         this.identifier = identifier
     }
 
-    createTodo(name, dueDate, priority, description, notes=[], checklist=[]){
-        this.todos.push({name, dueDate, priority, description, notes, checklist})
-    }
-    
+    // createTodo(name, dueDate, priority, description, notes=[], checklist=[]){
+    //     this.todos.push({name, dueDate, priority, description, notes, checklist})
+    // }
+
 }
