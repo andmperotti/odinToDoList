@@ -1,3 +1,5 @@
+import Checklist from './checklist.js'
+
 export default class{
     constructor(name, dueDate, priority, description, notes=[], checklist=[]){
         this.name = name;
@@ -11,6 +13,8 @@ export default class{
 
     //delete todo
     //complete todo
-    //change todo property
-    //
+    //change todo property value (this is not an array)
+    //create checklist item
+    //delete checklist item
+    //delete note item
 }
