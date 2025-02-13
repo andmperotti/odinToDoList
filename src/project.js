@@ -7,10 +7,10 @@ export default class{
         this.todos = []
         this.identifier = identifier
     }
-    deleteTodo(id){
-        let todoIndex = this.todos.indexOf({identifier:id})
+    deleteTodo(todoIdentifier){
+        let todoIndex = this.todos.indexOf({identifier:todoIdentifier})
     }
-    changeNonArrayProjectProp(prop, val){
-        this.prop = val
+    changeNonArrayProjectProp(todoProp, newValue){
+        this.todoProp = newValue
     }
 }
