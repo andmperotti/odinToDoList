@@ -10,7 +10,7 @@ const todoApp = (()=>{
             for(let project of projects){
                 console.log(project)
             }
-        }else if(projects.length<1){
+        }else if(!projects.length){
             console.log('No projects stored thus far')
         }
     }
