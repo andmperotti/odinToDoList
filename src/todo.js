@@ -13,7 +13,7 @@ export default class{
     toggleTodoComplete(){
         this.completed = this.completed===true ? false:true;
     }
-    changeNonArrayPropValue(todoProp, newPropVal){
+    changePrimitivePropVal(todoProp, newPropVal){
         this.todoProp = newPropVal
     }
     createChecklistItem(checklistItemText){
