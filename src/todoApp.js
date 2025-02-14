@@ -22,6 +22,7 @@ const todoApp = (()=>{
     }
 
     function deleteProject(projectIndex){
+        let projects = JSON.parse(localStorage.getItem('projectsArray'))
         projects.splice(projectIndex, projectIndex)
         localStorage.setItem('projectsArray', JSON.stringify(projects))
     }
