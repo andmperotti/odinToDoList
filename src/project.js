@@ -19,4 +19,7 @@ export default class{
             }
         }
     }
+    createTodo(name, dueDate, priority, description){
+        this.todos.push(new Todo(name, dueDate, priority, description))
+    }
 }
