@@ -9,8 +9,8 @@ export default class{
     deleteTodo(todoIndex){
         this.todos.splice(todoIndex, todoIndex)
     }
-    changePrimitivePropVal(todoProp, newPropVal){
-        this.todoProp = newValue
+    changePrimitivePropVal(projectProp, newPropVal){
+        this.projectProp = newPropVal
     }
     logTodos(){
         if(this.todos.length>0){
