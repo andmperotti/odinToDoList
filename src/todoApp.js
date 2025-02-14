@@ -6,7 +6,7 @@ const todoApp = (()=>{
     }
     function getProjects(){
         let projects = JSON.parse(localStorage.getItem("projectsArray"))
-        if(projects.length>0){
+        if(projects.length){
             for(let project of projects){
                 console.log(project)
             }
@@ -15,7 +15,7 @@ const todoApp = (()=>{
         }
     }
 
-    function addProject(projectName, projectDescription){
+    function createProject(projectName, projectDescription){
         let projects = JSON.parse(localStorage.getItem("projectsArray"))
         projects.push(new Project(projectName, projectDescription))
         localStorage.setItem('projectsArray', JSON.stringify(projects))
@@ -25,7 +25,11 @@ const todoApp = (()=>{
         projects.splice(projectIndex, projectIndex)
         localStorage.setItem('projectsArray', JSON.stringify(projects))
     }
-    return {getProjects, addProject, deleteProject}
+
+    function deleteProjects(){
+        localStorage.clear()
+    }
+    return {getProjects, createProject, deleteProject, deleteProjects}
 })()
 
 export { todoApp }
