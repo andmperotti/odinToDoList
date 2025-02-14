@@ -28,7 +28,7 @@ const todoApp = (()=>{
     }
 
     function deleteProjects(){
-        localStorage.clear()
+        localStorage.setItem("projectsArray", '[]')
     }
     return {getProjects, createProject, deleteProject, deleteProjects}
 })()
