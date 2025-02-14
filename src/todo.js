@@ -19,12 +19,13 @@ export default class{
     createChecklistItem(checklistItemText){
         this.checklist.push(new Checklist(checklistItemText))
     }
-    deleteChecklistItem(checklistItemText){
-        let checklistItemIndex = this.checklist.findIndex(checkItem=>checkItem.text===checklistItemText)
-        this.checklist.splice(checklistItemText, checklistItemText)
+    deleteChecklistItem(checklistItemIndex){
+        this.checklist.splice(checklistItemIndex, checklistItemIndex)
     }
-    deleteNoteItem(noteElementString){
-        let noteIndex = this.notes.indexOf(noteElementString)
+    createNoteItem(newNoteString){
+        this.notes.push(newNoteString)
+    }
+    deleteNoteItem(noteIndex){
         this.notes.splice(noteIndex, noteIndex)
     }
 }
