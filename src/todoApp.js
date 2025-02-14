@@ -15,15 +15,13 @@ const todoApp = (()=>{
         }
     }
 
-    function addProject(name, description){
+    function addProject(projectName, projectDescription){
         let projects = JSON.parse(localStorage.getItem("projectsArray"))
-        projects.push(new Project(name, description))
+        projects.push(new Project(projectName, projectDescription))
         localStorage.setItem('projectsArray', JSON.stringify(projects))
     }
 
-    function deleteProject(id){
-        let projects = JSON.parse(localStorage.getItem("projectsArray"))
-        let projectIndex = projects.indexOf({identifier: id})
+    function deleteProject(projectIndex){
         projects.splice(projectIndex, projectIndex)
         localStorage.setItem('projectsArray', JSON.stringify(projects))
     }
