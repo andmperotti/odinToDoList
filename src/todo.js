@@ -11,35 +11,35 @@ export default class{
         this.notes = notes
         this.checklist = checklist
         this.completed = false
-    }
-    toggleTodoComplete(){
-        this.completed = this.completed===true ? false:true;
-        saveToStorage(todoApp.projects)
-    }
-    changePrimitivePropVal(todoProp, newPropVal){
-        this.todoProp = newPropVal
-        saveToStorage(todoApp.projects)
-    }
-
-    logChecklistItems(){
-        for(let item in this.checklist){
-            console.log(item)
+        this.toggleTodoComplete = function(){
+            this.completed = this.completed===true ? false:true;
+            saveToStorage(todoApp.projects)
         }
-    }
-    createChecklistItem(checklistItemText){
-        this.checklist.push(new Checklist(checklistItemText))
-        saveToStorage(todoApp.projects)
-    }
-    deleteChecklistItem(checklistItemIndex){
-        this.checklist.splice(checklistItemIndex, checklistItemIndex)
-        saveToStorage(todoApp.projects)
-    }
-    createNoteItem(newNoteString){
-        this.notes.push(newNoteString)
-        saveToStorage(todoApp.projects)
-    }
-    deleteNoteItem(noteIndex){
-        this.notes.splice(noteIndex, noteIndex)
-        saveToStorage(todoApp.projects)
+        this.changePrimitivePropVal = function(todoProp, newPropVal){
+            this.todoProp = newPropVal
+            saveToStorage(todoApp.projects)
+        }
+    
+        this.logChecklistItems = function(){
+            for(let item in this.checklist){
+                console.log(item)
+            }
+        }
+        this.createChecklistItem = function(checklistItemText){
+            this.checklist.push(new Checklist(checklistItemText))
+            saveToStorage(todoApp.projects)
+        }
+        this.deleteChecklistItem = function(checklistItemIndex){
+            this.checklist.splice(checklistItemIndex, checklistItemIndex)
+            saveToStorage(todoApp.projects)
+        }
+        this.createNoteItem = function(newNoteString){
+            this.notes.push(newNoteString)
+            saveToStorage(todoApp.projects)
+        }
+        this.deleteNoteItem = function(noteIndex){
+            this.notes.splice(noteIndex, noteIndex)
+            saveToStorage(todoApp.projects)
+        }
     }
 }
