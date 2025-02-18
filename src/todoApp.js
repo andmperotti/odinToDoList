@@ -17,12 +17,12 @@ const todoApp = (()=>{
         }
     )
 
-    //log to the console each project, this just logs the entire project data, maybe later change this to just log the name and maybe the number of todos?
+    //log to the console each project, this logs the project name and its description both defined by the user
     function logProjects(){
         projects = JSON.parse(localStorage.getItem("projectsArray"))
         if(projects.length){
             for(let project of projects){
-                console.log(project)
+                console.log(`${project.name} : ${project.description}`)
             }
         }else if(!projects.length){
             console.log('No projects stored thus far')
