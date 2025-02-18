@@ -7,15 +7,16 @@ export default class{
         this.name = name
         this.description = description
         this.todos = []
+
         this.deleteTodo= function(todoIndex){
             this.todos.splice(todoIndex, todoIndex)
             saveToStorage(todoApp.projects)
-    
+            console.log(`Deleted todo at index ${todoIndex}`)
         }
         this.changePrimitivePropVal = function(projectProp, newPropVal){
             this.projectProp = newPropVal
             saveToStorage(todoApp.projects)
-    
+            console.log(`${projectProp} value changed to: ${newPropVal}`)
         }
         this.logTodos= function(){
             if(this.todos.length>0){
@@ -27,6 +28,7 @@ export default class{
         this.createTodo = function(name, dueDate, priority, description){
             this.todos.push(new Todo(name, dueDate, priority, description))
             saveToStorage(todoApp.projects)
+            console.log(`Created ${name}, todo which is due on ${dueDate}, and has a priority of ${priority}, and has a description of: ${description}`)
         }
     }
 
