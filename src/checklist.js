@@ -1,5 +1,4 @@
-import {saveToStorage} from "./storage.js"
-import {todoApp} from "./todoApp.js"
+import {saveToStorage, projects} from "./storage.js"
 
 export default class{
     constructor(text, checked=false){
@@ -7,7 +6,7 @@ export default class{
         this.checked = false;
         this.toggleCheck = function(){
             this.checked = this.checked===true ? false : true;
-            saveToStorage(todoApp.projects)
+            saveToStorage(projects)
         }
     }
 }

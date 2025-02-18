@@ -1,4 +1,5 @@
 import Project from './project.js'
+import { saveToStorage, loadStorage, projects} from "./storage.js"
 
 const todoApp = (()=>{
     //set starter array if localStorage doesn't have app projectsArray variable
@@ -7,19 +8,19 @@ const todoApp = (()=>{
     }
     //load in the localStorage projects array variable into our application
         //so we'll need to convert here not just load/copy in data
-    let projects = JSON.parse(localStorage.getItem("projectsArray"),
-        (key, value)=>{
-            if(typeof value === 'string' && value.includes("function(")){
-            return eval("(" + value + ")")
-            }else{
-            return value
-            }
-        }
-    )
+    // let projects = JSON.parse(localStorage.getItem("projectsArray"),
+    //     (key, value)=>{
+    //         if(typeof value === 'string' && value.includes("function(")){
+    //         return eval("(" + value + ")")
+    //         }else{
+    //         return value
+    //         }
+    //     }
+    // )
 
     //log to the console each project, this logs the project name and its description both defined by the user
     function logProjects(){
-        projects = JSON.parse(localStorage.getItem("projectsArray"))
+        let projects = loadStorage()
         if(projects.length){
             for(let project of projects){
                 console.log(`${project.name} : ${project.description}`)
@@ -38,7 +39,8 @@ const todoApp = (()=>{
             }else{
               return value
             }
-        }))        
+        }))
+        console.log(`${projectName} project added!`)
     }
 
     //given an index of a project you'd like to delete, splice it out of hte local array of 'projects' then save the changes to the localStorage
@@ -56,7 +58,7 @@ const todoApp = (()=>{
     //a function that rather than wipes the entire localStorage only wipes the projectsArray value by overwriting it with a new array
     function deleteProjects(){
         localStorage.setItem("projectsArray", '[]')
-        let projects = JSON.parse(localStorage.getItem("projectsArray"))
+        let projects = loadStorage()
     }
 
     //give access to the project variable and methods of this iife module

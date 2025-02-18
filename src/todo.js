@@ -1,6 +1,5 @@
 import Checklist from './checklist.js'
-import {saveToStorage} from "./storage.js"
-import {todoApp} from "./todoApp.js"
+import {saveToStorage, projects} from "./storage.js"
 
 export default class{
     constructor(name, dueDate, priority, description, notes=[], checklist=[]){
@@ -11,13 +10,14 @@ export default class{
         this.notes = notes
         this.checklist = checklist
         this.completed = false
+
         this.toggleTodoComplete = function(){
             this.completed = this.completed===true ? false:true;
-            saveToStorage(todoApp.projects)
+            saveToStorage(projects)
         }
         this.changePrimitivePropVal = function(todoProp, newPropVal){
             this.todoProp = newPropVal
-            saveToStorage(todoApp.projects)
+            saveToStorage(projects)
         }
     
         this.logChecklistItems = function(){
@@ -27,19 +27,19 @@ export default class{
         }
         this.createChecklistItem = function(checklistItemText){
             this.checklist.push(new Checklist(checklistItemText))
-            saveToStorage(todoApp.projects)
+            saveToStorage(projects)
         }
         this.deleteChecklistItem = function(checklistItemIndex){
             this.checklist.splice(checklistItemIndex, checklistItemIndex)
-            saveToStorage(todoApp.projects)
+            saveToStorage(projects)
         }
         this.createNoteItem = function(newNoteString){
             this.notes.push(newNoteString)
-            saveToStorage(todoApp.projects)
+            saveToStorage(projects)
         }
         this.deleteNoteItem = function(noteIndex){
             this.notes.splice(noteIndex, noteIndex)
-            saveToStorage(todoApp.projects)
+            saveToStorage(projects)
         }
     }
 }

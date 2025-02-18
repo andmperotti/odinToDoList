@@ -1,6 +1,5 @@
 import Todo from './todo.js'
-import {saveToStorage} from "./storage.js"
-import {todoApp} from "./todoApp.js"
+import {saveToStorage, projects} from "./storage.js"
 
 export default class{
     constructor(name, description){
@@ -10,12 +9,12 @@ export default class{
 
         this.deleteTodo= function(todoIndex){
             this.todos.splice(todoIndex, todoIndex)
-            saveToStorage(todoApp.projects)
+            saveToStorage(projects)
             console.log(`Deleted todo at index ${todoIndex}`)
         }
         this.changePrimitivePropVal = function(projectProp, newPropVal){
             this.projectProp = newPropVal
-            saveToStorage(todoApp.projects)
+            saveToStorage(projects)
             console.log(`${projectProp} value changed to: ${newPropVal}`)
         }
         this.logTodos= function(){
@@ -29,7 +28,7 @@ export default class{
         }
         this.createTodo = function(name, dueDate, priority, description){
             this.todos.push(new Todo(name, dueDate, priority, description))
-            saveToStorage(todoApp.projects)
+            saveToStorage(projects)
             console.log(`Created ${name}, todo which is due on ${dueDate}, and has a priority of ${priority}, and has a description of: ${description}`)
         }
     }
