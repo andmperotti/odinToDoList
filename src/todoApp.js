@@ -38,8 +38,7 @@ const todoApp = (()=>{
             }else{
               return value
             }
-          }))
-        projects = JSON.parse(localStorage.getItem("projectsArray"))   
+        }))        
     }
 
     //given an index of a project you'd like to delete, splice it out of hte local array of 'projects' then save the changes to the localStorage
