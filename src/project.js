@@ -23,6 +23,8 @@ export default class{
                 for(let todo of this.todos){
                     console.log(`Todo name: ${todo.name}, todo due date: ${todo.dueDate}, todo priority: ${todo.priority}, todo description: ${todo.description}, todo notes: ${todo.notes.join(', ')}, todo checklist: ${todo.checklist.join(', ')}, todo completion: ${todo.completed}`)
                 }
+            }else{
+                console.log("No todos to log")
             }
         }
         this.createTodo = function(name, dueDate, priority, description){
