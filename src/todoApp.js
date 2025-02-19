@@ -39,14 +39,29 @@ class Todo{
         this.complete = complete
     }
     //add note to todo function
-
-    //delete not from todo function
-
+    addNote(noteText){
+        this.notes.push(noteText)
+    }
+    //delete note from todo function
+    deleteNote(noteIndex){
+        this.notes.splice(noteIndex, 1)
+    }
     //create checklist function 
-
+    createChecklistItem(checkDescription){
+        this.checklist.push(new Checklist(checkDescription))
+    }
     //toggle checklist item function
-
+    toggleChecklistItem(checklistIndex){
+        if(this.checklist[checklistIndex]===true){
+            this.checklist[checklistIndex]=false
+        }else{
+            this.checklist[checklistIndex]=true
+        }
+    }
     //delete checklist item
+    deleteChecklistItem(checklistIndex){
+        this.checklist.splice(checklistIndex, 1)
+    }
 }
 
 //checklist class
