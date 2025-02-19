@@ -89,15 +89,27 @@ function deleteProject(projectIndex){
 //save to localStorage function
     //this will need to be called anytime a change is made
 function saveToStorage(data){
-
+    localStorage.setItem('projectsArray', JSON.stringify(projects))
 }
 
 //load from local Storage function
     //I think this would pretty much only be called at the initial load into a new window
+    //if data exists on localStorage then load it, otherwise save an empty array as its value
 function loadStorage(){
-
+    let returnProjects;
+    if(!localStorage.getItem('projectsArray')){
+        localStorage.setItem('projectsArray', '[]')
+        returnProjects = []
+    }else{
+        let pojoProjects = JSON.parse(localStorage.getItem('projectsArray'))
+        returnProjects = []
+        //here use nested for loops to build Projects, whom have Todos, whom have Checklists
+        
+    }
+    return returnProjects
 }
-//create local variable which is the converted local storage into JSON
+
+//create local variable which is the converted local storage from JSON
 let projects = loadStorage()
 
 
@@ -111,5 +123,5 @@ let projects = loadStorage()
 
 
 
-
 //change instance property value function; can be used to change the value of any property that is not holding an array
+export {projects, loadStorage, saveToStorage, createProject, deleteProject, Checklist, Project, Todo}
