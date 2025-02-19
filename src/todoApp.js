@@ -75,13 +75,13 @@ class Checklist{
 
 
 //createProject function
-function createProject(){
-
+function createProject(projectTitle, projectDescription){
+    projects.push(new Project())
 }
 
 //deleteProject function
-function deleteProject(){
-
+function deleteProject(projectIndex){
+    projects.splice(projectIndex, 1)
 }
 
 
