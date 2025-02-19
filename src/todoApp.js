@@ -10,10 +10,18 @@ class Project{
         this.todos = todos
     }
     //create todo function
+    createTodo(todoName, todoDescription, todoPriority, todoDueDate, todoNotes, todoChecklist){
+        this.todos.push(new Todo(todoName, todoDescription, todoPriority, todoDueDate, todoNotes, todoChecklist))
+    }
 
     //complete todo function
-
+    completeTodo(todoIndex){
+        this.todos[todoIndex].complete=true
+    }
     //delete todo function
+    deleteTodo(todoIndex){
+        this.todos.splice(todoIndex, 1)
+    }
 }
 
 //todo class
@@ -21,13 +29,14 @@ class Project{
         //notes will be an array which just holds strings
         //checklist will be an array which holds instances of Checklist class instances
 class Todo{
-    constructor(name, description, priority, dueDate, notes=[], checklist=[]){
+    constructor(name, description, priority, dueDate, notes=[], checklist=[], complete=false){
         this.name = name
         this.description = description
         this.priority = priority
         this.dueDate = Date(dueDate)
         this.notes = notes
         this.checklist = checklist
+        this.complete = complete
     }
     //add note to todo function
 
@@ -63,13 +72,15 @@ function deleteProject(){
 
 
 //save to localStorage function
+    //this will need to be called anytime a change is made
 function saveToStorage(data){
 
 }
 
 //load from local Storage function
+    //I think this would pretty much only be called at the initial load into a new window
 function loadStorage(){
-    
+
 }
 //create local variable which is the converted local storage into JSON
 let projects = loadStorage()
