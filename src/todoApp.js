@@ -104,7 +104,7 @@ const todoApp = (function(){
     
     function startANew(){
         localStorage.setItem('projectsArray', '[]')
-        projects = []
+        projects = projects.splice(0, projects.length)
     }
 
     return {projects, Project, Todo, Checklist, loadStorage, saveToStorage, deleteProject, createProject, startANew}
