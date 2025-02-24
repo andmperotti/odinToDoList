@@ -1,3 +1,3 @@
-import { todoApp } from './todoApp.js'
+import { UIController } from './UIController.js'
 
-window.todoApp = todoApp
+window.UIController = UIController
