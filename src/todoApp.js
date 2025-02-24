@@ -9,8 +9,12 @@ const todoApp = (function(){
             this.todos.push(new Todo(todoName, todoDescription, todoPriority, todoDueDate, todoNotes, todoChecklist))
             console.log(`${todoName} created!`)
         }
-        completeTodo(todoIndex){
-            this.todos[todoIndex].complete=true
+        toggleTodo(todoIndex){
+            if(this.todos[todoIndex].complete === false){
+                this.todos[todoIndex].complete = true
+            }else{
+                this.todos[todoIndex].complete = false
+            }
         }
         deleteTodo(todoIndex){
             this.todos.splice(todoIndex, 1)
