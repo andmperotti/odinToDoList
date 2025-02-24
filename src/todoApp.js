@@ -8,6 +8,7 @@ const todoApp = (function(){
         createTodo(todoName, todoDescription, todoPriority, todoDueDate, todoNotes, todoChecklist){
             this.todos.push(new Todo(todoName, todoDescription, todoPriority, todoDueDate, todoNotes, todoChecklist))
             console.log(`${todoName} created!`)
+            saveToStorage()
         }
         toggleTodo(todoIndex){
             if(this.todos[todoIndex].complete === false){
@@ -15,9 +16,11 @@ const todoApp = (function(){
             }else{
                 this.todos[todoIndex].complete = false
             }
+            saveToStorage()
         }
         deleteTodo(todoIndex){
             this.todos.splice(todoIndex, 1)
+            saveToStorage()
         }
     }
 
@@ -33,15 +36,19 @@ const todoApp = (function(){
         }
         addNote(noteText){
             this.notes.push(noteText)
+            saveToStorage()
         }
         deleteNote(noteIndex){
             this.notes.splice(noteIndex, 1)
+            saveToStorage()
         }
         createChecklistItem(checkDescription){
             this.checklist.push(new Checklist(checkDescription))
+            saveToStorage()
         }
         deleteChecklistItem(checklistIndex){
             this.checklist.splice(checklistIndex, 1)
+            saveToStorage()
         }
     }
 
@@ -56,6 +63,7 @@ const todoApp = (function(){
             }else{
                 this.checklist[checklistIndex].checked=true
             }
+            saveToStorage()
         }
     }
 
@@ -65,10 +73,12 @@ const todoApp = (function(){
     function createProject(projectTitle, projectDescription){
         projects.push(new Project(projectTitle, projectDescription))
         console.log(`${projectTitle} with a description of ${projectDescription} has been created!`)
+        saveToStorage()
     }
 
     function deleteProject(projectIndex){
         projects.splice(projectIndex, 1)
+        saveToStorage()
     }
 
     function saveToStorage(){
@@ -76,7 +86,6 @@ const todoApp = (function(){
         console.log('Saved projects data to localStorage')
     }
 
-    //this needs a warning, if projects contains elements not in the localStorage then loadStorage will overwrite them, maybe a yes/no question, and suggest to saveToStorage first, or something?
     function loadStorage(){
         let returnedProjects = [];
         if(!localStorage.getItem('projectsArray')){
@@ -111,7 +120,7 @@ const todoApp = (function(){
         projects = projects.splice(0, projects.length)
     }
 
-    return {projects, Project, Todo, Checklist, loadStorage, saveToStorage, deleteProject, createProject, startANew}
+    return {projects, Project, Todo, Checklist, deleteProject, createProject, startANew}
 })()
 
 export {todoApp}
