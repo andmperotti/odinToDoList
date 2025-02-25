@@ -5,16 +5,31 @@ export const UIController =(function(){
         //sidebar with projects in a list (could sort these later with uncompleted task count vs due dates/etc), including a button where a new project can be made
         //main content area where projects are opened up and todos can be seen and made which will be crossed out if completed, not crossed out if un complete, as well as a button to delete a todo item for any reason. If no projects exist maybe generate an example project or explanation text that tells a user how to create a new project
     let mainProjectArea = document.querySelector('#content')
-    let navProjectArea = document.querySelector('navProjects')
+    let navProjectArea = document.querySelector('#navProjects')
     let newProjectButton = document.querySelector('#createNewProject')
     let mainBody = document.querySelector('body')
 
-    console.log(todoApp.projects)
+    //function that generates links on nav sidebar
     function generateSavedProjects(){
-        for(let savedProject in todoApp.projects){
-            console.log('test')
-            //don't forget to add a dataset attribute which we'll use to pass to functions that require index positions
+        for(let i= 0;  i<todoApp.projects.length; i++){
+            let tempProject = document.createElement('li')
+            tempProject.textContent = todoApp.projects[i].title
+            tempProject.style.listStyleType = 'none'
+            tempProject.style.color = "red"
+            tempProject.style.fontWeight = "bold"
+            //data-index dataset attribute declaration
+            tempProject.dataset.index = i
+            navProjectArea.appendChild(tempProject)
         }
+    }
+    //delegate listener on #navProjects for project li's when clicked (use dataset attribute)
+
+
+    //function that will create elements into our main element f
+    function generateProject(project){
+        // console.log(`${project.title}`)
+        //don't forget to add a dataset attribute which we'll use to pass to functions that require index positions
+
     }
     generateSavedProjects()
 
@@ -28,6 +43,9 @@ export const UIController =(function(){
 
     let newProjectNameLabel = document.createElement('label')
     let newProjectNameInput = document.createElement('input')
+    //We'll need to require a length
+    newProjectNameInput.minLength = '3'
+    ///////////////DO THE ABOVE
     newProjectNameLabel.textContent = 'Project Name: '
     newProjectNameLabel.appendChild(newProjectNameInput)
     newProjectModal.appendChild(newProjectNameLabel)
@@ -62,6 +80,9 @@ export const UIController =(function(){
     saveNewProject.style.marginTop = '15px'
     //event listener for 'save' button which generates a new project
     saveNewProject.addEventListener('click', ()=>{
+        //add conditional logic so we can require project names be of a minimum size!
+        //HERE//
+
         //triggers createProject from todoApp
         todoApp.createProject(newProjectNameInput.value, newProjectDescriptionInput.value)
         //hide modal
