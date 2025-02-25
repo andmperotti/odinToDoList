@@ -13,6 +13,7 @@ export const UIController =(function(){
     function generateSavedProjects(){
         for(let savedProject in todoApp.projects){
             console.log('test')
+            //don't forget to add a dataset attribute which we'll use to pass to functions that require index positions
         }
     }
     generateSavedProjects()
