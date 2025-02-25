@@ -20,7 +20,6 @@ export const UIController =(function(){
     //new project modal
     let newProjectModal = document.createElement('div')
     newProjectModal.style.overflow = 'clip'
-    newProjectModal.id = 'projectModal'
     //modals inner elements
     let newProjectTitle = document.createElement('h3')
     newProjectTitle.textContent = "Create New Project"
@@ -60,21 +59,34 @@ export const UIController =(function(){
     saveNewProject.textContent = "Save"
     newProjectModal.appendChild(saveNewProject)
     saveNewProject.style.marginTop = '15px'
-
-
+    //event listener for 'save' button which generates a new project
     saveNewProject.addEventListener('click', ()=>{
         //triggers createProject from todoApp
         todoApp.createProject(newProjectNameInput.value, newProjectDescriptionInput.value)
         //hide modal
         newProjectModal.style.width = '0%'
         newProjectModal.style.height = '0%'
+        //wipe input fields
+        newProjectNameInput.value = ''
+        newProjectDescriptionInput.value = ''
         //new project is rendered into sidebar
         
     })
+    //button to allow users to exit the modal, which also wipes any values entered into input fields and hides modal
+    let modalCancelButton = document.createElement('button')
+    modalCancelButton.type = 'button'
+    modalCancelButton.textContent = 'Cancel'
+    newProjectModal.appendChild(modalCancelButton)
+
+    //event listener for cancel button, which again wipes input fields, and hides modal
+    modalCancelButton.addEventListener('click', ()=>{
+        newProjectNameInput.value = ''
+        newProjectDescriptionInput.value = ''
+        newProjectModal.style.width = '0%'
+        newProjectModal.style.height = '0%'
+    })
 
     mainBody.appendChild(newProjectModal)
-    let createProjectModal = document.querySelector('#projectModal')
-    //hide the create project modal by default
 
     //click to show create new project modal
     newProjectButton.addEventListener('click', ()=>{
