@@ -26,6 +26,11 @@ export const UIController =(function(){
     }
 
     //delegate listener on #navProjects for project li's when clicked (use dataset attribute)
+    navProjectArea.addEventListener('click', (e)=>{
+        //placeholder as the generate function isn't complete
+        console.log('viewProject function not complete yet')
+        // viewProject(.target.dataset.index)
+    })
 
     //offer ways of sorting projects, maybe in ways considering todo dueDates and priorities, or how many todos are remaining, etc
 
@@ -48,10 +53,8 @@ export const UIController =(function(){
 
     let newProjectNameLabel = document.createElement('label')
     let newProjectNameInput = document.createElement('input')
-    //We'll need to require a length
-    newProjectNameInput.minLength = '3'
-    ///////////////DO THE ABOVE
-    newProjectNameLabel.textContent = 'Project Name: '
+    newProjectNameLabel.textContent = 'Project Name: *'
+    newProjectNameInput.placeholder = '3 character minimum'
     newProjectNameLabel.appendChild(newProjectNameInput)
     newProjectModal.appendChild(newProjectNameLabel)
 
@@ -61,6 +64,7 @@ export const UIController =(function(){
     newProjectDescriptionLabel.appendChild(newProjectDescriptionInput)
     newProjectModal.appendChild(newProjectDescriptionLabel)
     //styling modal inner elements
+        //going to need to replace this with flex or grid, it doesn't scale well
     newProjectNameLabel.style.display = 'block'
     newProjectDescriptionLabel.style.display = 'block'
     newProjectNameInput.style.marginLeft = "45px"
@@ -83,23 +87,40 @@ export const UIController =(function(){
     saveNewProject.textContent = "Save"
     newProjectModal.appendChild(saveNewProject)
     saveNewProject.style.marginTop = '15px'
+
     //event listener for 'save' button which generates a new project
     saveNewProject.addEventListener('click', ()=>{
-        //add conditional logic so we can require project names be of a minimum size!
-        //HERE//
-
+        if(newProjectNameInput.value.length>2){
         //triggers createProject from todoApp
-        todoApp.createProject(newProjectNameInput.value, newProjectDescriptionInput.value)
-        //hide modal
-        newProjectModal.style.width = '0%'
-        newProjectModal.style.height = '0%'
-        //wipe input fields
-        newProjectNameInput.value = ''
-        newProjectDescriptionInput.value = ''
-        //new project is rendered into sidebar
-        wipeNavProjects()
-        //regenerate list of projects in side nav
-        populateNavProjects() 
+            todoApp.createProject(newProjectNameInput.value, newProjectDescriptionInput.value)
+            //hide modal
+            newProjectModal.style.width = '0%'
+            newProjectModal.style.height = '0%'
+            //wipe input fields
+            newProjectNameInput.value = ''
+            newProjectDescriptionInput.value = ''
+            //new project is rendered into sidebar
+            wipeNavProjects()
+            //regenerate list of projects in side nav
+            populateNavProjects()
+        }else{
+            //tell user that their project name needs to be atleast 3 characters in length
+            newProjectNameLabel.querySelector('input').style.borderColor = 'red'
+            setTimeout(() => {
+                let nameLengthError = document.createElement('span')
+                nameLengthError.innerText = 'Project Name must be at least 3 characters long'
+                nameLengthError.style.display = 'block'
+                nameLengthError.style.color = 'red'
+                newProjectNameLabel.after(nameLengthError)
+            }, 100);
+            //after 3 seconds remove the error message and styling
+            setTimeout(() => {
+                newProjectNameLabel.querySelector('input').style.borderColor = ''
+                newProjectModal.querySelector('span').remove()
+            }, 3000);
+
+        }
+
 
     })
 
