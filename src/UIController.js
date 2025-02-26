@@ -20,7 +20,7 @@ export const UIController =(function(){
         }
     }
 
-    //function to wipe side van project list, used before repopulating list when a project has been added or deleted
+    //function to wipe side nav project list, used before repopulating list when a project has been added or deleted
     function wipeNavProjects(){
         navProjectArea.innerHTML=''
     }
@@ -31,8 +31,10 @@ export const UIController =(function(){
         console.log('viewProject function not complete yet')
         // viewProject(.target.dataset.index)
     })
-
     //offer ways of sorting projects, maybe in ways considering todo dueDates and priorities, or how many todos are remaining, etc
+
+
+
 
     //main content area where projects are opened up and todos can be seen and made which will be crossed out if completed, not crossed out if un complete, as well as a button to delete a todo item for any reason. If no projects exist maybe generate an example project or explanation text that tells a user how to create a new project
     //function that will create html content dynamically for a specific project
@@ -44,7 +46,7 @@ export const UIController =(function(){
     populateNavProjects()
 
     //new project modal
-    let newProjectModal = document.createElement('div')
+    let newProjectModal = document.createElement('aside')
     newProjectModal.style.overflow = 'clip'
     //modals inner elements
     let newProjectTitle = document.createElement('h3')
@@ -65,10 +67,10 @@ export const UIController =(function(){
     newProjectModal.appendChild(newProjectDescriptionLabel)
     //styling modal inner elements
         //going to need to replace this with flex or grid, it doesn't scale well
-    newProjectNameLabel.style.display = 'block'
-    newProjectDescriptionLabel.style.display = 'block'
-    newProjectNameInput.style.marginLeft = "45px"
-    newProjectDescriptionInput.style.marginLeft = "10px"
+    // newProjectNameLabel.style.display = 'block'
+    // newProjectDescriptionLabel.style.display = 'block'
+    // newProjectNameInput.style.marginLeft = "45px"
+    // newProjectDescriptionInput.style.marginLeft = "10px"
 
     
     //styling modal 
