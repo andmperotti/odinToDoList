@@ -18,6 +18,7 @@ export const UIController =(function(){
             navProjectArea.appendChild(tempProject)
         }
     }
+    populateNavProjects()
 
     //function to wipe side nav project list, used before repopulating list when a project has been added or deleted
     function wipeNavProjects(){
@@ -27,8 +28,7 @@ export const UIController =(function(){
     //delegate listener on #navProjects for project li's when clicked (use dataset attribute)
     navProjectArea.addEventListener('click', (e)=>{
         //placeholder as the generate function isn't complete
-        console.log('viewProject function not complete yet')
-        // viewProject(.target.dataset.index)
+        viewProject(e.target.dataset.index)
     })
     //offer ways of sorting projects, maybe in ways considering todo dueDates and priorities, or how many todos are remaining, etc
 
@@ -37,12 +37,95 @@ export const UIController =(function(){
 
     //main content area where projects are opened up and todos can be seen and made which will be crossed out if completed, not crossed out if un complete, as well as a button to delete a todo item for any reason. If no projects exist maybe generate an example project or explanation text that tells a user how to create a new project
     //function that will create html content dynamically for a specific project
-    function viewProject(project){
+    function viewProject(projectIndex){
+        //wipe project view area in case a project was being shown
+
         //don't forget to add a dataset attribute which we'll use to pass to functions that require index positions, so for todos, checklists, and note items
 
+        //pull project from imported projects array
+        let currentProject = todoApp.projects[projectIndex]
+        //create div element for this project
+        let buildProject = document.createElement('div')
+        //create h3 which wraps projects title, give it content, append it to div temp project variable
+        let buildProjectTitle = document.createElement('h3')
+        buildProjectTitle.innerText = `${currentProject.title}`
+        buildProject.appendChild(buildProjectTitle)
+
+        let buildProjectDescription = document.createElement('p')
+        buildProjectDescription.innerText = `${currentProject.description}`
+        buildProject.appendChild(buildProjectDescription)
+
+        let buildProjectTodos = document.createElement('ul')
+        for(let i = 0; i<currentProject.todos.length; i++){
+            //invoke function that builds todo item as a node and append it into buildProjectTodos
+            buildProjectTodos.appendChild(buildTodo(currentProject.todos[i]))
+        }
+
+        mainProjectArea.appendChild(buildProject)
 
     }
-    populateNavProjects()
+
+    //functiion that builds todo item nodes
+        //maybe todos that are completed are greyed out ish?
+    function buildTodo(todo){
+        let todoContainer = document.createElement('div')
+        let todoName = document.createElement('h4')
+        todoName.innerText = `$todo.todoName`
+        todoContainer.appendChild(todoName)
+        let todoDescription = document.createElement('p')
+        todoDescription.innerText = `${todo.todoDescription}`
+        todoContainer.appendChild(todoDescription)
+        let todoPriority = document.createElement('p')
+        todoPriority.innerText = `${todo.todoPriority}`
+        todoContainer.appendChild(todoPriority)
+        let todoDueDate = document.createElement('p')
+        todoDueDate.innerText `${todo.todoDueDate}`
+        todoContainer.appendChild(todoDueDate)
+        let todoNotes = document.createElement('ul')
+        for(let note of todo.todoNotes){
+            let tempNote = document.createElement('li')
+            tempNote.innerText= note
+            todoNotes.appendChild(tempNote)
+        }
+        todoContainer.appendChild(todoNotes)
+        let todoChecklist = document.createElement('ul')
+        for(let i = 0; i< todo.todoChecklist.length; i++){
+            //checklist items, input type='checkbox' checked
+            todoChecklist.appendChild(buildChecklist(todo.todoChecklist[i]))
+        }
+        todoContainer.appendChild(todoChecklist)
+        //if todo is complete change background color to grey
+        if(todo.todoComplete === true){
+            todoContainer.style.backgroundColor = 'grey'
+        }
+        let todoComplete = document.createElement('p')
+        todoComplete.innerText= `${todo.todoComplete}`
+        if(todo.todoComplete===true){
+            todoComplete.style.color = 'green'
+        }
+
+        //need to create a ui for adding todo items
+        //need to create a ui for adding notes to todo items
+        //need to create a ui for adding checklist items to todo items
+
+        return todoContainer
+    }
+
+    //function to build checkList items
+    function buildChecklist(checklist){
+        let checklistItem = document.createElement('li')
+        let checklistDescription = document.createElement('label')
+        checklistDescription.innerText = `${checklist.description}`
+        let checklistItemBox = document.createElement('input')
+        checklistItemBox.type = 'checkbox'
+        if(checklist.checked){
+            //this code might be wrong, checked is an attribute on the input element and its a boolean attribute, just needs to be added, if saved as true, elsewhere we'll have an event listener that lets us change this value.
+            // checklistItemBox.checked = true
+            checklistItemBox.setAttribute='checked'
+        }
+        checklistDescription.appendChild(checklistItemBox)
+        checklistItem.appendChild(checklistDescription)
+    }
 
     //new project modal
     let newProjectModal = document.createElement('aside')
