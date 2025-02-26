@@ -14,7 +14,6 @@ export const UIController =(function(){
             tempProject.style.listStyleType = 'none'
             tempProject.style.color = "red"
             tempProject.style.fontWeight = "bold"
-            //data-index dataset attribute declaration
             tempProject.dataset.index = i
             navProjectArea.appendChild(tempProject)
         }
@@ -65,13 +64,6 @@ export const UIController =(function(){
     let newProjectDescriptionInput = document.createElement('input')
     newProjectDescriptionLabel.appendChild(newProjectDescriptionInput)
     newProjectModal.appendChild(newProjectDescriptionLabel)
-    //styling modal inner elements
-        //going to need to replace this with flex or grid, it doesn't scale well
-    // newProjectNameLabel.style.display = 'block'
-    // newProjectDescriptionLabel.style.display = 'block'
-    // newProjectNameInput.style.marginLeft = "45px"
-    // newProjectDescriptionInput.style.marginLeft = "10px"
-
     
     //styling modal 
     newProjectModal.style.position = 'absolute'
@@ -80,15 +72,16 @@ export const UIController =(function(){
     newProjectModal.style.border = '1px solid black'
     newProjectModal.style.backgroundColor = 'lightgray'
     newProjectModal.style.textAlign = 'center'
-    newProjectModal.style.width = '0%'
-    newProjectModal.style.height = '0%'
     newProjectModal.style.borderRadius = '5%'
     //button to trigger saving of the new project
     let saveNewProject = document.createElement('button')
     saveNewProject.type = 'button'
     saveNewProject.textContent = "Save"
     newProjectModal.appendChild(saveNewProject)
-    saveNewProject.style.marginTop = '15px'
+
+    //hide modal by default
+    newProjectModal.style.display = 'none'
+
 
     //event listener for 'save' button which generates a new project
     saveNewProject.addEventListener('click', ()=>{
@@ -96,8 +89,7 @@ export const UIController =(function(){
         //triggers createProject from todoApp
             todoApp.createProject(newProjectNameInput.value, newProjectDescriptionInput.value)
             //hide modal
-            newProjectModal.style.width = '0%'
-            newProjectModal.style.height = '0%'
+            newProjectModal.style.display = 'none'
             //wipe input fields
             newProjectNameInput.value = ''
             newProjectDescriptionInput.value = ''
@@ -136,8 +128,9 @@ export const UIController =(function(){
     modalCancelButton.addEventListener('click', ()=>{
         newProjectNameInput.value = ''
         newProjectDescriptionInput.value = ''
-        newProjectModal.style.width = '0%'
-        newProjectModal.style.height = '0%'
+        //hide modal
+        newProjectModal.style.display = 'none'
+
     })
 
     mainBody.appendChild(newProjectModal)
@@ -145,8 +138,7 @@ export const UIController =(function(){
     //click to show create new project modal
     newProjectButton.addEventListener('click', ()=>{
         //unhide create project modal
-            newProjectModal.style.width = '50%'
-            newProjectModal.style.height = '20%'
+        newProjectModal.style.display = ""
     })
 
 
