@@ -39,7 +39,7 @@ export const UIController =(function(){
     //function that will create html content dynamically for a specific project
     function viewProject(projectIndex){
         //wipe project view area in case a project was being shown
-
+        mainProjectArea.removeChild(mainProjectArea.firstChild)
         //don't forget to add a dataset attribute which we'll use to pass to functions that require index positions, so for todos, checklists, and note items
 
         //pull project from imported projects array
@@ -65,7 +65,7 @@ export const UIController =(function(){
 
     }
 
-    //functiion that builds todo item nodes
+    //function that builds todo item nodes
         //maybe todos that are completed are greyed out ish?
     function buildTodo(todo){
         let todoContainer = document.createElement('div')
