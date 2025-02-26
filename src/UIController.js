@@ -1,16 +1,13 @@
 import { todoApp } from './todoApp.js'
 
 export const UIController =(function(){
-    //Generate site layout elements //mostly done with template
-        //sidebar with projects in a list (could sort these later with uncompleted task count vs due dates/etc), including a button where a new project can be made
-        //main content area where projects are opened up and todos can be seen and made which will be crossed out if completed, not crossed out if un complete, as well as a button to delete a todo item for any reason. If no projects exist maybe generate an example project or explanation text that tells a user how to create a new project
     let mainProjectArea = document.querySelector('#content')
     let navProjectArea = document.querySelector('#navProjects')
     let newProjectButton = document.querySelector('#createNewProject')
     let mainBody = document.querySelector('body')
 
-    //function that generates links on nav sidebar
-    function generateSavedProjects(){
+    //function that generates links for active projects on nav sidebar
+    function populateNavProjects(){
         for(let i= 0;  i<todoApp.projects.length; i++){
             let tempProject = document.createElement('li')
             tempProject.textContent = todoApp.projects[i].title
@@ -22,16 +19,19 @@ export const UIController =(function(){
             navProjectArea.appendChild(tempProject)
         }
     }
+
     //delegate listener on #navProjects for project li's when clicked (use dataset attribute)
 
+    //offer ways of sorting projects, maybe in ways considering todo dueDates and priorities, or how many todos are remaining, etc
 
-    //function that will create elements into our main element f
-    function generateProject(project){
-        // console.log(`${project.title}`)
-        //don't forget to add a dataset attribute which we'll use to pass to functions that require index positions
+    //main content area where projects are opened up and todos can be seen and made which will be crossed out if completed, not crossed out if un complete, as well as a button to delete a todo item for any reason. If no projects exist maybe generate an example project or explanation text that tells a user how to create a new project
+    //function that will create html content dynamically for a specific project
+    function viewProject(project){
+        //don't forget to add a dataset attribute which we'll use to pass to functions that require index positions, so for todos, checklists, and note items
+
 
     }
-    generateSavedProjects()
+    populateNavProjects()
 
     //new project modal
     let newProjectModal = document.createElement('div')
@@ -94,6 +94,7 @@ export const UIController =(function(){
         //new project is rendered into sidebar
         
     })
+
     //button to allow users to exit the modal, which also wipes any values entered into input fields and hides modal
     let modalCancelButton = document.createElement('button')
     modalCancelButton.type = 'button'
