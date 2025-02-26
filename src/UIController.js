@@ -20,6 +20,11 @@ export const UIController =(function(){
         }
     }
 
+    //function to wipe side van project list, used before repopulating list when a project has been added or deleted
+    function wipeNavProjects(){
+        navProjectArea.innerHTML=''
+    }
+
     //delegate listener on #navProjects for project li's when clicked (use dataset attribute)
 
     //offer ways of sorting projects, maybe in ways considering todo dueDates and priorities, or how many todos are remaining, etc
@@ -92,7 +97,10 @@ export const UIController =(function(){
         newProjectNameInput.value = ''
         newProjectDescriptionInput.value = ''
         //new project is rendered into sidebar
-        
+        wipeNavProjects()
+        //regenerate list of projects in side nav
+        populateNavProjects() 
+
     })
 
     //button to allow users to exit the modal, which also wipes any values entered into input fields and hides modal
