@@ -34,3 +34,10 @@ main {
 ul {
     padding: 0;
 }
+
+aside {
+    display: grid;
+    padding: 10px;
+    justify-items: center;
+    gap: 2px;
+}
