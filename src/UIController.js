@@ -58,8 +58,10 @@ export const UIController =(function(){
         let buildProjectTodos = document.createElement('ul')
         for(let i = 0; i<currentProject.todos.length; i++){
             //invoke function that builds todo item as a node and append it into buildProjectTodos
-            buildProjectTodos.appendChild(buildTodo(currentProject.todos[i]))
+            buildProjectTodos.appendChild(buildTodo(currentProject.todos[i], i))
         }
+        //add button to add a todo
+
 
         mainProjectArea.appendChild(buildProject)
 
@@ -67,8 +69,9 @@ export const UIController =(function(){
 
     //function that builds todo item nodes
         //maybe todos that are completed are greyed out ish?
-    function buildTodo(todo){
-        let todoContainer = document.createElement('div')
+    function buildTodo(todo, index){
+        let todoContainer = document.createElement('li')
+        todoContainer.attributes.dataset.index = index
         let todoName = document.createElement('h4')
         todoName.innerText = `$todo.todoName`
         todoContainer.appendChild(todoName)
@@ -82,16 +85,18 @@ export const UIController =(function(){
         todoDueDate.innerText `${todo.todoDueDate}`
         todoContainer.appendChild(todoDueDate)
         let todoNotes = document.createElement('ul')
-        for(let note of todo.todoNotes){
+        for(let i = 0; i<todo.todoNotes.length; i++){
             let tempNote = document.createElement('li')
-            tempNote.innerText= note
+            tempNote.innerText= todo.todoNotes[i]
+            //add button to delete notes
+
             todoNotes.appendChild(tempNote)
         }
         todoContainer.appendChild(todoNotes)
         let todoChecklist = document.createElement('ul')
         for(let i = 0; i< todo.todoChecklist.length; i++){
             //checklist items, input type='checkbox' checked
-            todoChecklist.appendChild(buildChecklist(todo.todoChecklist[i]))
+            todoChecklist.appendChild(buildChecklist(todo.todoChecklist[i], i))
         }
         todoContainer.appendChild(todoChecklist)
         //if todo is complete change background color to grey
@@ -112,8 +117,9 @@ export const UIController =(function(){
     }
 
     //function to build checkList items
-    function buildChecklist(checklist){
+    function buildChecklist(checklist, index){
         let checklistItem = document.createElement('li')
+        checklistItem.attributes.dataset.index = index
         let checklistDescription = document.createElement('label')
         checklistDescription.innerText = `${checklist.description}`
         let checklistItemBox = document.createElement('input')
@@ -220,9 +226,30 @@ export const UIController =(function(){
 
     //click to show create new project modal
     newProjectButton.addEventListener('click', ()=>{
-        //unhide create project modal
-        newProjectModal.style.display = ""
+        if(newProjectModal.style.display === 'none'){
+            newProjectModal.style.display = ''
+        }else{
+            newProjectNameInput.value = ''
+            newProjectDescriptionInput.value = ''
+            newProjectModal.style.display = 'none'
+        }
     })
+
+
+    //button to wipe all projects, temporarily use an alert to confirm
+    let wipeProjectsButton = document.createElement('button')
+    wipeProjectsButton.type = 'button'
+    wipeProjectsButton.innerText = "Delete All Projects"
+    // wipeProjectsButton
+    wipeProjectsButton.addEventListener('click', ()=>{
+        let userWipeConfirm = prompt("Are you sure you want to wipe )everything?(true/false) ")
+        if(userWipeConfirm==='true'){
+            todoApp.startANew()
+            wipeNavProjects()
+            populateNavProjects()
+        }
+    })
+    document.querySelector('nav').appendChild(wipeProjectsButton)
 
 
 
