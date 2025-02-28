@@ -90,6 +90,7 @@ export const UIController =(function(){
         for(let i = 0; i<todo.todoNotes.length; i++){
             let tempNote = document.createElement('li')
             tempNote.innerText= todo.todoNotes[i]
+            tempNote.dataset.noteIndex = i
             //add button to delete notes
 
             todoNotes.appendChild(tempNote)
