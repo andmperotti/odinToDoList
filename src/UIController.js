@@ -41,7 +41,7 @@ export const UIController =(function(){
     //function that will create html content dynamically for a specific project
     function viewProject(projectIndex){
         //wipe project view area in case a project was being shown
-        mainProjectArea.removeChild(mainProjectArea.firstChild)
+        mainProjectArea.removeChild(mainProjectArea.lastChild)
         //don't forget to add a dataset attribute which we'll use to pass to functions that require index positions, so for todos, checklists, and note items
 
         //pull project from imported projects array
@@ -61,18 +61,41 @@ export const UIController =(function(){
         let createTodoButton = document.createElement('button')
         createTodoButton.type = 'button'
         createTodoButton.innerText = 'Add Todo'
+        createTodoButton.addEventListener('click', e=>{
+            //modal that allows user to build a todo item
+            let newTodoModal = document.querySelector('#newTodoModal')
+            //show element to user, as it's hidden by default
+
+
+            //labels and inputs to take in starter data
+                //i'm going to create an element in our html template, hide it via display none in the css and show it when we need it...
+            //target inputs so we can pass data to function
+
+
+            //rerender todos when one is added (which gives that todo a dataset.todoIndex attribute and value)
+
+            //invocation of function that adds todo to project
+            todoApp.createTodo(/* insert targeted inputs here */)
+            //wipe todo ul area
+            buildProjectTodos.innerHTML = ''
+            //regenerate todos
+            buildProjectTodos()
+        })
         buildProject.appendChild(createTodoButton)
 
         let buildProjectTodos = document.createElement('ul')
-        for(let i = 0; i<currentProject.todos.length; i++){
-            //invoke function that builds todo item as a node and appends it into buildProjectTodos
-            buildProjectTodos.appendChild(buildTodo(currentProject.todos[i], i))
+        function generateTodos(){
+            for(let i = 0; i<currentProject.todos.length; i++){
+                //invoke function that builds todo item as a node and appends it into buildProjectTodos
+                buildProjectTodos.appendChild(buildTodo(currentProject.todos[i], i))
+            }
         }
+        generateTodos()
 
         mainProjectArea.appendChild(buildProject)
     }
 
-    //function that builds todo item nodes
+    //function that builds todo item nodes in view
         //maybe todos that are completed are greyed out ish?
     function buildTodo(todo, index){
         let todoContainer = document.createElement('li')
@@ -174,9 +197,6 @@ export const UIController =(function(){
     saveNewProject.textContent = "Save"
     newProjectModal.appendChild(saveNewProject)
 
-    //hide modal by default
-    newProjectModal.style.display = 'none'
-
 
     //event listener for 'save' button which generates a new project
     saveNewProject.addEventListener('click', ()=>{
@@ -233,7 +253,7 @@ export const UIController =(function(){
     //click to show create new project modal
     newProjectButton.addEventListener('click', ()=>{
         if(newProjectModal.style.display === 'none'){
-            newProjectModal.style.display = ''
+            newProjectModal.style.display = 'grid'
         }else{
             newProjectNameInput.value = ''
             newProjectDescriptionInput.value = ''
