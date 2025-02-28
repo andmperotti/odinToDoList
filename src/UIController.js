@@ -57,16 +57,19 @@ export const UIController =(function(){
         buildProjectDescription.innerText = `${currentProject.description}`
         buildProject.appendChild(buildProjectDescription)
 
+        //add button to add a todo
+        let createTodoButton = document.createElement('button')
+        createTodoButton.type = 'button'
+        createTodoButton.innerText = 'Add Todo'
+        buildProject.appendChild(createTodoButton)
+
         let buildProjectTodos = document.createElement('ul')
         for(let i = 0; i<currentProject.todos.length; i++){
-            //invoke function that builds todo item as a node and append it into buildProjectTodos
+            //invoke function that builds todo item as a node and appends it into buildProjectTodos
             buildProjectTodos.appendChild(buildTodo(currentProject.todos[i], i))
         }
-        //add button to add a todo
-
 
         mainProjectArea.appendChild(buildProject)
-
     }
 
     //function that builds todo item nodes
