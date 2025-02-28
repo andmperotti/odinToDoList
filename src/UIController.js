@@ -162,41 +162,12 @@ export const UIController =(function(){
         checklistItem.appendChild(checklistDescription)
     }
 
-    //new project modal
-    let newProjectModal = document.createElement('aside')
-    newProjectModal.style.overflow = 'clip'
-    //modals inner elements
-    let newProjectTitle = document.createElement('h3')
-    newProjectTitle.textContent = "Create New Project"
-    newProjectModal.appendChild(newProjectTitle)
-
-    let newProjectNameLabel = document.createElement('label')
-    let newProjectNameInput = document.createElement('input')
-    newProjectNameLabel.textContent = 'Project Name: *'
-    newProjectNameInput.placeholder = '3 character minimum'
-    newProjectNameLabel.appendChild(newProjectNameInput)
-    newProjectModal.appendChild(newProjectNameLabel)
-
-    let newProjectDescriptionLabel = document.createElement('label')
-    newProjectDescriptionLabel.textContent = 'Project Description: '
-    let newProjectDescriptionInput = document.createElement('input')
-    newProjectDescriptionLabel.appendChild(newProjectDescriptionInput)
-    newProjectModal.appendChild(newProjectDescriptionLabel)
-    
-    //styling modal 
-    newProjectModal.style.position = 'absolute'
-    newProjectModal.style.top = '25%'
-    newProjectModal.style.left = '35%'
-    newProjectModal.style.border = '1px solid black'
-    newProjectModal.style.backgroundColor = 'lightgray'
-    newProjectModal.style.textAlign = 'center'
-    newProjectModal.style.borderRadius = '5%'
-    //button to trigger saving of the new project
-    let saveNewProject = document.createElement('button')
-    saveNewProject.type = 'button'
-    saveNewProject.textContent = "Save"
-    newProjectModal.appendChild(saveNewProject)
-
+    //project modal elements
+    let newProjectModal = document.querySelector('#newProjectModal') 
+    let newProjectNameInput = document.querySelector('#newProjectName')
+    let newProjectDescriptionInput = document.querySelector('#newProjectDescription')
+    let saveNewProject = document.querySelector('#saveNewProject')
+    let modalCancelButton = document.querySelector('#cancelNewProject')
 
     //event listener for 'save' button which generates a new project
     saveNewProject.addEventListener('click', ()=>{
@@ -233,12 +204,6 @@ export const UIController =(function(){
 
     })
 
-    //button to allow users to exit the modal, which also wipes any values entered into input fields and hides modal
-    let modalCancelButton = document.createElement('button')
-    modalCancelButton.type = 'button'
-    modalCancelButton.textContent = 'Cancel'
-    newProjectModal.appendChild(modalCancelButton)
-
     //event listener for cancel button, which again wipes input fields, and hides modal
     modalCancelButton.addEventListener('click', ()=>{
         newProjectNameInput.value = ''
@@ -248,11 +213,9 @@ export const UIController =(function(){
 
     })
 
-    mainBody.appendChild(newProjectModal)
-
     //click to show create new project modal
     newProjectButton.addEventListener('click', ()=>{
-        if(newProjectModal.style.display === 'none'){
+        if(newProjectModal.style.display !== 'grid'){
             newProjectModal.style.display = 'grid'
         }else{
             newProjectNameInput.value = ''
