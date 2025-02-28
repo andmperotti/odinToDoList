@@ -27,7 +27,9 @@ export const UIController =(function(){
 
     //delegate listener on #navProjects for project li's when clicked (use dataset attribute)
     navProjectArea.addEventListener('click', (e)=>{
-        //placeholder as the generate function isn't complete
+        //if what you're clicking on doesn't have a data-index attribute then do nothing
+        if(!e.target.dataset.index){return}
+        //otherwise, invoke viewProject function giving the function that data-index attribute value
         viewProject(e.target.dataset.index)
     })
     //offer ways of sorting projects, maybe in ways considering todo dueDates and priorities, or how many todos are remaining, etc
