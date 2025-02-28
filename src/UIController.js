@@ -14,7 +14,7 @@ export const UIController =(function(){
             tempProject.style.listStyleType = 'none'
             tempProject.style.color = "red"
             tempProject.style.fontWeight = "bold"
-            tempProject.dataset.index = i
+            tempProject.dataset.projectIndex = i
             navProjectArea.appendChild(tempProject)
         }
     }
@@ -28,9 +28,9 @@ export const UIController =(function(){
     //delegate listener on #navProjects for project li's when clicked (use dataset attribute)
     navProjectArea.addEventListener('click', (e)=>{
         //if what you're clicking on doesn't have a data-index attribute then do nothing
-        if(!e.target.dataset.index){return}
+        if(!e.target.dataset.projectIndex){return}
         //otherwise, invoke viewProject function giving the function that data-index attribute value
-        viewProject(e.target.dataset.index)
+        viewProject(e.target.dataset.projectIndex)
     })
     //offer ways of sorting projects, maybe in ways considering todo dueDates and priorities, or how many todos are remaining, etc
 
@@ -73,7 +73,7 @@ export const UIController =(function(){
         //maybe todos that are completed are greyed out ish?
     function buildTodo(todo, index){
         let todoContainer = document.createElement('li')
-        todoContainer.attributes.dataset.index = index
+        todoContainer.attributes.dataset.todoIndex = index
         let todoName = document.createElement('h4')
         todoName.innerText = `$todo.todoName`
         todoContainer.appendChild(todoName)
@@ -121,7 +121,7 @@ export const UIController =(function(){
     //function to build checkList items
     function buildChecklist(checklist, index){
         let checklistItem = document.createElement('li')
-        checklistItem.attributes.dataset.index = index
+        checklistItem.attributes.dataset.checklistIndex = index
         let checklistDescription = document.createElement('label')
         checklistDescription.innerText = `${checklist.description}`
         let checklistItemBox = document.createElement('input')
