@@ -13,11 +13,13 @@
         <button type="button" id="createNewProject">Create Project</button>
     </nav>
     <main id="content">
+        <!-- modals that are hidden by default, which allow us to give a ui for creating new projects, todos, checklist items, and notes-->
         <aside id="newTodoModal">
-            <label><input type="text"></label>
-            <label><input type="text"></label>
-            <label><input type="text"></label>
-            <label><input type="text"></label>
+            <h3>Create New Todo</h3>
+            <label>Todo Name: *<input type="text" placeholder="3 character minimum" id="newTodoName"></label>
+            <label>Todo Description: <input type="text" id="newTodoDescription"></label>
+            <label>Todo Priority<input type="integer" id="newTodoPriority" placeholder="0=lowest, 10 = highest"></label>
+            <label>Todo Due Date:<input type="date" id="newTodoDueDate"></label>
         </aside>
         <aside id="newProjectModal">
             <h3>Create New Project</h3>
@@ -30,6 +32,7 @@
             <button id="saveNewProject">Save</button>
             <button id="cancelNewProject">Cancel</button>
         </aside>
+
     </main>
 </body>
 </html>
