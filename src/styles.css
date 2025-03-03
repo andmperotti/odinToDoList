@@ -48,3 +48,7 @@ aside {
     text-align: center;
     border-radius: 5%;
 }
+
+li {
+    list-style-type: none;
+}
