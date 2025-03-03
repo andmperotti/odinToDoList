@@ -99,14 +99,31 @@ export const UIController =(function(){
             let cancelNewTodoButton = document.querySelector('#cancelNewTodoButton')
             //work on listener code for these
             saveNewTodoButton.addEventListener('click', e=>{
-                currentProject.createTodo(newTodoNameInput.value, newTodoDescriptionInput.value, newTodoPriorityInput.value, newTodoDueDateInput.value)
-                newTodoNameInput.value = ''
-                newTodoDescriptionInput.value = ''
-                newTodoPriorityInput.value = ''
-                newTodoDueDateInput.value = ''
-                newTodoModal.style.display = 'none'
-                //rerender project with this new todo
-                viewProject(activeViewedProject)
+                if(newTodoNameInput.value.length>2){
+                    currentProject.createTodo(newTodoNameInput.value, newTodoDescriptionInput.value, newTodoPriorityInput.value, newTodoDueDateInput.value)
+                    newTodoNameInput.value = ''
+                    newTodoDescriptionInput.value = ''
+                    newTodoPriorityInput.value = ''
+                    newTodoDueDateInput.value = ''
+                    newTodoModal.style.display = 'none'
+                    //rerender project with this new todo
+                    viewProject(activeViewedProject)
+                }else{
+                    let todoNameLengthError = document.createElement('p')
+                    setTimeout(() => {
+                        todoNameLengthError.innerText = 'Name needs to have a length of at least 3 characters'
+                        todoNameLengthError.style.color = 'red'
+                        newTodoNameInput.after(todoNameLengthError)
+                        newTodoNameInput.style.borderColor = 'red'
+                    }, 1);
+                    setTimeout(() => {
+                        newTodoNameInput.style.borderColor = ''
+                        todoNameLengthError.remove()
+                    }, 3000);
+                    // todoNameLengthError.innerText = 'Name needs to have a length of at least 3 characters'
+                    // newTodoNameInput.after(todoNameLengthError)
+                }
+
 
             })
             cancelNewTodoButton.addEventListener('click', e=>{
@@ -206,6 +223,11 @@ export const UIController =(function(){
         //need to create a ui for adding notes to todo items, might start it in th template
         //need to create a ui for adding checklist items to todo items, might start it in the template
 
+
+
+
+
+
         //need to build a button to toggle the complete property value of a todo item
         let completeTodoButton = document.createElement('button')
         completeTodoButton.type = 'button'
@@ -262,6 +284,8 @@ export const UIController =(function(){
     let newProjectDescriptionInput = document.querySelector('#newProjectDescription')
     let saveNewProject = document.querySelector('#saveNewProject')
     let modalCancelButton = document.querySelector('#cancelNewProject')
+    let newProjectNameLabel = document.querySelector('#newProjectNameLabel')
+
 
     //event listener for 'save' button which generates a new project
     saveNewProject.addEventListener('click', ()=>{
@@ -277,8 +301,7 @@ export const UIController =(function(){
             wipeNavProjects()
             //regenerate list of projects in side nav
             populateNavProjects()
-        }else{
-            //tell user that their project name needs to be atleast 3 characters in length
+        }else{            
             newProjectNameLabel.querySelector('input').style.borderColor = 'red'
             setTimeout(() => {
                 let nameLengthError = document.createElement('span')
