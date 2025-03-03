@@ -14,21 +14,30 @@
     </nav>
     <main id="content">
         <!-- modals that are hidden by default, which allow us to give a ui for creating new projects, todos, checklist items, and notes-->
+        <aside id="newNoteModal">
+            <label for="newNoteString">
+                <input type="text" id="newNoteString">
+            </label>
+        </aside>
+        <aside id="newChecklistModal">
+            <label for="newChecklistDescription"><input type="text" id="newChecklistDescription"></label>
+            <label for="newChecklistChecked"><input type="checkbox" id="newChecklistChecked"></label>
+        </aside>
         <aside id="newTodoModal">
             <h3>Create New Todo</h3>
-            <label>Todo Name: *<input type="text" placeholder="3 character minimum" id="newTodoName"></label>
-            <label>Todo Description: <input type="text" id="newTodoDescription"></label>
-            <label>Todo Priority<input type="integer" id="newTodoPriority" placeholder="0=lowest, 10 = highest"></label>
-            <label>Todo Due Date:<input type="date" id="newTodoDueDate"></label>
+            <label for="newTodoName">Todo Name: *<input type="text" placeholder="3 character minimum" id="newTodoName"></label>
+            <label for="newTodoDescription">Todo Description: <input type="text" id="newTodoDescription"></label>
+            <label for="newTodoDueDate">Todo Priority<input type="integer" id="newTodoPriority" placeholder="0=lowest, 10 = highest"></label>
+            <label for="newTodoDueDate">Todo Due Date:<input type="date" id="newTodoDueDate"></label>
             <button id="createNewTodoButton" type="button">Save New Todo</button>
             <button id="cancelNewTodoButton" type="button">Cancel</button>
         </aside>
         <aside id="newProjectModal">
             <h3>Create New Project</h3>
-            <label id="newProjectNameLabel">Project Name: *
+            <label id="newProjectNameLabel" for="newProjectName">Project Name: *
                 <input type="text" placeholder="3 character minimum" id="newProjectName">
             </label>
-            <label>Project Description: 
+            <label for="newProjectDescription">Project Description: 
                 <input type="text" id="newProjectDescription">
             </label>
             <button id="saveNewProject">Save</button>
