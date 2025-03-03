@@ -25,12 +25,17 @@ export const UIController =(function(){
         navProjectArea.innerHTML=''
     }
 
+    //variable to keep track of which project is being viewed
+    let activeViewedProject = Number()
     //delegate listener on #navProjects for project li's when clicked (use dataset attribute)
     navProjectArea.addEventListener('click', (e)=>{
         //if what you're clicking on doesn't have a data-index attribute then do nothing
         if(!e.target.dataset.projectIndex){return}
         //otherwise, invoke viewProject function giving the function that data-index attribute value
         viewProject(e.target.dataset.projectIndex)
+        activeViewedProject = e.target.dataset.projectIndex
+        console.log(activeViewedProject)
+        
     })
     //offer ways of sorting projects, maybe in ways considering todo dueDates and priorities, or how many todos are remaining, etc
 
@@ -40,7 +45,7 @@ export const UIController =(function(){
     //main content area where projects are opened up and todos can be seen and made which will be crossed out if completed, not crossed out if un complete, as well as a button to delete a todo item for any reason. If no projects exist maybe generate an example project or explanation text that tells a user how to create a new project
     //function that will create html content dynamically for a specific project
     function viewProject(projectIndex){
-        //wipe project view area in case a project was being shown
+        //wipe project view area in case a project was being shown (lastChild because it was appended after the hidden modals)
         mainProjectArea.removeChild(mainProjectArea.lastChild)
         //don't forget to add a dataset attribute which we'll use to pass to functions that require index positions, so for todos, checklists, and note items
 
@@ -50,97 +55,186 @@ export const UIController =(function(){
         let buildProject = document.createElement('div')
         //create h3 which wraps projects title, give it content, append it to div temp project variable
         let buildProjectTitle = document.createElement('h3')
-        buildProjectTitle.innerText = `${currentProject.title}`
+        buildProjectTitle.innerText = `Project Name: ${currentProject.title}`
         buildProject.appendChild(buildProjectTitle)
 
         let buildProjectDescription = document.createElement('p')
-        buildProjectDescription.innerText = `${currentProject.description}`
+        buildProjectDescription.innerText = `Project Description: ${currentProject.description}`
         buildProject.appendChild(buildProjectDescription)
 
-        //add button to add a todo
+        //add button to create a todo
         let createTodoButton = document.createElement('button')
         createTodoButton.type = 'button'
         createTodoButton.innerText = 'Add Todo'
+        buildProject.appendChild(createTodoButton)
+
+        //create a ul where todo items will be inserted
+        let buildProjectTodos = document.createElement('ul')
+        buildProjectTodos.style.padding = '3%'
+        buildProject.appendChild(buildProjectTodos)
+
+        //listener on the createTodoButton
         createTodoButton.addEventListener('click', e=>{
             //modal that allows user to build a todo item
             let newTodoModal = document.querySelector('#newTodoModal')
-            //show element to user, as it's hidden by default
+            //elements where we can find user data input
+            let newTodoNameInput = document.querySelector('#newTodoName')
+            let newTodoDescriptionInput = document.querySelector('#newTodoDescription')
+            let newTodoPriorityInput = document.querySelector('#newTodoPriority')
+            let newTodoDueDateInput = document.querySelector('#newTodoDueDate')
+
+            //write validation logic for name, and maybe dueDate ?
 
 
-            //labels and inputs to take in starter data
-                //i'm going to create an element in our html template, hide it via display none in the css and show it when we need it...
-            //target inputs so we can pass data to function
+            //show element to user, as it's hidden by default, yet create a toggle on the button 
+            if(newTodoModal.style.display !== 'grid'){
+                newTodoModal.style.display = 'grid'
+            }else{
+                newTodoModal.style.display = 'none'
+                //wipe input fields
+            }
+
+            //save and cancel buttons
+            let saveNewTodoButton = document.querySelector('#createNewTodoButton')
+            let cancelNewTodoButton = document.querySelector('#cancelNewTodoButton')
+            //work on listener code for these
+            saveNewTodoButton.addEventListener('click', e=>{
+                currentProject.createTodo(newTodoNameInput.value, newTodoDescriptionInput.value, newTodoPriorityInput.value, newTodoDueDateInput.value)
+                newTodoNameInput.value = ''
+                newTodoDescriptionInput.value = ''
+                newTodoPriorityInput.value = ''
+                newTodoDueDateInput.value = ''
+                newTodoModal.style.display = 'none'
+                //rerender project with this new todo
+                viewProject(activeViewedProject)
+
+            })
+            cancelNewTodoButton.addEventListener('click', e=>{
+                newTodoNameInput.value = ''
+                newTodoDescriptionInput.value = ''
+                newTodoPriorityInput.value = ''
+                newTodoDueDateInput.value = ''
+                newTodoModal.style.display = 'none'
+            })
 
 
-            //rerender todos when one is added (which gives that todo a dataset.todoIndex attribute and value)
-
-            //invocation of function that adds todo to project
-            todoApp.createTodo(/* insert targeted inputs here */)
-            //wipe todo ul area
-            buildProjectTodos.innerHTML = ''
-            //regenerate todos
-            buildProjectTodos()
+            
         })
-        buildProject.appendChild(createTodoButton)
 
-        let buildProjectTodos = document.createElement('ul')
         function generateTodos(){
             for(let i = 0; i<currentProject.todos.length; i++){
                 //invoke function that builds todo item as a node and appends it into buildProjectTodos
                 buildProjectTodos.appendChild(buildTodo(currentProject.todos[i], i))
             }
         }
+
+        //generate preexisting todo items when project is loaded
         generateTodos()
 
         mainProjectArea.appendChild(buildProject)
     }
 
-    //function that builds todo item nodes in view
-        //maybe todos that are completed are greyed out ish?
+    //function that builds preexisting todo item nodes in view
     function buildTodo(todo, index){
         let todoContainer = document.createElement('li')
-        todoContainer.attributes.dataset.todoIndex = index
+        todoContainer.style.border = '1px solid black'
+        todoContainer.style.listStyleType = 'none'
+        todoContainer.dataset.todoIndex = index
+
         let todoName = document.createElement('h4')
-        todoName.innerText = `$todo.todoName`
+        todoName.innerText = `Todo Name: ${todo.name}`
         todoContainer.appendChild(todoName)
+
         let todoDescription = document.createElement('p')
-        todoDescription.innerText = `${todo.todoDescription}`
+        todoDescription.innerText = `Todo Description: ${todo.description}`
         todoContainer.appendChild(todoDescription)
+
         let todoPriority = document.createElement('p')
-        todoPriority.innerText = `${todo.todoPriority}`
+        todoPriority.innerText = `Todo Priority: ${todo.priority}`
         todoContainer.appendChild(todoPriority)
+
         let todoDueDate = document.createElement('p')
-        todoDueDate.innerText `${todo.todoDueDate}`
+        todoDueDate.innerText = `Todo due date: ${todo.dueDate}`
         todoContainer.appendChild(todoDueDate)
+
         let todoNotes = document.createElement('ul')
-        for(let i = 0; i<todo.todoNotes.length; i++){
+        todoNotes.innerText = "Todo Notes: "
+        //I think the below needs to be a function elsewhere, because we'll call it in multiple places...
+        if(todo.notes.length<1){
+            todoNotes.innerText += 'None'
+        }
+        for(let i = 0; i<todo.notes.length; i++){
             let tempNote = document.createElement('li')
-            tempNote.innerText= todo.todoNotes[i]
+            tempNote.innerText= todo.notes[i]
             tempNote.dataset.noteIndex = i
-            //add button to delete notes
+            //add button to delete notes, using note index set on dataset attribute
+            let deleteNoteButton = document.createElement('button')
+            deleteNoteButton.type = 'button'
+            deleteNoteButton.innerText = 'X'
+            tempNote.appendChild(deleteNoteButton)
+            deleteNoteButton.addEventListener('click', e=>{
+                todo.deleteNote(e.target.dataset.noteIndex)
+            })
 
             todoNotes.appendChild(tempNote)
         }
         todoContainer.appendChild(todoNotes)
         let todoChecklist = document.createElement('ul')
-        for(let i = 0; i< todo.todoChecklist.length; i++){
+        todoChecklist.innerText = "Todo Checklist: "
+        if(todo.checklist.length<1){
+            todoChecklist.innerText += 'None'
+        }
+        for(let i = 0; i< todo.checklist.length; i++){
             //checklist items, input type='checkbox' checked
-            todoChecklist.appendChild(buildChecklist(todo.todoChecklist[i], i))
+            todoChecklist.appendChild(buildChecklist(todo.checklist[i], i))
         }
         todoContainer.appendChild(todoChecklist)
-        //if todo is complete change background color to grey
-        if(todo.todoComplete === true){
-            todoContainer.style.backgroundColor = 'grey'
+        //if todo is complete place a line-through styling on it
+        if(todo.complete === true){
+            todoContainer.style.textDecoration = 'line-through'
+        }else{
+            todoContainer.style.textDecoration = 'none'
         }
         let todoComplete = document.createElement('p')
-        todoComplete.innerText= `${todo.todoComplete}`
+        todoComplete.innerText= `Todo status: ${todo.complete}`
         if(todo.todoComplete===true){
             todoComplete.style.color = 'green'
         }
 
-        //need to create a ui for adding todo items
-        //need to create a ui for adding notes to todo items
-        //need to create a ui for adding checklist items to todo items
+
+
+        //need to create a ui for adding notes to todo items, might start it in th template
+        //need to create a ui for adding checklist items to todo items, might start it in the template
+
+        //need to build a button to toggle the complete property value of a todo item
+        let completeTodoButton = document.createElement('button')
+        completeTodoButton.type = 'button'
+        completeTodoButton.innerText = 'Toggle Complete'
+        completeTodoButton.addEventListener('click', e=>{
+            if(todo.complete===true){
+                todo.complete = false
+                viewProject(activeViewedProject)
+            }else{
+                todo.complete = true
+                viewProject(activeViewedProject)
+
+            }
+        })
+        todoContainer.appendChild(completeTodoButton)
+
+        let deleteTodoButton = document.createElement('button')
+        deleteTodoButton.type = 'button'
+        deleteTodoButton.innerText = "Delete Todo"
+        deleteTodoButton.addEventListener('click', e=>{
+            let userConfirmsTodoDelete = prompt("Are you sure you want to delete this todo item?(yes/no) ")
+            if(userConfirmsTodoDelete === 'yes'){
+                todoApp.projects[activeViewedProject].deleteTodo(index)
+                viewProject(activeViewedProject)
+            }
+        })
+        todoContainer.appendChild(deleteTodoButton)
+
+
 
         return todoContainer
     }
