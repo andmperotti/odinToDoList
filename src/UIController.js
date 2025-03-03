@@ -5,6 +5,27 @@ export const UIController =(function(){
     let navProjectArea = document.querySelector('#navProjects')
     let newProjectButton = document.querySelector('#createNewProject')
     let mainBody = document.querySelector('body')
+    let newTodoNoteModal = document.querySelector('#newNoteModal')
+    let newTodoNoteInputValue = document.querySelector('#newNoteString').value
+    let newTodoModal = document.querySelector('#newTodoModal')
+    let newTodoNameInput = document.querySelector('#newTodoName')
+    let newTodoDescriptionInput = document.querySelector('#newTodoDescription')
+    let newTodoPriorityInput = document.querySelector('#newTodoPriority')
+    let newTodoDueDateInput = document.querySelector('#newTodoDueDate')
+    let saveNewTodoButton = document.querySelector('#createNewTodoButton')
+    let cancelNewTodoButton = document.querySelector('#cancelNewTodoButton')
+    let newNoteModalCancelButton = document.querySelector('#cancelNewNote')
+    let newNoteModalSaveButton = document.querySelector('#saveNewNote')
+    let newChecklistModal = document.querySelector('#newChecklistModal')
+    let newCheckListDescriptionValue = document.querySelector('#newChecklistDescription').value
+    let newChecklistCheckedValue = document.querySelector('#newChecklistChecked').value
+    let newProjectModal = document.querySelector('#newProjectModal') 
+    let newProjectNameInput = document.querySelector('#newProjectName')
+    let newProjectDescriptionInput = document.querySelector('#newProjectDescription')
+    let saveNewProject = document.querySelector('#saveNewProject')
+    let modalCancelButton = document.querySelector('#cancelNewProject')
+    let newProjectNameLabel = document.querySelector('#newProjectNameLabel')
+
 
     //function that generates links for active projects on nav sidebar
     function populateNavProjects(){
@@ -26,15 +47,15 @@ export const UIController =(function(){
     }
 
     //variable to keep track of which project is being viewed
-    let activeViewedProject = Number()
+    let activeViewedProject;
     //delegate listener on #navProjects for project li's when clicked (use dataset attribute)
     navProjectArea.addEventListener('click', (e)=>{
         //if what you're clicking on doesn't have a data-index attribute then do nothing
         if(!e.target.dataset.projectIndex){return}
         //otherwise, invoke viewProject function giving the function that data-index attribute value
         viewProject(e.target.dataset.projectIndex)
-        activeViewedProject = e.target.dataset.projectIndex
-        console.log(activeViewedProject)
+        activeViewedProject = Number(e.target.dataset.projectIndex)
+        console.log(todoApp.projects[e.target.dataset.projectIndex])
         
     })
     //offer ways of sorting projects, maybe in ways considering todo dueDates and priorities, or how many todos are remaining, etc
@@ -49,7 +70,7 @@ export const UIController =(function(){
         mainProjectArea.removeChild(mainProjectArea.lastChild)
         //don't forget to add a dataset attribute which we'll use to pass to functions that require index positions, so for todos, checklists, and note items
 
-        //pull project from imported projects array
+        //pull project from imported projects array, Project object
         let currentProject = todoApp.projects[projectIndex]
         //create div element for this project
         let buildProject = document.createElement('div')
@@ -75,29 +96,17 @@ export const UIController =(function(){
 
         //listener on the createTodoButton
         createTodoButton.addEventListener('click', e=>{
-            //modal that allows user to build a todo item
-            let newTodoModal = document.querySelector('#newTodoModal')
-            //elements where we can find user data input
-            let newTodoNameInput = document.querySelector('#newTodoName')
-            let newTodoDescriptionInput = document.querySelector('#newTodoDescription')
-            let newTodoPriorityInput = document.querySelector('#newTodoPriority')
-            let newTodoDueDateInput = document.querySelector('#newTodoDueDate')
-
-            //write validation logic for name, and maybe dueDate ?
-
-
             //show element to user, as it's hidden by default, yet create a toggle on the button 
             if(newTodoModal.style.display !== 'grid'){
                 newTodoModal.style.display = 'grid'
             }else{
                 newTodoModal.style.display = 'none'
-                //wipe input fields
+                newTodoNameInput.value = ''
+                newTodoDescriptionInput.value = ''
+                newTodoPriorityInput.value = ''
+                newTodoDueDateInput = ''
             }
-
-            //save and cancel buttons
-            let saveNewTodoButton = document.querySelector('#createNewTodoButton')
-            let cancelNewTodoButton = document.querySelector('#cancelNewTodoButton')
-            //work on listener code for these
+            //listener code for save new todo, and cancel buttons
             saveNewTodoButton.addEventListener('click', e=>{
                 if(newTodoNameInput.value.length>2){
                     currentProject.createTodo(newTodoNameInput.value, newTodoDescriptionInput.value, newTodoPriorityInput.value, newTodoDueDateInput.value)
@@ -120,11 +129,7 @@ export const UIController =(function(){
                         newTodoNameInput.style.borderColor = ''
                         todoNameLengthError.remove()
                     }, 3000);
-                    // todoNameLengthError.innerText = 'Name needs to have a length of at least 3 characters'
-                    // newTodoNameInput.after(todoNameLengthError)
                 }
-
-
             })
             cancelNewTodoButton.addEventListener('click', e=>{
                 newTodoNameInput.value = ''
@@ -133,9 +138,6 @@ export const UIController =(function(){
                 newTodoDueDateInput.value = ''
                 newTodoModal.style.display = 'none'
             })
-
-
-            
         })
 
         function generateTodos(){
@@ -144,14 +146,13 @@ export const UIController =(function(){
                 buildProjectTodos.appendChild(buildTodo(currentProject.todos[i], i))
             }
         }
-
         //generate preexisting todo items when project is loaded
         generateTodos()
 
         mainProjectArea.appendChild(buildProject)
     }
 
-    //function that builds preexisting todo item nodes in view
+    //function that builds preexisting todo item nodes in view, it gets passed each todo object from a project, and its index in the todos array...
     function buildTodo(todo, index){
         let todoContainer = document.createElement('li')
         todoContainer.style.border = '1px solid black'
@@ -176,26 +177,42 @@ export const UIController =(function(){
 
         let todoNotes = document.createElement('ul')
         todoNotes.innerText = "Todo Notes: "
-        //I think the below needs to be a function elsewhere, because we'll call it in multiple places...
+        todoNotes.style.border = '1px solid grey'
+        todoNotes.style.margin = '5px'
+        //this code builds note elements
         if(todo.notes.length<1){
             todoNotes.innerText += 'None'
         }
         for(let i = 0; i<todo.notes.length; i++){
-            let tempNote = document.createElement('li')
-            tempNote.innerText= todo.notes[i]
-            tempNote.dataset.noteIndex = i
-            //add button to delete notes, using note index set on dataset attribute
-            let deleteNoteButton = document.createElement('button')
-            deleteNoteButton.type = 'button'
-            deleteNoteButton.innerText = 'X'
-            tempNote.appendChild(deleteNoteButton)
-            deleteNoteButton.addEventListener('click', e=>{
-                todo.deleteNote(e.target.dataset.noteIndex)
-            })
-
-            todoNotes.appendChild(tempNote)
+            buildNote(todo.notes[i], i)
         }
         todoContainer.appendChild(todoNotes)
+        //button for adding notes
+        let newTodoNoteButton = document.createElement('button')
+        newTodoNoteButton.type = 'button'
+        newTodoNoteButton.innerText = 'Add Note'
+        todoContainer.appendChild(newTodoNoteButton)
+        //show note modal
+        newTodoNoteButton.addEventListener('click', e=>{
+            newTodoNoteModal.style.display = 'grid'
+        })
+
+        //1.this isnt invoking the function
+        //2.its trying to invoke it for EVERY todo in a project... weird
+        newNoteModalSaveButton.addEventListener('click', e=>{
+            //this below code needs to go into a listener on a save note button
+            todo.addNote(newTodoNoteInputValue)
+            // viewProject(activeViewedProject)
+            newTodoNoteModal.style.display = 'none'
+
+        })
+        //when cancel button is clicked hide the modal and wipe the input field
+        newNoteModalCancelButton.addEventListener('click', e=>{
+            newTodoNoteModal.style.display = 'none'
+            newTodoNoteInputValue = ''
+        })
+        
+                
         let todoChecklist = document.createElement('ul')
         todoChecklist.innerText = "Todo Checklist: "
         if(todo.checklist.length<1){
@@ -256,36 +273,44 @@ export const UIController =(function(){
         })
         todoContainer.appendChild(deleteTodoButton)
 
+        //function to build checkList items
+        function buildChecklist(checklist, index){
+            let checklistItem = document.createElement('li')
+            checklistItem.attributes.dataset.checklistIndex = index
+            let checklistDescription = document.createElement('label')
+            checklistDescription.innerText = `${checklist.description}`
+            let checklistItemBox = document.createElement('input')
+            checklistItemBox.type = 'checkbox'
+            if(checklist.checked){
+                //this code might be wrong, checked is an attribute on the input element and its a boolean attribute, just needs to be added, if saved as true, elsewhere we'll have an event listener that lets us change this value.
+                // checklistItemBox.checked = true
+                checklistItemBox.setAttribute='checked'
+            }
+            checklistDescription.appendChild(checklistItemBox)
+            checklistItem.appendChild(checklistDescription)
+        }
 
+        //function to build note elements
+        function buildNote(note, index){
+            let tempNote = document.createElement('li')
+            let tempNoteString = document.createElement('span')
+            tempNoteString.innerText = note
+            tempNote.appendChild(tempNoteString)
+            tempNote.dataset.noteIndex = index
+            //add button to delete the note
+            let deleteNoteButton = document.createElement('button')
+            deleteNoteButton.type = 'button'
+            deleteNoteButton.innerText = 'Delete'
+            tempNote.appendChild(deleteNoteButton)
+            todoNotes.appendChild(tempNote)
+            //3. this doesn't work at all
+            deleteNoteButton.addEventListener('click', e=>{
+                todo.deleteNote(index)
+            })
+        }
 
         return todoContainer
     }
-
-    //function to build checkList items
-    function buildChecklist(checklist, index){
-        let checklistItem = document.createElement('li')
-        checklistItem.attributes.dataset.checklistIndex = index
-        let checklistDescription = document.createElement('label')
-        checklistDescription.innerText = `${checklist.description}`
-        let checklistItemBox = document.createElement('input')
-        checklistItemBox.type = 'checkbox'
-        if(checklist.checked){
-            //this code might be wrong, checked is an attribute on the input element and its a boolean attribute, just needs to be added, if saved as true, elsewhere we'll have an event listener that lets us change this value.
-            // checklistItemBox.checked = true
-            checklistItemBox.setAttribute='checked'
-        }
-        checklistDescription.appendChild(checklistItemBox)
-        checklistItem.appendChild(checklistDescription)
-    }
-
-    //project modal elements
-    let newProjectModal = document.querySelector('#newProjectModal') 
-    let newProjectNameInput = document.querySelector('#newProjectName')
-    let newProjectDescriptionInput = document.querySelector('#newProjectDescription')
-    let saveNewProject = document.querySelector('#saveNewProject')
-    let modalCancelButton = document.querySelector('#cancelNewProject')
-    let newProjectNameLabel = document.querySelector('#newProjectNameLabel')
-
 
     //event listener for 'save' button which generates a new project
     saveNewProject.addEventListener('click', ()=>{
