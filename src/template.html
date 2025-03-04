@@ -15,6 +15,7 @@
     <main id="content">
         <!-- modals that are hidden by default, which allow us to give a ui for creating new projects, todos, checklist items, and notes-->
         <aside id="newNoteModal">
+            <h3>New Note</h3>
             <label for="newNoteString">Note: 
                 <input type="text" id="newNoteString">
             </label>
@@ -22,8 +23,10 @@
             <button id="cancelNewNote" type="button">Cancel</button>
         </aside>
         <aside id="newChecklistModal">
-            <label for="newChecklistDescription"><input type="text" id="newChecklistDescription"></label>
-            <label for="newChecklistChecked"><input type="checkbox" id="newChecklistChecked"></label>
+            <h3>New Checklist Item</h3>
+            <label for="newChecklistDescription">Checklist Text: <input type="text" id="newChecklistDescription"></label>
+            <button id="createNewChecklist">Add Checklist Item</button>
+            <button id="cancelNewChecklist">Cancel</button>
         </aside>
         <aside id="newTodoModal">
             <h3>Create New Todo</h3>
