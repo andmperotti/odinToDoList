@@ -1,3 +1,4 @@
+import { vi } from 'date-fns/locale'
 import { todoApp } from './todoApp.js'
 
 export const UIController =(function(){
@@ -6,7 +7,7 @@ export const UIController =(function(){
     let newProjectButton = document.querySelector('#createNewProject')
     let mainBody = document.querySelector('body')
     let newTodoNoteModal = document.querySelector('#newNoteModal')
-    let newTodoNoteInputValue = document.querySelector('#newNoteString').value
+    let newTodoNoteInput = document.querySelector('#newNoteString')
     let newTodoModal = document.querySelector('#newTodoModal')
     let newTodoNameInput = document.querySelector('#newTodoName')
     let newTodoDescriptionInput = document.querySelector('#newTodoDescription')
@@ -55,7 +56,6 @@ export const UIController =(function(){
         //otherwise, invoke viewProject function giving the function that data-index attribute value
         viewProject(e.target.dataset.projectIndex)
         activeViewedProject = Number(e.target.dataset.projectIndex)
-        console.log(todoApp.projects[e.target.dataset.projectIndex])
         
     })
     //offer ways of sorting projects, maybe in ways considering todo dueDates and priorities, or how many todos are remaining, etc
@@ -197,19 +197,18 @@ export const UIController =(function(){
             newTodoNoteModal.style.display = 'grid'
         })
 
-        //1.this isnt invoking the function
-        //2.its trying to invoke it for EVERY todo in a project... weird
         newNoteModalSaveButton.addEventListener('click', e=>{
-            //this below code needs to go into a listener on a save note button
-            todo.addNote(newTodoNoteInputValue)
-            // viewProject(activeViewedProject)
+            console.log(newTodoNoteInput.value)
+            todo.addNote(newTodoNoteInput.value)
+            newTodoNoteInput.value = ''
             newTodoNoteModal.style.display = 'none'
+            viewProject(activeViewedProject)
 
         })
         //when cancel button is clicked hide the modal and wipe the input field
         newNoteModalCancelButton.addEventListener('click', e=>{
             newTodoNoteModal.style.display = 'none'
-            newTodoNoteInputValue = ''
+            newTodoNoteInput.value = ''
         })
         
                 
@@ -276,7 +275,7 @@ export const UIController =(function(){
         //function to build checkList items
         function buildChecklist(checklist, index){
             let checklistItem = document.createElement('li')
-            checklistItem.attributes.dataset.checklistIndex = index
+            checklistItem.dataset.checklistIndex = index
             let checklistDescription = document.createElement('label')
             checklistDescription.innerText = `${checklist.description}`
             let checklistItemBox = document.createElement('input')
@@ -288,6 +287,7 @@ export const UIController =(function(){
             }
             checklistDescription.appendChild(checklistItemBox)
             checklistItem.appendChild(checklistDescription)
+            return checklistItem
         }
 
         //function to build note elements
@@ -303,9 +303,9 @@ export const UIController =(function(){
             deleteNoteButton.innerText = 'Delete'
             tempNote.appendChild(deleteNoteButton)
             todoNotes.appendChild(tempNote)
-            //3. this doesn't work at all
             deleteNoteButton.addEventListener('click', e=>{
                 todo.deleteNote(index)
+                viewProject(activeViewedProject)
             })
         }
 
