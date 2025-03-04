@@ -85,23 +85,31 @@ const todoApp = (function(){
         localStorage.setItem('projectsArray', JSON.stringify(projects))
         console.log('Saved projects data to localStorage')
     }
-
+    
+    //does indeed load each project as a Project class instance, however does not load each todo as a Todo class instance, and therefore neither each checklist item as a Checklist class instance
     function loadStorage(){
-        let returnedProjects = [];
+        //create temp array of projects to return
+        let convertedProjects = [];
+        //if localStorage isn't holding a projectsArray value then set it up and give it an empty array
         if(!localStorage.getItem('projectsArray')){
             localStorage.setItem('projectsArray', '[]')
+        //otherwise create a temp variable which holds the converted JSON to pojo objects
         }else{
             let parsedProjects = JSON.parse(localStorage.getItem('projectsArray'))
+            //iterate over those pojo objects and build Project class instances
             for(let project of parsedProjects){
-                returnedProjects.push(new Project(project.title, project.description, project.todos))
+                convertedProjects.push(new Project(project.title, project.description, project.todos))
             }
-            returnedProjects.forEach(project=>{
-                project.todos.forEach(todo=>{
-                    let tempTodo = todo
-                    todo = new Todo(tempTodo.name, tempTodo.description, tempTodo.priority, tempTodo.dueDate, tempTodo.notes, tempTodo.checklist)
-                    todo.checklist.forEach(checkItem=>{
-                        let tempCheckItem = checkItem
-                        checkItem = new Checklist(tempCheckItem.description, tempCheckItem.checked)
+            //iterate over each Project instance in our convertedProjects array
+            convertedProjects.forEach((project, projectIndex)=>{
+              //iterate over each todo pojo object in the todos property which is an array, and create a temp variable which is a newly built instance of Todo using this pojo todo, then swap out the old pojo for the Todo class instance using splice
+                project.todos.forEach((todo, todoIndex)=>{
+                    let tempTodo = new Todo(todo.name, todo.description, todo.priority, todo.dueDate, todo.notes, todo.checklist)
+                    project.todos.splice(todoIndex, 1, tempTodo)
+                //iterate over each checklist pojo and do the same as above to create Checklist class instances and replace the stored pojos with the Checklist class instances
+                    todo.checklist.forEach((checkitem, checkitemIndex)=>{
+                        let tempCheckitem = new Checklist(checkitem.description, checkitem.checked)
+                        todo.checklist.splice(checkitemIndex, 1 , tempCheckitem)
                     })
                 })
             })
@@ -109,8 +117,8 @@ const todoApp = (function(){
         //wipe projects
         projects.splice(0, projects.length)
         //add each converted project into projects array variable
-        for(let convertedProject of returnedProjects){
-            projects.push(convertedProject)
+        for(let converted of convertedProjects){
+            projects.push(converted)
         }
         console.log('Storage loaded into projects variable from localStorage')
     }
