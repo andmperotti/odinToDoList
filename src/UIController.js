@@ -18,8 +18,9 @@ export const UIController =(function(){
     let newNoteModalCancelButton = document.querySelector('#cancelNewNote')
     let newNoteModalSaveButton = document.querySelector('#saveNewNote')
     let newChecklistModal = document.querySelector('#newChecklistModal')
-    let newCheckListDescriptionValue = document.querySelector('#newChecklistDescription').value
-    let newChecklistCheckedValue = document.querySelector('#newChecklistChecked').value
+    let newCheckListDescription= document.querySelector('#newChecklistDescription')
+    let saveNewChecklistItem = document.querySelector('#createNewChecklist')
+    let cancelNewChecklistModal = document.querySelector('#cancelNewChecklist')
     let newProjectModal = document.querySelector('#newProjectModal') 
     let newProjectNameInput = document.querySelector('#newProjectName')
     let newProjectDescriptionInput = document.querySelector('#newProjectDescription')
@@ -212,8 +213,11 @@ export const UIController =(function(){
         })
         
                 
+
+        //checklist output
         let todoChecklist = document.createElement('ul')
         todoChecklist.innerText = "Todo Checklist: "
+        todoChecklist.style.border = '1px solid red'
         if(todo.checklist.length<1){
             todoChecklist.innerText += 'None'
         }
@@ -235,9 +239,29 @@ export const UIController =(function(){
         }
 
 
+        let createChecklistButton = document.createElement('button')
+        createChecklistButton.type = 'button'
+        createChecklistButton.innerText = "Create Checklist Item"
+        todoContainer.appendChild(createChecklistButton)
 
-        //need to create a ui for adding notes to todo items, might start it in th template
-        //need to create a ui for adding checklist items to todo items, might start it in the template
+        createChecklistButton.addEventListener('click', e=>{
+            if(newChecklistModal.style.display != 'grid'){
+                newChecklistModal.style.display = 'grid'
+            }else{
+                newChecklistModal.style.display = ''
+            }
+        })
+        saveNewChecklistItem.addEventListener('click', e=>{
+            todo.createChecklistItem(newCheckListDescription.value)
+            viewProject(activeViewedProject)
+            newChecklistModal.style.display = ''
+            newCheckListDescription.value = ''
+        })
+        cancelNewChecklistModal.addEventListener('click', e=>{
+            newChecklistModal.style.display = ''
+            newCheckListDescription.value = ''
+        })
+
 
 
 
@@ -245,9 +269,10 @@ export const UIController =(function(){
 
 
         //need to build a button to toggle the complete property value of a todo item
+        let todoEditsDiv = document.createElement('div')
         let completeTodoButton = document.createElement('button')
         completeTodoButton.type = 'button'
-        completeTodoButton.innerText = 'Toggle Complete'
+        completeTodoButton.innerText = 'Toggle Todo Complete'
         completeTodoButton.addEventListener('click', e=>{
             if(todo.complete===true){
                 todo.complete = false
@@ -258,7 +283,7 @@ export const UIController =(function(){
 
             }
         })
-        todoContainer.appendChild(completeTodoButton)
+        todoEditsDiv.appendChild(completeTodoButton)
 
         let deleteTodoButton = document.createElement('button')
         deleteTodoButton.type = 'button'
@@ -270,7 +295,8 @@ export const UIController =(function(){
                 viewProject(activeViewedProject)
             }
         })
-        todoContainer.appendChild(deleteTodoButton)
+        todoEditsDiv.appendChild(deleteTodoButton)
+        todoContainer.appendChild(todoEditsDiv)
 
         //function to build checkList items
         function buildChecklist(checklist, index){
