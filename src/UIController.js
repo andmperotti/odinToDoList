@@ -205,6 +205,13 @@ export const UIController =(function(){
         let todoPriority = document.createElement('p')
         todoPriority.innerText = `Todo Priority: ${todo.priority}`
         todoContainer.appendChild(todoPriority)
+        if(todo.priority<3){
+            todoContainer.style.backgroundColor = 'lightgreen'
+        }else if(todo.priority<6){
+            todoContainer.style.backgroundColor = 'yellow'
+        }else{
+            todoContainer.style.backgroundColor = 'red'
+        }
 
         let todoDueDate = document.createElement('p')
         todoDueDate.innerText = `Todo due date: ${todo.dueDate}`
