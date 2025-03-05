@@ -61,8 +61,6 @@ export const UIController =(function(){
                 todoApp.deleteProject(i)
                 wipeNavProjects()
                 populateNavProjects()
-                //this isn't working, i have to refresh sometimes to get a button to work
-                //its because this for loop only sets up listeners on site load
             })  
         }
     }
@@ -267,6 +265,7 @@ export const UIController =(function(){
             todoChecklist.appendChild(buildChecklist(todo.checklist[i], i))
         }
         todoContainer.appendChild(todoChecklist)
+
         //if todo is complete place a line-through styling on it
         if(todo.complete === true){
             todoContainer.style.textDecoration = 'line-through'
@@ -347,11 +346,11 @@ export const UIController =(function(){
             checklistDescription.innerText = `${checklist.description}`
             let checklistItemBox = document.createElement('input')
             checklistItemBox.type = 'checkbox'
-            if(checklist.checked){
-                //this code might be wrong, checked is an attribute on the input element and its a boolean attribute, just needs to be added, if saved as true, elsewhere we'll have an event listener that lets us change this value.
-                // checklistItemBox.checked = true
-                checklistItemBox.setAttribute='checked'
-            }
+            checklistItemBox.checked = checklist.checked
+            checklistItemBox.addEventListener('click', e=>{
+                todo.toggleChecklistItem(index)
+                viewProject(activeViewedProject)
+            })
             checklistDescription.appendChild(checklistItemBox)
             checklistItem.appendChild(checklistDescription)
             return checklistItem
