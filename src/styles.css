@@ -52,3 +52,9 @@ aside {
 li {
     list-style-type: none;
 }
+
+#bottomNavDiv {
+    position: absolute;
+    bottom: 1px;
+    left: 25px;
+}
