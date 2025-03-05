@@ -52,13 +52,6 @@ const todoApp = (function(){
             this.checklist.splice(checklistIndex, 1)
             saveToStorage()
         }
-    }
-
-    class Checklist{
-        constructor(description, checked=false){
-            this.description = description
-            this.checked = checked
-        }
         toggleChecklistItem(checklistIndex){
             if(this.checklist[checklistIndex].checked===true){
                 this.checklist[checklistIndex].checked=false
@@ -66,6 +59,13 @@ const todoApp = (function(){
                 this.checklist[checklistIndex].checked=true
             }
             saveToStorage()
+        }
+    }
+
+    class Checklist{
+        constructor(description, checked=false){
+            this.description = description
+            this.checked = checked
         }
     }
 
