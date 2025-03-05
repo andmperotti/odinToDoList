@@ -404,6 +404,7 @@ export const UIController =(function(){
             todoApp.startANew()
             wipeNavProjects()
             populateNavProjects()
+            mainProjectArea.remove(mainProjectArea.lastChild)
         }
     })
     document.querySelector('nav').appendChild(wipeProjectsButton)
