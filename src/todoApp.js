@@ -1,3 +1,4 @@
+
 const todoApp = (function(){
     class Project{
         constructor(title, description, todos=[]){
@@ -29,7 +30,8 @@ const todoApp = (function(){
             this.name = name
             this.description = description
             this.priority = priority
-            this.dueDate = Date(dueDate)
+            //need to pass a string 'year-month-day', otherwise if the value being passed in is an empty string then set the date to the next day
+            this.dueDate = dueDate === '' ? `${new Date(Date.now()).getFullYear()}-${new Date(Date.now()).getMonth()+1}-${new Date(Date.now()).getDate()+1}` : dueDate
             this.notes = notes
             this.checklist = checklist
             this.complete = complete
