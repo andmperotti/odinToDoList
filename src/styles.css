@@ -58,3 +58,8 @@ li {
     bottom: 1px;
     left: 25px;
 }
+
+#navProjects li {
+    border: 1px solid pink;
+    margin: 5px;
+}
