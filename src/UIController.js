@@ -40,10 +40,33 @@ export const UIController =(function(){
             tempProject.style.color = "red"
             tempProject.style.fontWeight = "bold"
             tempProject.dataset.projectIndex = i
+            let projectDeleteButton = document.createElement('button')
+            projectDeleteButton.innerText = '-'
+            projectDeleteButton.type = 'button'
+            projectDeleteButton.dataset.sideButtonIndex = i
+            tempProject.appendChild(projectDeleteButton)
             navProjectArea.appendChild(tempProject)
         }
+        setSideNavDeletes()
+
     }
     populateNavProjects()
+
+
+    //listeners on side nav project delete buttons
+    function setSideNavDeletes(){
+        let projectDeleteButtons = Array(...document.querySelectorAll('ul li button'))
+        for(let i = 0; i<projectDeleteButtons.length;i++){
+            projectDeleteButtons[i].addEventListener('click', e=>{
+                todoApp.deleteProject(i)
+                wipeNavProjects()
+                populateNavProjects()
+                //this isn't working, i have to refresh sometimes to get a button to work
+                //its because this for loop only sets up listeners on site load
+            })  
+        }
+    }
+
 
     //function to wipe side nav project list, used before repopulating list when a project has been added or deleted
     function wipeNavProjects(){
