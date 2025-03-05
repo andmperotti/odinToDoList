@@ -1,4 +1,3 @@
-import { vi } from 'date-fns/locale'
 import { todoApp } from './todoApp.js'
 
 export const UIController =(function(){
@@ -27,6 +26,9 @@ export const UIController =(function(){
     let saveNewProject = document.querySelector('#saveNewProject')
     let modalCancelButton = document.querySelector('#cancelNewProject')
     let newProjectNameLabel = document.querySelector('#newProjectNameLabel')
+    let wipeProjectsButton = document.querySelector('#deleteAllProjectsButton')
+    let infoButton = document.querySelector('#infoButton')
+
 
 
     //function that generates links for active projects on nav sidebar
@@ -61,7 +63,18 @@ export const UIController =(function(){
     })
     //offer ways of sorting projects, maybe in ways considering todo dueDates and priorities, or how many todos are remaining, etc
 
+    function drawExplainer(){
+        let explainerContainer = document.createElement('div')
+        let explainerHeader = document.createElement('h2')
+        explainerHeader.innerText = "Welcome"
+        explainerContainer.appendChild(explainerHeader)
 
+        let explainerPara = document.createElement('p')
+        explainerPara.innerText = 'To the left you can click on a project to open it, click on the - button beside it to delete it, create new projects, or delete all projects. This data can be accessed again by clicking the info button at the bottom of the side navigation bar. \n \n All data is stored on your computer browser in local storage, have no fear your data is your data'
+        explainerContainer.appendChild(explainerPara)
+        mainProjectArea.appendChild(explainerContainer)
+    }
+    drawExplainer()
 
 
     //main content area where projects are opened up and todos can be seen and made which will be crossed out if completed, not crossed out if un complete, as well as a button to delete a todo item for any reason. If no projects exist maybe generate an example project or explanation text that tells a user how to create a new project
@@ -69,8 +82,6 @@ export const UIController =(function(){
     function viewProject(projectIndex){
         //wipe project view area in case a project was being shown (lastChild because it was appended after the hidden modals)
         mainProjectArea.removeChild(mainProjectArea.lastChild)
-        //don't forget to add a dataset attribute which we'll use to pass to functions that require index positions, so for todos, checklists, and note items
-
         //pull project from imported projects array, Project object
         let currentProject = todoApp.projects[projectIndex]
         //create div element for this project
@@ -393,34 +404,27 @@ export const UIController =(function(){
     })
 
 
-    //button to wipe all projects, temporarily use an alert to confirm
-    let wipeProjectsButton = document.createElement('button')
-    wipeProjectsButton.type = 'button'
-    wipeProjectsButton.innerText = "Delete All Projects"
-    // wipeProjectsButton
+    // wipeProjectsButton listener
     wipeProjectsButton.addEventListener('click', ()=>{
         let userWipeConfirm = prompt("Are you sure you want to wipe )everything?(true/false) ")
         if(userWipeConfirm==='true'){
-            todoApp.startANew()
-            wipeNavProjects()
-            populateNavProjects()
-            mainProjectArea.remove(mainProjectArea.lastChild)
+            if(Array.from(document.querySelectorAll('#navProjects li')).length>0){
+                todoApp.startANew()
+                wipeNavProjects()
+                populateNavProjects()
+                mainProjectArea.lastChild.remove()
+                drawExplainer()
+            }
+            //somehow newProjectModal gets removed but not a new project
+
+            //maybe use display = '' for that starter rubric to tell users how to use the app, as in to hide it when viewProject is invoked and then display it when delete all projects is invoked or a button to show starter info is clicked
         }
     })
-    document.querySelector('nav').appendChild(wipeProjectsButton)
 
-
-
-
-
-
-    //generate projects that are saved (function), this would be in the main section, within the notes and checklist ul's create buttons to add notes and checklist items, and within those notes and checklist items create buttons to delete those items. These checklist items will also be able to have a cross through them or not depending on if they have been completed.
-
-    //generate projects as a list item in the nav's ul, and give them buttons inside their list items that allows a user to delete the projects, of course prompt with a modal if they are sure they want to delete the project.
-
-    //generate project when user creates it (same function as above just called at different time (listener on a button that exists in the nav element))
-
-    //don't forget that functions that add or delete things will need to repaint the page to include/exclude added/deleted items
-
+    infoButton.addEventListener('click', e=>{
+        mainProjectArea.lastChild.remove()
+        drawExplainer()
+    })
+    
     
 })()
