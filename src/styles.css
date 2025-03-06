@@ -42,7 +42,7 @@ aside {
     gap: 2px;
     top: 25%;
     left: 35%;
-    position: absolute;
+    position: fixed;
     border: 1px solid black;
     background-color: lightgray;
     text-align: center;
