@@ -24,7 +24,7 @@ export const UIController =(function(){
     let newProjectNameInput = document.querySelector('#newProjectName')
     let newProjectDescriptionInput = document.querySelector('#newProjectDescription')
     let saveNewProject = document.querySelector('#saveNewProject')
-    let modalCancelButton = document.querySelector('#cancelNewProject')
+    let newProjectModalCancelButton = document.querySelector('#cancelNewProject')
     let newProjectNameLabel = document.querySelector('#newProjectNameLabel')
     let wipeProjectsButton = document.querySelector('#deleteAllProjectsButton')
     let infoButton = document.querySelector('#infoButton')
@@ -53,6 +53,9 @@ export const UIController =(function(){
     populateNavProjects()
 
 
+
+
+
     //listeners on side nav project delete buttons
     function setSideNavDeletes(){
         let projectDeleteButtons = Array(...document.querySelectorAll('ul li button'))
@@ -66,22 +69,39 @@ export const UIController =(function(){
     }
 
 
+
+
     //function to wipe side nav project list, used before repopulating list when a project has been added or deleted
     function wipeNavProjects(){
         navProjectArea.innerHTML=''
     }
 
+
+
+
+
+
+
+
+
+
     //variable to keep track of which project is being viewed
-    let activeViewedProject;
+    // let activeViewedProject;
     //delegate listener on #navProjects for project li's when clicked (use dataset attribute)
     navProjectArea.addEventListener('click', (e)=>{
         //if what you're clicking on doesn't have a data-index attribute then do nothing
         if(!e.target.dataset.projectIndex){return}
         //otherwise, invoke viewProject function giving the function that data-index attribute value
         viewProject(e.target.dataset.projectIndex)
-        activeViewedProject = Number(e.target.dataset.projectIndex)
+        // activeViewedProject = Number(e.target.dataset.projectIndex)
         
     })
+
+
+
+
+
+
     //offer ways of sorting projects, maybe in ways considering todo dueDates and priorities, or how many todos are remaining, etc
 
     function drawExplainer(){
@@ -98,6 +118,13 @@ export const UIController =(function(){
     drawExplainer()
 
 
+
+
+
+
+
+
+
     //main content area where projects are opened up and todos can be seen and made which will be crossed out if completed, not crossed out if un complete, as well as a button to delete a todo item for any reason. If no projects exist maybe generate an example project or explanation text that tells a user how to create a new project
     //function that will create html content dynamically for a specific project
     function viewProject(projectIndex){
@@ -111,12 +138,13 @@ export const UIController =(function(){
         let buildProjectTitle = document.createElement('h3')
         buildProjectTitle.innerText = `Project Name: ${currentProject.title}`
         buildProject.appendChild(buildProjectTitle)
+        //create change project title button
 
         let buildProjectDescription = document.createElement('p')
         buildProjectDescription.innerText = `Project Description: ${currentProject.description}`
         buildProject.appendChild(buildProjectDescription)
+        //create change project description button
 
-        //add button to create a todo
         let createTodoButton = document.createElement('button')
         createTodoButton.type = 'button'
         createTodoButton.innerText = 'Add Todo'
@@ -127,9 +155,9 @@ export const UIController =(function(){
         buildProjectTodos.style.padding = '3%'
         buildProject.appendChild(buildProjectTodos)
 
-        //listener on the createTodoButton
+        //listener on the createTodoButton, shows newTodoModal
         createTodoButton.addEventListener('click', e=>{
-            //show element to user, as it's hidden by default, yet create a toggle on the button 
+            //show newTodoModal element to user, as it's hidden by default, yet create a toggle on the button to hide the modal if clicked again
             if(newTodoModal.style.display !== 'grid'){
                 newTodoModal.style.display = 'grid'
             }else{
@@ -139,53 +167,50 @@ export const UIController =(function(){
                 newTodoPriorityInput.value = ''
                 newTodoDueDateInput = ''
             }
-            //listener code for save new todo, and cancel buttons
-            saveNewTodoButton.addEventListener('click', e=>{
-                if(newTodoNameInput.value.length>2){
-                    currentProject.createTodo(newTodoNameInput.value, newTodoDescriptionInput.value, newTodoPriorityInput.value, newTodoDueDateInput.value)
-                    newTodoNameInput.value = ''
-                    newTodoDescriptionInput.value = ''
-                    newTodoPriorityInput.value = ''
-                    newTodoDueDateInput.value = ''
-                    newTodoModal.style.display = 'none'
-                    //rerender project with this new todo
-                    viewProject(activeViewedProject)
-                }else{
-                    let todoNameLengthError = document.createElement('p')
-                    setTimeout(() => {
-                        todoNameLengthError.innerText = 'Name needs to have a length of at least 3 characters'
-                        todoNameLengthError.style.color = 'red'
-                        newTodoNameInput.after(todoNameLengthError)
-                        newTodoNameInput.style.borderColor = 'red'
-                    }, 1);
-                    setTimeout(() => {
-                        newTodoNameInput.style.borderColor = ''
-                        todoNameLengthError.remove()
-                    }, 3000);
-                }
-            })
-            cancelNewTodoButton.addEventListener('click', e=>{
+        })
+        
+        //listener code for save new todo, and cancel buttons
+        saveNewTodoButton.addEventListener('click', e=>{
+            if(newTodoNameInput.value.length>2){
+                currentProject.createTodo(newTodoNameInput.value, newTodoDescriptionInput.value, newTodoPriorityInput.value, newTodoDueDateInput.value)
                 newTodoNameInput.value = ''
                 newTodoDescriptionInput.value = ''
                 newTodoPriorityInput.value = ''
                 newTodoDueDateInput.value = ''
                 newTodoModal.style.display = 'none'
-            })
+                //rerender project with this new todo
+                viewProject(projectIndex)
+            }else{
+                let todoNameLengthError = document.createElement('p')
+                setTimeout(() => {
+                    todoNameLengthError.innerText = 'Name needs to have a length of at least 3 characters'
+                    todoNameLengthError.style.color = 'red'
+                    newTodoNameInput.after(todoNameLengthError)
+                    newTodoNameInput.style.borderColor = 'red'
+                }, 1);
+                setTimeout(() => {
+                    newTodoNameInput.style.borderColor = ''
+                    todoNameLengthError.remove()
+                }, 3000);
+            }
+        })
+        cancelNewTodoButton.addEventListener('click', e=>{
+            newTodoNameInput.value = ''
+            newTodoDescriptionInput.value = ''
+            newTodoPriorityInput.value = ''
+            newTodoDueDateInput.value = ''
+            newTodoModal.style.display = 'none'
         })
 
-        function generateTodos(){
-            for(let i = 0; i<currentProject.todos.length; i++){
-                //invoke function that builds todo item as a node and appends it into buildProjectTodos
-                buildProjectTodos.appendChild(buildTodo(currentProject.todos[i], i))
-            }
-        }
-        //generate preexisting todo items when project is loaded
-        generateTodos()
 
-        mainProjectArea.appendChild(buildProject)
-    }
 
-    //function that builds preexisting todo item nodes in view, it gets passed each todo object from a project, and its index in the todos array...
+
+
+
+
+
+
+        //function that builds preexisting todo item nodes in view, it gets passed each todo object from a project, and its index in the todos array...
     function buildTodo(todo, index){
         let todoContainer = document.createElement('li')
         todoContainer.style.border = '1px solid black'
@@ -197,11 +222,11 @@ export const UIController =(function(){
         todoContainer.appendChild(todoName)
 
         let todoDescription = document.createElement('p')
-        todoDescription.innerText = `Todo Description: ${todo.description}`
+        todoDescription.innerText = `Todo Description: ${todo.description||'none'}`
         todoContainer.appendChild(todoDescription)
 
         let todoPriority = document.createElement('p')
-        todoPriority.innerText = `Todo Priority: ${todo.priority}`
+        todoPriority.innerText = `Todo Priority: ${todo.priority||0}`
         todoContainer.appendChild(todoPriority)
         if(todo.priority<3){
             todoContainer.style.backgroundColor = 'lightgreen'
@@ -226,24 +251,27 @@ export const UIController =(function(){
         for(let i = 0; i<todo.notes.length; i++){
             buildNote(todo.notes[i], i)
         }
-        todoContainer.appendChild(todoNotes)
         //button for adding notes
         let newTodoNoteButton = document.createElement('button')
         newTodoNoteButton.type = 'button'
         newTodoNoteButton.innerText = 'Add Note'
-        todoContainer.appendChild(newTodoNoteButton)
-        //show note modal
+        todoNotes.appendChild(newTodoNoteButton)
+        todoContainer.appendChild(todoNotes)
+        //toggle note modal
         newTodoNoteButton.addEventListener('click', e=>{
-            newTodoNoteModal.style.display = 'grid'
+            if(newTodoNoteModal.style.display !== 'grid'){
+                newTodoNoteModal.style.display = 'grid'
+            }else{
+                newTodoNoteModal.style.display = ''
+
+            }
         })
 
         newNoteModalSaveButton.addEventListener('click', e=>{
-            console.log(newTodoNoteInput.value)
             todo.addNote(newTodoNoteInput.value)
             newTodoNoteInput.value = ''
             newTodoNoteModal.style.display = 'none'
-            viewProject(activeViewedProject)
-
+            viewProject(projectIndex)
         })
         //when cancel button is clicked hide the modal and wipe the input field
         newNoteModalCancelButton.addEventListener('click', e=>{
@@ -264,6 +292,11 @@ export const UIController =(function(){
             //checklist items, input type='checkbox' checked
             todoChecklist.appendChild(buildChecklist(todo.checklist[i], i))
         }
+        let createChecklistButton = document.createElement('button')
+        createChecklistButton.type = 'button'
+        createChecklistButton.innerText = "Create Checklist Item"
+        todoChecklist.appendChild(createChecklistButton)
+
         todoContainer.appendChild(todoChecklist)
 
         //if todo is complete place a line-through styling on it
@@ -279,11 +312,7 @@ export const UIController =(function(){
         }
 
 
-        let createChecklistButton = document.createElement('button')
-        createChecklistButton.type = 'button'
-        createChecklistButton.innerText = "Create Checklist Item"
-        todoContainer.appendChild(createChecklistButton)
-
+ 
         createChecklistButton.addEventListener('click', e=>{
             if(newChecklistModal.style.display != 'grid'){
                 newChecklistModal.style.display = 'grid'
@@ -293,7 +322,7 @@ export const UIController =(function(){
         })
         saveNewChecklistItem.addEventListener('click', e=>{
             todo.createChecklistItem(newCheckListDescription.value)
-            viewProject(activeViewedProject)
+            viewProject(projectIndex)
             newChecklistModal.style.display = ''
             newCheckListDescription.value = ''
         })
@@ -301,12 +330,6 @@ export const UIController =(function(){
             newChecklistModal.style.display = ''
             newCheckListDescription.value = ''
         })
-
-
-
-
-
-
 
         //need to build a button to toggle the complete property value of a todo item
         let todoEditsDiv = document.createElement('div')
@@ -316,10 +339,10 @@ export const UIController =(function(){
         completeTodoButton.addEventListener('click', e=>{
             if(todo.complete===true){
                 todo.complete = false
-                viewProject(activeViewedProject)
+                viewProject(projectIndex)
             }else{
                 todo.complete = true
-                viewProject(activeViewedProject)
+                viewProject(projectIndex)
 
             }
         })
@@ -331,8 +354,8 @@ export const UIController =(function(){
         deleteTodoButton.addEventListener('click', e=>{
             let userConfirmsTodoDelete = prompt("Are you sure you want to delete this todo item?(yes/no) ")
             if(userConfirmsTodoDelete === 'yes'){
-                todoApp.projects[activeViewedProject].deleteTodo(index)
-                viewProject(activeViewedProject)
+                todoApp.projects[projectIndex].deleteTodo(index)
+                viewProject(projectIndex)
             }
         })
         todoEditsDiv.appendChild(deleteTodoButton)
@@ -349,7 +372,7 @@ export const UIController =(function(){
             checklistItemBox.checked = checklist.checked
             checklistItemBox.addEventListener('click', e=>{
                 todo.toggleChecklistItem(index)
-                viewProject(activeViewedProject)
+                viewProject(projectIndex)
             })
             checklistDescription.appendChild(checklistItemBox)
             checklistItem.appendChild(checklistDescription)
@@ -371,13 +394,58 @@ export const UIController =(function(){
             todoNotes.appendChild(tempNote)
             deleteNoteButton.addEventListener('click', e=>{
                 todo.deleteNote(index)
-                viewProject(activeViewedProject)
+                viewProject(projectIndex)
             })
         }
 
         return todoContainer
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function generateTodos(){
+            for(let i = 0; i<currentProject.todos.length; i++){
+                //invoke function that builds todo item as a node and appends it into buildProjectTodos
+                buildProjectTodos.appendChild(buildTodo(currentProject.todos[i], i))
+            }
+        }
+        //generate preexisting todo items when project is loaded
+        generateTodos()
+
+        mainProjectArea.appendChild(buildProject)
+    }
+
+
+
+
+
+
+
+
+
+
+
+    
     //event listener for 'save' button which generates a new project
     saveNewProject.addEventListener('click', ()=>{
         if(newProjectNameInput.value.length>2){
@@ -413,7 +481,7 @@ export const UIController =(function(){
     })
 
     //event listener for cancel button, which again wipes input fields, and hides modal
-    modalCancelButton.addEventListener('click', ()=>{
+    newProjectModalCancelButton.addEventListener('click', ()=>{
         newProjectNameInput.value = ''
         newProjectDescriptionInput.value = ''
         //hide modal
@@ -454,6 +522,7 @@ export const UIController =(function(){
         mainProjectArea.lastChild.remove()
         drawExplainer()
     })
+
     
     
 })()
