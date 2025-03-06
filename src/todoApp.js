@@ -1,7 +1,7 @@
 
 const todoApp = (function(){
     class Project{
-        constructor(title, description, todos=[]){
+        constructor(title, description='none', todos=[]){
             this.title = title
             this.description = description
             this.todos = todos
