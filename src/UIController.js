@@ -58,17 +58,13 @@ export const UIController =(function(){
 
     //listeners on side nav project delete buttons
     function setSideNavDeletes(){
-        let projectDeleteButtons = Array(...document.querySelectorAll('ul li button'))
-        for(let i = 0; i<projectDeleteButtons.length;i++){
-            projectDeleteButtons[i].addEventListener('click', e=>{
-                todoApp.deleteProject(i)
+        navProjectArea.addEventListener('click', e=>{
+            if(!e.target.dataset.sideButtonIndex){return}
+                todoApp.deleteProject(e.target.dataset.sideButtonIndex)
                 wipeNavProjects()
                 populateNavProjects()
             })  
         }
-    }
-
-
 
 
     //function to wipe side nav project list, used before repopulating list when a project has been added or deleted
@@ -76,16 +72,6 @@ export const UIController =(function(){
         navProjectArea.innerHTML=''
     }
 
-
-
-
-
-
-
-
-
-
-    //variable to keep track of which project is being viewed
     // let activeViewedProject;
     //delegate listener on #navProjects for project li's when clicked (use dataset attribute)
     navProjectArea.addEventListener('click', (e)=>{
@@ -93,6 +79,7 @@ export const UIController =(function(){
         if(!e.target.dataset.projectIndex){return}
         //otherwise, invoke viewProject function giving the function that data-index attribute value
         viewProject(e.target.dataset.projectIndex)
+        //variable to keep track of which project is being viewed, do i need it though?
         // activeViewedProject = Number(e.target.dataset.projectIndex)
         
     })
