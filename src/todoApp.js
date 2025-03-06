@@ -26,7 +26,7 @@ const todoApp = (function(){
     }
 
     class Todo{
-        constructor(name, description, priority=0, dueDate, notes=[], checklist=[], complete=false){
+        constructor(name, description='none', priority=0, dueDate, notes=[], checklist=[], complete=false){
             this.name = name
             this.description = description
             this.priority = priority
