@@ -48,6 +48,10 @@ const todoApp = (function(){
             this.notes.push(noteText)
             saveToStorage()
         }
+        changeNote(newNoteText, i){
+            this.notes.splice(i, 1, newNoteText)
+            saveToStorage()
+        }
         deleteNote(noteIndex){
             this.notes.splice(noteIndex, 1)
             saveToStorage()
