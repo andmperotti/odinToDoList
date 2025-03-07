@@ -23,6 +23,10 @@ const todoApp = (function(){
             this.todos.splice(todoIndex, 1)
             saveToStorage()
         }
+        changeProjectName(newNameValue){
+            this.name = newNameValue
+            saveToStorage()
+        }
     }
 
     class Todo{
