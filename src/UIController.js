@@ -444,20 +444,24 @@ export const UIController =(function(){
             newTodoName.innerText = `Todo Name: ${todo.name}`
             //button to change name:
 
+
             newTodoItem.appendChild(newTodoName)
             let newTodoDescription = document.createElement('p')
             newTodoDescription.innerText = `Todo Description: ${todo.description}`
             //button to change description:
+
 
             newTodoItem.appendChild(newTodoDescription)
             let newTodoDuedate = document.createElement('p')
             newTodoDuedate.innerText = `Todo Due Date:${todo.dueDate}`
             //button to change due date:
 
+
             newTodoItem.appendChild(newTodoDuedate)
             let newTodoPriority = document.createElement('p')
             newTodoPriority.innerText = `Todo Priority: ${Number(todo.priority)}`
             //button to chang todo priority:
+
 
             newTodoItem.appendChild(newTodoPriority)
             if(todo.priority<3){
@@ -468,13 +472,134 @@ export const UIController =(function(){
                 newTodoItem.style.backgroundColor = 'red'
             }
             
-            //notes
-                //generate note elements, with delete and edit buttons beside or below it
-                //add note button, which generates modal
-                    //Add note header
-                    //notes description field inside label
-                    //save note button
-                    //cancel note creation button
+            //container for notes, followed by for loop that will build note elements (li)
+            let noteDisplayContainer = document.createElement('section')
+            let noteUlContainer = document.createElement('ul')
+            noteUlContainer.innerText = 'Todo Notes:'
+            noteDisplayContainer.appendChild(noteUlContainer)
+            if(todo.notes.length<1){noteUlContainer.innerText+='none'}
+            for(let i = 0; i<todo.notes.length; i++){
+                let tempNote = document.createElement('li')
+                tempNote.innerText = todo.notes[i]
+                let tempNoteChangeButton = document.createElement('button')
+                tempNoteChangeButton.type = 'button'
+                tempNoteChangeButton.innerText = 'Change'
+                let tempNoteDeleteButton = document.createElement('button')
+                tempNoteDeleteButton.type = 'button'
+                tempNoteDeleteButton.innerText = 'X'
+                tempNote.appendChild(tempNoteChangeButton)
+                tempNote.appendChild(tempNoteDeleteButton)
+
+                noteUlContainer.appendChild(tempNote)
+
+                //event listeners for change and delete buttons for each note
+                tempNoteChangeButton.addEventListener('click', e=>{
+                    if(document.querySelector('#newNoteValueModal')){
+                        document.querySelector('#newNoteValueModal').remove()
+                    }
+                    //modal for taking in new user note value
+                    let newNoteValueModal = document.createElement('aside')
+                    newNoteValueModal.id = 'newNoteValueModal'
+                    newNoteValueModal.style.display = 'grid'
+                    let newNoteValueModalHeader = document.createElement('h3')
+                    newNoteValueModalHeader.innerText = 'Change Note Value'
+                    newNoteValueModal.appendChild(newNoteValueModalHeader)
+                    let newNoteValueModalLabel = document.createElement('label')
+                    newNoteValueModalLabel.innerText = 'New Note Value: '
+                    let newNoteValueModalInput = document.createElement('input')
+                    newNoteValueModalInput.id = 'newNoteValueModalInput'
+                    newNoteValueModalLabel.setAttribute('for', 'newNoteValueModalInput')
+                    newNoteValueModalLabel.appendChild(newNoteValueModalInput)
+                    newNoteValueModal.appendChild(newNoteValueModalLabel)
+                    let newNoteValueModalButtonSection = document.createElement('section')
+                    let newNoteValueModalSubmitButton = document.createElement('button')
+                    newNoteValueModalSubmitButton.type = 'button'
+                    newNoteValueModalSubmitButton.innerText = 'Submit'
+                    newNoteValueModalButtonSection.appendChild(newNoteValueModalSubmitButton)
+                    let newNoteValueModalCancelButton = document.createElement('button')
+                    newNoteValueModalCancelButton.type = 'button'
+                    newNoteValueModalCancelButton.innerText = "Cancel"
+                    newNoteValueModalButtonSection.appendChild(newNoteValueModalCancelButton)
+                    newNoteValueModal.appendChild(newNoteValueModalButtonSection)
+                    mainProjectArea.appendChild(newNoteValueModal)
+                    //event listeners for newNoteValueModal submit and cancel
+                    newNoteValueModalSubmitButton.addEventListener('click', e=>{
+                        todo.changeNote(newNoteValueModalInput.value, i)
+                        document.querySelector('#newNoteValueModal').remove()
+                        viewProject(projectIndex)
+                    })
+                    newNoteValueModalCancelButton.addEventListener('click', e=>{
+                        document.querySelector('#newNoteValueModal').remove()
+                    })
+                    //event listener for delete note
+
+
+
+                    //put this following in an event listener on a submit button
+                    // todo.notes[i].changeNote()
+                })
+                tempNoteDeleteButton.addEventListener('click', e=>{
+                    todo.deleteNote(i)
+                    viewProject(projectIndex)
+                })
+
+
+
+
+
+
+
+            }
+            //note button for users to add notes duh
+            let addNoteButton = document.createElement('button')
+            addNoteButton.type = 'button'
+            addNoteButton.innerText = "Add Note"
+            noteDisplayContainer.appendChild(addNoteButton)
+            //event listener that creates note modal so users can add a new note
+            addNoteButton.addEventListener('click', e=>{
+                if(document.querySelector('#addNoteModal')){
+                    document.querySelector('#addNoteModal').remove()
+                }
+                let addNoteModal = document.createElement('aside')
+                addNoteModal.style.display = 'grid'
+                addNoteModal.id = 'addNoteModal'
+                let addNoteHeader = document.createElement('h3')
+                addNoteHeader.innerText = "Add New Note"
+                addNoteModal.appendChild(addNoteHeader)
+                let addNoteLabel = document.createElement('label')
+                addNoteLabel.innerText = "Todo Note: "
+                let addNoteInput = document.createElement('input')
+                addNoteInput.id = 'addNoteInput'
+                addNoteLabel.appendChild(addNoteInput)
+                addNoteLabel.setAttribute('for', 'addNoteInput')
+                addNoteModal.appendChild(addNoteLabel)
+                let addNoteModalButtonSection = document.createElement('section')
+                let addNoteModalSubmitButton = document.createElement('button')
+                addNoteModalSubmitButton.type = 'button'
+                addNoteModalSubmitButton.innerText = 'Submit'
+                let addNoteModalCancelButton = document.createElement('button')
+                addNoteModalCancelButton.type = 'button'
+                addNoteModalCancelButton.innerText = 'Cancel'
+                addNoteModalButtonSection.appendChild(addNoteModalSubmitButton)
+                addNoteModalButtonSection.appendChild(addNoteModalCancelButton)
+                addNoteModal.appendChild(addNoteModalButtonSection)
+                mainProjectArea.appendChild(addNoteModal)
+
+                //event listeners for submit and cancel buttons:
+                addNoteModalSubmitButton.addEventListener('click', e=>{
+                    todo.addNote(addNoteInput.value)
+                    addNoteModal.remove()
+                    viewProject(projectIndex)
+                })
+                addNoteModalCancelButton.addEventListener('click', e=>{
+                    addNoteModal.remove()
+                })
+            })
+
+            // note section to temp todo
+            newTodoItem.appendChild(noteDisplayContainer)
+
+
             //checklists
                 //generate checklist items with their text as innerText of a checkbox input element, delete and change buttons beside or below them
                 //add checklist item button, which generates a modal
@@ -484,9 +609,31 @@ export const UIController =(function(){
                     //cancel creation of checklist item
 
 
+            //add checklist section to temp todo
 
 
 
+            //add delete todo button
+            let todoButtonContainer = document.createElement('section')
+            let deleteTodoButton = document.createElement('button')
+            deleteTodoButton.type = 'button'
+            deleteTodoButton.innerText = 'Delete Todo'
+            todoButtonContainer.appendChild(deleteTodoButton)
+            //event listener for delete todo button
+            deleteTodoButton.addEventListener('click', e=>{
+                let userConfirmationTodoDelete = prompt("Are you sure you want to delete this todo? (yes/no)")
+                if(userConfirmationTodoDelete==='no'){
+                    return
+                }else{
+                    todoApp.projects[projectIndex].deleteTodo(index)
+                    viewProject(projectIndex)
+                }
+            })
+
+
+            newTodoItem.appendChild(todoButtonContainer)
+
+            //return temp todo item, as this function will be called by a for loop that appends these todos (li's) into a list (ul)
             return newTodoItem
 
         }
@@ -500,224 +647,3 @@ export const UIController =(function(){
         mainProjectArea.appendChild(buildProject)
     }
 })()
-
-
-
-
-//old code:
-
-
-
-    // //main content area where projects are opened up and todos can be seen and made which will be crossed out if completed, not crossed out if un complete, as well as a button to delete a todo item for any reason. If no projects exist maybe generate an example project or explanation text that tells a user how to create a new project
-    // //function that will create html content dynamically for a specific project
-    // function viewProject(projectIndex){
-
-
-
-
-
-    //     //function that builds preexisting todo item nodes in view, it gets passed each todo object from a project, and its index in the todos array...
-    //     function buildTodo(todo, index){
-    //         let todoContainer = document.createElement('li')
-    //         todoContainer.style.border = '1px solid black'
-    //         todoContainer.style.listStyleType = 'none'
-    //         todoContainer.dataset.todoIndex = index
-
-    //         let todoName = document.createElement('h4')
-    //         todoName.innerText = `Todo Name: ${todo.name}`
-    //         todoContainer.appendChild(todoName)
-
-    //         let todoDescription = document.createElement('p')
-    //         todoDescription.innerText = `Todo Description: ${todo.description||'none'}`
-    //         todoContainer.appendChild(todoDescription)
-
-    //         let todoPriority = document.createElement('p')
-    //         todoPriority.innerText = `Todo Priority: ${todo.priority||0}`
-    //         todoContainer.appendChild(todoPriority)
-    //         if(todo.priority<3){
-    //             todoContainer.style.backgroundColor = 'lightgreen'
-    //         }else if(todo.priority<6){
-    //             todoContainer.style.backgroundColor = 'yellow'
-    //         }else{
-    //             todoContainer.style.backgroundColor = 'red'
-    //         }
-
-    //         let todoDueDate = document.createElement('p')
-    //         todoDueDate.innerText = `Todo due date: ${todo.dueDate}`
-    //         todoContainer.appendChild(todoDueDate)
-
-    //         let todoNotes = document.createElement('ul')
-    //         todoNotes.innerText = "Todo Notes: "
-    //         todoNotes.style.border = '1px solid grey'
-    //         todoNotes.style.margin = '5px'
-    //         //this code builds note elements
-    //         if(todo.notes.length<1){
-    //             todoNotes.innerText += 'None'
-    //         }
-    //         for(let i = 0; i<todo.notes.length; i++){
-    //             buildNote(todo.notes[i], i)
-    //         }
-    //         //button for adding notes
-    //         let newTodoNoteButton = document.createElement('button')
-    //         newTodoNoteButton.type = 'button'
-    //         newTodoNoteButton.innerText = 'Add Note'
-    //         todoNotes.appendChild(newTodoNoteButton)
-    //         todoContainer.appendChild(todoNotes)
-    //         //toggle note modal
-    //         newTodoNoteButton.addEventListener('click', e=>{
-    //             if(newTodoNoteModal.style.display !== 'grid'){
-    //                 newTodoNoteModal.style.display = 'grid'
-    //             }else{
-    //                 newTodoNoteModal.style.display = ''
-
-    //             }
-    //         })
-
-    //         newNoteModalSaveButton.addEventListener('click', e=>{
-    //             todo.addNote(newTodoNoteInput.value)
-    //             newTodoNoteInput.value = ''
-    //             newTodoNoteModal.style.display = 'none'
-    //             viewProject(projectIndex)
-    //         })
-    //         //when cancel button is clicked hide the modal and wipe the input field
-    //         newNoteModalCancelButton.addEventListener('click', e=>{
-    //             newTodoNoteModal.style.display = 'none'
-    //             newTodoNoteInput.value = ''
-    //         })
-            
-                    
-
-    //         //checklist output
-    //         let todoChecklist = document.createElement('ul')
-    //         todoChecklist.innerText = "Todo Checklist: "
-    //         todoChecklist.style.border = '1px solid red'
-    //         if(todo.checklist.length<1){
-    //             todoChecklist.innerText += 'None'
-    //         }
-    //         for(let i = 0; i< todo.checklist.length; i++){
-    //             //checklist items, input type='checkbox' checked
-    //             todoChecklist.appendChild(buildChecklist(todo.checklist[i], i))
-    //         }
-    //         let createChecklistButton = document.createElement('button')
-    //         createChecklistButton.type = 'button'
-    //         createChecklistButton.innerText = "Create Checklist Item"
-    //         todoChecklist.appendChild(createChecklistButton)
-
-    //         todoContainer.appendChild(todoChecklist)
-
-    //         //if todo is complete place a line-through styling on it
-    //         if(todo.complete === true){
-    //             todoContainer.style.textDecoration = 'line-through'
-    //         }else{
-    //             todoContainer.style.textDecoration = 'none'
-    //         }
-    //         let todoComplete = document.createElement('p')
-    //         todoComplete.innerText= `Todo status: ${todo.complete}`
-    //         if(todo.todoComplete===true){
-    //             todoComplete.style.color = 'green'
-    //         }
-
-
-    
-    //         createChecklistButton.addEventListener('click', e=>{
-    //             if(newChecklistModal.style.display != 'grid'){
-    //                 newChecklistModal.style.display = 'grid'
-    //             }else{
-    //                 newChecklistModal.style.display = ''
-    //             }
-    //         })
-    //         saveNewChecklistItem.addEventListener('click', e=>{
-    //             todo.createChecklistItem(newCheckListDescription.value)
-    //             viewProject(projectIndex)
-    //             newChecklistModal.style.display = ''
-    //             newCheckListDescription.value = ''
-    //         })
-    //         cancelNewChecklistModal.addEventListener('click', e=>{
-    //             newChecklistModal.style.display = ''
-    //             newCheckListDescription.value = ''
-    //         })
-
-    //         //need to build a button to toggle the complete property value of a todo item
-    //         let todoEditsDiv = document.createElement('div')
-    //         let completeTodoButton = document.createElement('button')
-    //         completeTodoButton.type = 'button'
-    //         completeTodoButton.innerText = 'Toggle Todo Complete'
-    //         completeTodoButton.addEventListener('click', e=>{
-    //             if(todo.complete===true){
-    //                 todo.complete = false
-    //                 viewProject(projectIndex)
-    //             }else{
-    //                 todo.complete = true
-    //                 viewProject(projectIndex)
-
-    //             }
-    //         })
-    //         todoEditsDiv.appendChild(completeTodoButton)
-
-    //         let deleteTodoButton = document.createElement('button')
-    //         deleteTodoButton.type = 'button'
-    //         deleteTodoButton.innerText = "Delete Todo"
-    //         deleteTodoButton.addEventListener('click', e=>{
-    //             let userConfirmsTodoDelete = prompt("Are you sure you want to delete this todo item?(yes/no) ")
-    //             if(userConfirmsTodoDelete === 'yes'){
-    //                 todoApp.projects[projectIndex].deleteTodo(index)
-    //                 viewProject(projectIndex)
-    //             }
-    //         })
-    //         todoEditsDiv.appendChild(deleteTodoButton)
-    //         todoContainer.appendChild(todoEditsDiv)
-
-    //         //function to build checkList items
-    //         function buildChecklist(checklist, index){
-    //             let checklistItem = document.createElement('li')
-    //             checklistItem.dataset.checklistIndex = index
-    //             let checklistDescription = document.createElement('label')
-    //             checklistDescription.innerText = `${checklist.description}`
-    //             let checklistItemBox = document.createElement('input')
-    //             checklistItemBox.type = 'checkbox'
-    //             checklistItemBox.checked = checklist.checked
-    //             checklistItemBox.addEventListener('click', e=>{
-    //                 todo.toggleChecklistItem(index)
-    //                 viewProject(projectIndex)
-    //             })
-    //             checklistDescription.appendChild(checklistItemBox)
-    //             checklistItem.appendChild(checklistDescription)
-    //             return checklistItem
-    //         }
-
-    //         //function to build note elements
-    //         function buildNote(note, index){
-    //             let tempNote = document.createElement('li')
-    //             let tempNoteString = document.createElement('span')
-    //             tempNoteString.innerText = note
-    //             tempNote.appendChild(tempNoteString)
-    //             tempNote.dataset.noteIndex = index
-    //             //add button to delete the note
-    //             let deleteNoteButton = document.createElement('button')
-    //             deleteNoteButton.type = 'button'
-    //             deleteNoteButton.innerText = 'Delete'
-    //             tempNote.appendChild(deleteNoteButton)
-    //             todoNotes.appendChild(tempNote)
-    //             deleteNoteButton.addEventListener('click', e=>{
-    //                 todo.deleteNote(index)
-    //                 viewProject(projectIndex)
-    //             })
-    //         }
-
-    //         return todoContainer
-    //     }
-
-
-
-    //     function generateTodos(){
-    //         for(let i = 0; i<currentProject.todos.length; i++){
-    //             //invoke function that builds todo item as a node and appends it into buildProjectTodos
-    //             buildProjectTodos.appendChild(buildTodo(currentProject.todos[i], i))
-    //         }
-    //     }
-    //     //generate preexisting todo items when project is loaded
-    //     generateTodos()
-
-    //     mainProjectArea.appendChild(buildProject)
-    // }    
-    
