@@ -176,8 +176,83 @@ export const UIController =(function(){
         let buildProjectTitle = document.createElement('h3')
         buildProjectTitle.innerText = `Project Name: ${currentProject.title}`
         buildProject.appendChild(buildProjectTitle)
+        let changeProjectTitleButton = document.createElement('button')
+        changeProjectTitleButton.type = 'button'
+        changeProjectTitleButton.innerText = 'Change Name'
+        buildProject.appendChild(changeProjectTitleButton)
 
-        //create change project title button here then add its event listener logic:
+        changeProjectTitleButton.addEventListener('click', e=>{
+            //if this modal exists remove it
+            if(document.querySelector('#changeProjectTitleModal')){
+                document.querySelector('#changeProjectTitleModal').remove()
+            }
+            //logic to change project name, obviously
+            // todoApp.projects[projectIndex].changeProjectName = 
+            //build modal, show modal
+                //have an input field to let us change project Name to whatever 3 or more character name value they want, bring over logic to validate that
+                //2 buttons, one to save change other to cancel
+            let changeProjectTitleModal = document.createElement('aside')
+            changeProjectTitleModal.id = 'changeProjectTitleModal'
+            changeProjectTitleModal.style.display = 'grid'
+            let changeProjectTitleModalHeader = document.createElement('h4')
+            changeProjectTitleModalHeader.innerText = 'Change Project Name'
+            changeProjectTitleModal.appendChild(changeProjectTitleModalHeader)
+            let priorProjectTitle = document.createElement('p')
+            priorProjectTitle.innerText = `Previous Title: ${todoApp.projects[projectIndex].title}`
+            changeProjectTitleModal.appendChild(priorProjectTitle)
+            //label for input field to change project title value
+            let newProjectTitleModalLabel = document.createElement('label')
+            newProjectTitleModalLabel.innerText = 'New Title: '
+            //input for new project title, is nested by label
+            let newProjectModalTitleInput = document.createElement('input')
+            newProjectModalTitleInput.placeholder = 'Minimum 3 characters'
+            newProjectModalTitleInput.id = 'newProjectModalTitleInput'
+            newProjectTitleModalLabel.appendChild(newProjectModalTitleInput)
+            newProjectTitleModalLabel.setAttribute('for', 'newProjectModalTitleInput')
+            //append label into changeProjectTitleModal
+            changeProjectTitleModal.appendChild(newProjectTitleModalLabel)
+            //create div to place buttons in for easier styling
+            let changeProjectTitleButtonDiv = document.createElement('div')
+            //change value button
+            let changeProjectTitleButton = document.createElement('button')
+            changeProjectTitleButton.type = 'button'
+            changeProjectTitleButton.innerText = "Change"
+            changeProjectTitleButtonDiv.appendChild(changeProjectTitleButton)
+            //cancel button
+            let cancelChangeProjectTitleButton = document.createElement('button')
+            cancelChangeProjectTitleButton.type = 'button'
+            cancelChangeProjectTitleButton.innerText = "Cancel"
+            changeProjectTitleButtonDiv.appendChild(cancelChangeProjectTitleButton)
+            changeProjectTitleModal.appendChild(changeProjectTitleButtonDiv)
+            mainProjectArea.appendChild(changeProjectTitleModal)
+            //event listeners for changeProjectTitleButton and cancelChangeProjectTitleButton
+            changeProjectTitleButton.addEventListener('click', e=>{
+                if(newProjectModalTitleInput.value.length>2){
+                    todoApp.projects[projectIndex].changeProjectTitle(newProjectModalTitleInput.value)
+                    changeProjectTitleModal.remove()
+                    viewProject(projectIndex)
+                    wipeNavProjects()
+                    populateNavProjects()
+                }else{
+                    newProjectModalTitleInput.style.borderColor = 'red'
+                    setTimeout(() => {
+                        let nameLengthError = document.createElement('span')
+                        nameLengthError.innerText = 'Project Name must be at least 3 characters long'
+                        nameLengthError.style.display = 'block'
+                        nameLengthError.style.color = 'red'
+                        newProjectTitleModalLabel.after(nameLengthError)
+                    }, 100);
+                    //after 3 seconds remove the error message and styling
+                    setTimeout(() => {
+                        newProjectModalTitleInput.style.borderColor = ''
+                        changeProjectTitleModal.querySelector('span').remove()
+                    }, 3000);
+                }
+            })
+            cancelChangeProjectTitleButton.addEventListener('click', e=>{
+                changeProjectTitleModal.remove()
+            })
+        })
 
 
         //create paragraph element which tells user their projects description
