@@ -172,25 +172,24 @@ export const UIController =(function(){
         let currentProject = todoApp.projects[projectIndex]
         //create div element for this project to be displayed
         let buildProject = document.createElement('div')
+        //build a div that holds the project title, and changeprojecttitle button
+        let projectTitleArea = document.createElement('section')
         //create h3 which wraps projects title, give it content, append it to div temp project variable
         let buildProjectTitle = document.createElement('h3')
         buildProjectTitle.innerText = `Project Name: ${currentProject.title}`
-        buildProject.appendChild(buildProjectTitle)
+        projectTitleArea.appendChild(buildProjectTitle)
         let changeProjectTitleButton = document.createElement('button')
         changeProjectTitleButton.type = 'button'
         changeProjectTitleButton.innerText = 'Change Name'
-        buildProject.appendChild(changeProjectTitleButton)
+        projectTitleArea.appendChild(changeProjectTitleButton)
+        buildProject.appendChild(projectTitleArea)
+
 
         changeProjectTitleButton.addEventListener('click', e=>{
             //if this modal exists remove it
             if(document.querySelector('#changeProjectTitleModal')){
                 document.querySelector('#changeProjectTitleModal').remove()
             }
-            //logic to change project name, obviously
-            // todoApp.projects[projectIndex].changeProjectName = 
-            //build modal, show modal
-                //have an input field to let us change project Name to whatever 3 or more character name value they want, bring over logic to validate that
-                //2 buttons, one to save change other to cancel
             let changeProjectTitleModal = document.createElement('aside')
             changeProjectTitleModal.id = 'changeProjectTitleModal'
             changeProjectTitleModal.style.display = 'grid'
@@ -255,24 +254,42 @@ export const UIController =(function(){
         })
 
 
+        //create project descriptiion container using a div to hold text output and button
+        let projectDescriptionArea = document.createElement('section')
         //create paragraph element which tells user their projects description
         let buildProjectDescription = document.createElement('p')
         buildProjectDescription.innerText = `Project Description: ${currentProject.description}`
-        buildProject.appendChild(buildProjectDescription)
-    
+        projectDescriptionArea.appendChild(buildProjectDescription)
+        
         //create change project description button here then add its even listener logic:
+            //creates modal and shows
+                //header that tells user the modal is used to change project description
+                //label>input that accepts a new value
+                //div
+                    //save button
+                    //cancel button
+        let changeProjectDescriptionButton = document.createElement('button')
+        changeProjectDescriptionButton.type = 'button'
+        changeProjectDescriptionButton.innerText = 'Change Description'
+        projectDescriptionArea.appendChild(changeProjectDescriptionButton)
+        buildProject.appendChild(projectDescriptionArea)
 
 
+
+
+        //create todo area div that will hold the add todo button and the rendered todo elements
+        let projectTodoArea = document.createElement('section')
         //button that allows users to add todo's to their projects, listener for this button will follow the creation of todo elements
         let createTodoButton = document.createElement('button')
         createTodoButton.type = 'button'
         createTodoButton.innerText = 'Add Todo'
-        buildProject.appendChild(createTodoButton)
+        projectTodoArea.appendChild(createTodoButton)
 
         //create a ul where todo items will be inserted, a todo container if you must describe it
         let buildProjectTodos = document.createElement('ul')
         buildProjectTodos.style.padding = '3%'
-        buildProject.appendChild(buildProjectTodos)
+        projectTodoArea.appendChild(buildProjectTodos)
+        buildProject.appendChild(projectTodoArea)
 
         //listener on the createTodoButton, builds newTodoModal and displays it to user, includes buttons with own listeners to actually build todos
         createTodoButton.addEventListener('click', e=>{
