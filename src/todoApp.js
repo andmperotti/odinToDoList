@@ -27,6 +27,10 @@ const todoApp = (function(){
             this.title = newTitleValue
             saveToStorage()
         }
+        changeProjectDescription(newDescription){
+            this.description=newDescription
+            saveToStorage()
+        }
     }
 
     class Todo{
