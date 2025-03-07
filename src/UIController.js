@@ -596,20 +596,82 @@ export const UIController =(function(){
                 })
             })
 
-            // note section to temp todo
+            //note section into temp todo item
             newTodoItem.appendChild(noteDisplayContainer)
 
 
-            //checklists
-                //generate checklist items with their text as innerText of a checkbox input element, delete and change buttons beside or below them
-                //add checklist item button, which generates a modal
-                    //add checklist item header
-                    //checklist description field inside label
-                    //save checklist item
-                    //cancel creation of checklist item
+            //generate checklist items
+            let checklistContainer = document.createElement('section')
+            let checklistUlContainer = document.createElement('ul')
+            for(let i = 0; i<todo.checklist.length; i++){
+                let tempChecklistItem = document.createElement('li')
+                let tempChecklistItemLabel = document.createElement('label')
+                tempChecklistItemLabel.innerText = todo.checklist[i].description
+                let tempChecklistItemCheck = document.createElement('input')
+                tempChecklistItemCheck.type = 'checkbox'
+                tempChecklistItemLabel.appendChild(tempChecklistItemCheck)
+                //render checkmark if checklist item is checked in stored projects
+                if(todo.checklist[i].checked===true){
+                    tempChecklistItemCheck.setAttribute('checked', true)
+                }
+                //even listeners on the check boxes to change the checked value
+                tempChecklistItemCheck.addEventListener('click', e=>{
+                    todo.toggleChecklistItem(i)
+                    viewProject(projectIndex)
+                })
+                tempChecklistItem.appendChild(tempChecklistItemLabel)
+                checklistUlContainer.appendChild(tempChecklistItem)
+            }
 
+            checklistContainer.appendChild(checklistUlContainer)
+            let addChecklistItemButton = document.createElement("button")
+            addChecklistItemButton.type = 'button'
+            addChecklistItemButton.innerText = "Create Checklist Item"
+            addChecklistItemButton.id = 'addChecklistItemButton'
+            checklistContainer.appendChild(addChecklistItemButton)
+            //event listener for add checklist item button, shows a modal, modal has buttons to submit or cancel creation
+            addChecklistItemButton.addEventListener('click', e=>{
+                if(document.querySelector('#newChecklistModal')){
+                    document.querySelector('#newChecklistModal').remove()
+                }
+                let newChecklistModal = document.createElement('aside')
+                newChecklistModal.id = 'newChecklistModal'
+                newChecklistModal.style.display = 'grid'
+                let newChecklistModalHeader = document.createElement('h3')
+                newChecklistModalHeader.innerText = "New Checklist Item"
+                newChecklistModal.appendChild(newChecklistModalHeader)
+                let newChecklistModalLabel = document.createElement('label')
+                newChecklistModalLabel.innerText = 'Value: '
+                let newChecklistModalInput = document.createElement('input')
+                newChecklistModalInput.id = 'newChecklistModalInput'
+                newChecklistModalLabel.appendChild(newChecklistModalInput)
+                newChecklistModal.appendChild(newChecklistModalLabel)
+                //button section
+                let newChecklistModalButtonSection = document.createElement('section')
+                let newChecklistModalSubmitButton = document.createElement('button')
+                newChecklistModalSubmitButton.type = 'button'
+                newChecklistModalSubmitButton.innerText = 'Submit'
+                newChecklistModalButtonSection.appendChild(newChecklistModalSubmitButton)
+                let newChecklistModalCancelButton = document.createElement('button')
+                newChecklistModalCancelButton.type = 'button'
+                newChecklistModalCancelButton.innerText = 'Cancel'
+                newChecklistModalButtonSection.appendChild(newChecklistModalCancelButton)
+                newChecklistModal.appendChild(newChecklistModalButtonSection)
+                //event listeners on the submit and cancel button
+                newChecklistModalSubmitButton.addEventListener('click', e=>{
+                    todo.createChecklistItem(newChecklistModalInput.value)
+                    viewProject(projectIndex)
+                })
+                newChecklistModalCancelButton.addEventListener('click', e=>{
+                    newChecklistModal.remove()
+                })
 
-            //add checklist section to temp todo
+                mainProjectArea.appendChild(newChecklistModal)
+            })
+            //checklist items into temp todo item
+            newTodoItem.appendChild(checklistContainer)
+
+            
 
 
 
@@ -629,6 +691,29 @@ export const UIController =(function(){
                     viewProject(projectIndex)
                 }
             })
+
+
+
+
+
+
+            //add toggle todo, like its complete or its not
+            let toggleTodoButton = document.createElement('button')
+            toggleTodoButton.type = 'button'
+            toggleTodoButton.innerText = 'Toggle Todo'
+            //event listener for this toggle button
+            toggleTodoButton.addEventListener('click', e=>{
+                todoApp.projects[projectIndex].toggleTodo(index)
+            })
+            //add button to button container of div
+            todoButtonContainer.appendChild(toggleTodoButton)
+
+
+            //apply line through styling if todo item is complete
+
+
+
+
 
 
             newTodoItem.appendChild(todoButtonContainer)
