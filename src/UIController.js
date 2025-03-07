@@ -261,20 +261,60 @@ export const UIController =(function(){
         buildProjectDescription.innerText = `Project Description: ${currentProject.description}`
         projectDescriptionArea.appendChild(buildProjectDescription)
         
-        //create change project description button here then add its even listener logic:
-            //creates modal and shows
-                //header that tells user the modal is used to change project description
-                //label>input that accepts a new value
-                //div
-                    //save button
-                    //cancel button
+        //change project description button 
         let changeProjectDescriptionButton = document.createElement('button')
         changeProjectDescriptionButton.type = 'button'
         changeProjectDescriptionButton.innerText = 'Change Description'
         projectDescriptionArea.appendChild(changeProjectDescriptionButton)
         buildProject.appendChild(projectDescriptionArea)
+        //event listener ont hat button to change project description
+        changeProjectDescriptionButton.addEventListener('click', e=>{
+            if(document.querySelector('#changeProjectDescriptionModal')){
+                document.querySelector('#changeProjectDescriptionModal').remove()
+            }
+            let changeProjectDescriptionModal = document.createElement('aside')
+            changeProjectDescriptionModal.id = 'changeProjectDescriptionModal'
+            changeProjectDescriptionModal.style.display = 'grid'
+            let changeProjectDescriptionHeader = document.createElement('h3')
+            changeProjectDescriptionHeader.innerText = "Change Project Description"
+            changeProjectDescriptionModal.appendChild(changeProjectDescriptionHeader)
 
+            let changeProjectDescriptioOldValue = document.createElement('p')
+            changeProjectDescriptioOldValue.innerText = `Old value: ${todoApp.projects[projectIndex].description}`
+            changeProjectDescriptionModal.appendChild(changeProjectDescriptioOldValue)
+            let changeProjectDescriptionLabel = document.createElement('label')
+            changeProjectDescriptionLabel.innerText = 'New Description: '
+            let changeProjectDescriptionInput = document.createElement('input')
+            changeProjectDescriptionInput.id = 'changeProjectDescriptionInput'
+            changeProjectDescriptionLabel.setAttribute('for', 'changeProjectDescriptionInput')
+            changeProjectDescriptionLabel.appendChild(changeProjectDescriptionInput)
+            changeProjectDescriptionModal.appendChild(changeProjectDescriptionLabel)
+            //create section to house save and cancel buttons
+            let changeProjectDescriptionButtons = document.createElement('section')
+            let changeProjectDescriptionSaveButton = document.createElement('button')
+            changeProjectDescriptionSaveButton.type = 'button'
+            changeProjectDescriptionSaveButton.innerText = "Change"
+            changeProjectDescriptionButtons.appendChild(changeProjectDescriptionSaveButton)
+            let changeProjectDescriptionCancelButton = document.createElement('button')
+            changeProjectDescriptionCancelButton.type = 'button'
+            changeProjectDescriptionCancelButton.innerText = 'Cancel'
+            changeProjectDescriptionButtons
+            changeProjectDescriptionButtons.appendChild(changeProjectDescriptionCancelButton)
+            changeProjectDescriptionModal.appendChild(changeProjectDescriptionButtons)
 
+            mainProjectArea.appendChild(changeProjectDescriptionModal)
+
+            //event listeners on the save and cancel buttons
+            changeProjectDescriptionSaveButton.addEventListener('click', e=>{
+                todoApp.projects[projectIndex].changeProjectDescription(changeProjectDescriptionInput.value)
+                changeProjectDescriptionModal.remove()
+                viewProject(projectIndex)
+            })
+            changeProjectDescriptionCancelButton.addEventListener('click', e=>{
+                changeProjectDescriptionModal.remove()
+            })
+
+        })
 
 
         //create todo area div that will hold the add todo button and the rendered todo elements
