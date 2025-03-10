@@ -698,19 +698,23 @@ export const UIController =(function(){
 
 
 
-            //add toggle todo, like its complete or its not
+            //add toggle todo, so users can complete or uncomplete a todo
             let toggleTodoButton = document.createElement('button')
             toggleTodoButton.type = 'button'
             toggleTodoButton.innerText = 'Toggle Todo'
             //event listener for this toggle button
             toggleTodoButton.addEventListener('click', e=>{
-                todoApp.projects[projectIndex].toggleTodo(index)
+                todo.toggleTodo(index)
+                if(todo.complete===true){
+                    newTodoItem.style.textDecoration = 'line-through'
+                }else{
+                    newTodoItem.style.textDecoration = 'none'
+                }
             })
             //add button to button container of div
             todoButtonContainer.appendChild(toggleTodoButton)
 
 
-            //apply line through styling if todo item is complete
 
 
 

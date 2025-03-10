@@ -11,14 +11,6 @@ const todoApp = (function(){
             console.log(`${todoName} created!`)
             saveToStorage()
         }
-        toggleTodo(todoIndex){
-            if(this.todos[todoIndex].complete === false){
-                this.todos[todoIndex].complete = true
-            }else{
-                this.todos[todoIndex].complete = false
-            }
-            saveToStorage()
-        }
         deleteTodo(todoIndex){
             this.todos.splice(todoIndex, 1)
             saveToStorage()
@@ -69,6 +61,14 @@ const todoApp = (function(){
                 this.checklist[checklistIndex].checked=false
             }else{
                 this.checklist[checklistIndex].checked=true
+            }
+            saveToStorage()
+        }
+        toggleTodo(todoIndex){
+            if(this.complete === false){
+                this.complete = true
+            }else{
+                this.complete = false
             }
             saveToStorage()
         }
