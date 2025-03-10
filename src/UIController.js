@@ -89,18 +89,18 @@ export const UIController =(function(){
         let newProjectModalHeader = document.createElement('h3')
         newProjectModalHeader.innerText = "New Project"
         newProjectModal.appendChild(newProjectModalHeader)
-        let newProjectModalLabel = document.createElement('label')
-        newProjectModalLabel.innerText = "Project Name: "
-        let newProjectModalInput = document.createElement('input')
-        newProjectModalInput.id = 'newProjectModalInput'
+        let newProjectModalNameLabel = document.createElement('label')
+        newProjectModalNameLabel.innerText = "Project Name: "
+        let newProjectModalNameInput = document.createElement('input')
+        newProjectModalNameInput.placeholder = "Minimum 3 characters"
+        newProjectModalNameInput.id = 'newProjectModalNameInput'
         //validate that it's atleast 3 characters long
-        newProjectModalLabel.appendChild(newProjectModalInput)
-        newProjectModalLabel.setAttribute('for', 'newProjectModalInput')
-        newProjectModal.appendChild(newProjectModalLabel)
+        newProjectModalNameLabel.appendChild(newProjectModalNameInput)
+        newProjectModalNameLabel.setAttribute('for', 'newProjectModalNameInput')
+        newProjectModal.appendChild(newProjectModalNameLabel)
         let newProjectModalDescriptionLabel = document.createElement('label')
         newProjectModalDescriptionLabel.innerText = 'Description: '
         let newProjectModalDescriptionInput = document.createElement('input')
-        newProjectModalDescriptionInput.placeholder = "Minimum 3 characters"
         newProjectModalDescriptionLabel.appendChild(newProjectModalDescriptionInput)
         newProjectModalDescriptionInput.id = 'newProjectModalDescriptionInput'
         newProjectModalDescriptionLabel.setAttribute('for', 'newProjectModalDescriptionInput')
@@ -119,22 +119,23 @@ export const UIController =(function(){
 
         //listeners for submit and cancel button, including validation of name length of atleast 3
         newProjectModalSubmitButton.addEventListener('click', e=>{
-            if(newProjectModalInput.value.length>2){
-                todoApp.createProject(newProjectModalInput.value)
+            if(newProjectModalNameInput.value.length>2){
+                todoApp.createProject(newProjectModalNameInput.value)
                 newProjectModal.remove()
                 wipeNavProjects()
                 populateNavProjects()
             }else{
                 let newProjectModalSubmitErrorWarning = document.createElement('span')
                 newProjectModalSubmitErrorWarning.innerText = "Minimum 3 character length needed"
+                newProjectModalSubmitErrorWarning.style.color = 'red'
 
                 setTimeout(() => {
-                    newProjectModalDescriptionInput.border = '1px solid red'
-                    newProjectModalDescriptionLabel.after.appendChild(newProjectModalSubmitErrorWarnig)
+                    newProjectModalNameInput.style.borderColor = 'red'
+                    newProjectModalNameLabel.after(newProjectModalSubmitErrorWarning)
                 }, 5);
                 setTimeout(()=>{
                     newProjectModalSubmitErrorWarning.remove()
-                    newProjectModalDescriptionInput.border = ''
+                    newProjectModalNameInput.style.borderColor = ''
 
                 },  3000)
             }
@@ -497,8 +498,6 @@ export const UIController =(function(){
                 changeTodoNameModalCancelButton.addEventListener('click', e=>{
                     changeTodoNameModal.remove()
                 })
-
-
                 changeTodoNameModal.appendChild(changeTodoNameModalButtonSection)
                 mainProjectArea.appendChild(changeTodoNameModal)
             })
@@ -511,7 +510,7 @@ export const UIController =(function(){
 
             newTodoItem.appendChild(newTodoName)
             let newTodoDescription = document.createElement('p')
-            newTodoDescription.innerText = `Todo Description: ${todo.description}`
+            newTodoDescription.innerText = `Todo Description: ${todo.description ||'none '}`
             //button to change description:
             let changeTodoDescriptionButton = document.createElement('button')
             changeTodoDescriptionButton.type = 'button'
