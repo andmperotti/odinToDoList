@@ -449,18 +449,152 @@ export const UIController =(function(){
             let newTodoDescription = document.createElement('p')
             newTodoDescription.innerText = `Todo Description: ${todo.description}`
             //button to change description:
+            let changeTodoDescriptionButton = document.createElement('button')
+            changeTodoDescriptionButton.type = 'button'
+            changeTodoDescriptionButton.innerText = 'Change'
+            newTodoDescription.appendChild(changeTodoDescriptionButton)
+            //listener on changeTodoDescriptionButton to show modal
+            changeTodoDescriptionButton.addEventListener('click', e=>{
+                let changeTodoDescriptionModal = document.createElement('aside')
+                changeTodoDescriptionModal.style.display = 'grid'
+                let changeTodoDescriptionModalHeader = document.createElement('h3')
+                changeTodoDescriptionModalHeader.innerText = "Change Description"
+                changeTodoDescriptionModal.appendChild(changeTodoDescriptionModalHeader)
+                let changeTodoDescriptionModalLabel = document.createElement('label')
+                changeTodoDescriptionModalLabel.innerText = "New Description: "
+                let changeTodoDescriptionModalInput = document.createElement('input')
+                changeTodoDescriptionModalInput.id = 'changeTodoDescriptionModalInput'
+                changeTodoDescriptionModalLabel.setAttribute('for', 'changeTodoDescriptionModalInput')
+                changeTodoDescriptionModalLabel.appendChild(changeTodoDescriptionModalInput)
+                changeTodoDescriptionModal.appendChild(changeTodoDescriptionModalLabel)
+
+                //buttons for submitting change or cancelling it
+                let changeTodoDescriptionModalButtonSection = document.createElement('section')
+                let changeTodoDescriptionModalSubmitButton = document.createElement('button')
+                changeTodoDescriptionModalSubmitButton.type = 'button'
+                changeTodoDescriptionModalSubmitButton.innerText = 'Submit'
+                let changeTodoDescriptionModalCancelButton = document.createElement('button')
+                changeTodoDescriptionModalCancelButton.type = 'button'
+                changeTodoDescriptionModalCancelButton.innerText = 'Cancel'
+                changeTodoDescriptionModalButtonSection.appendChild(changeTodoDescriptionModalSubmitButton)
+                changeTodoDescriptionModalButtonSection.appendChild(changeTodoDescriptionModalCancelButton)
+                changeTodoDescriptionModal.appendChild(changeTodoDescriptionModalButtonSection)
+
+                //listeneres for buttons
+                changeTodoDescriptionModalSubmitButton.addEventListener('click', e=>{
+                    todo.changeDescription(changeTodoDescriptionModalInput.value)
+                    changeTodoDescriptionModal.remove()
+                    viewProject(projectIndex)
+
+                })
+                changeTodoDescriptionModalCancelButton.addEventListener('click', e=>{
+                    changeTodoDescriptionModal.remove()
+                })
+
+
+                mainProjectArea.appendChild(changeTodoDescriptionModal)
+            })
+
+
 
 
             newTodoItem.appendChild(newTodoDescription)
             let newTodoDuedate = document.createElement('p')
             newTodoDuedate.innerText = `Todo Due Date:${todo.dueDate}`
             //button to change due date:
+            let changeTodoDuedateButton = document.createElement('button')
+            changeTodoDuedateButton.type = 'button'
+            changeTodoDuedateButton.innerText = 'Change'
+            newTodoDuedate.appendChild(changeTodoDuedateButton)
+            //listener on change due date button that shows modal
+            changeTodoDuedateButton.addEventListener('click', e=>{
+                let changeTodoDuedateModal = document.createElement('aside')
+                changeTodoDuedateModal.style.display = 'grid'
+                let changeTodoDuedateModalHeader = document.createElement('h3')
+                changeTodoDuedateModalHeader.innerText = "Change Due Date"
+                changeTodoDuedateModal.appendChild(changeTodoDuedateModalHeader)
+                let changeTodoDuedateModalLabel = document.createElement('label')
+                changeTodoDuedateModalLabel.innerText = 'New Due Date'
+                let changeTodoDuedateModalInput = document.createElement('input')
+                changeTodoDuedateModalInput.id = 'changeTodoDuedateModalInput'
+                changeTodoDuedateModalInput.type = 'date'
+                changeTodoDuedateModalLabel.appendChild(changeTodoDuedateModalInput)
+                changeTodoDuedateModalLabel.setAttribute('for', 'changeTodoDuedateModalInput')
+                changeTodoDuedateModal.appendChild(changeTodoDuedateModalLabel)
+                //buttons to submit or cancel due date change
+                let changeTodoDuedateModalButtonSection = document.createElement('section')
+                let changeTodoDuedateModalSubmitButton = document.createElement('button')
+                changeTodoDuedateModalSubmitButton.type = 'button'
+                changeTodoDuedateModalSubmitButton.innerText = 'Submit'
+                let changeTodoDuedateModalCancelButton = document.createElement('button')
+                changeTodoDuedateModalCancelButton.type = 'button'
+                changeTodoDuedateModalCancelButton.innerText = 'Cancel'
+                changeTodoDuedateModalButtonSection.appendChild(changeTodoDuedateModalSubmitButton)
+                changeTodoDuedateModalButtonSection.appendChild(changeTodoDuedateModalCancelButton)
+                changeTodoDuedateModal.appendChild(changeTodoDuedateModalButtonSection)
+
+                //listeners on buttons
+                changeTodoDuedateModalSubmitButton.addEventListener('click', e=>{
+                    todo.changeDuedate(changeTodoDuedateModalInput.value)
+                    changeTodoDuedateModal.remove()
+                    viewProject(projectIndex)
+
+                })
+                changeTodoDuedateModalCancelButton.addEventListener('click', e=>{
+                    changeTodoDuedateModal.remove()
+                })
+
+                mainProjectArea.appendChild(changeTodoDuedateModal)
+            })                
+
 
 
             newTodoItem.appendChild(newTodoDuedate)
             let newTodoPriority = document.createElement('p')
-            newTodoPriority.innerText = `Todo Priority: ${Number(todo.priority)}`
-            //button to chang todo priority:
+            newTodoPriority.innerText = `Todo Priority: ${todo.priority} `
+            //button to change todo priority:
+            let changeTodoPriorityModalButton = document.createElement('button')
+            changeTodoPriorityModalButton.type = 'button'
+            changeTodoPriorityModalButton.innerText = "Change"
+            newTodoPriority.appendChild(changeTodoPriorityModalButton)
+            changeTodoPriorityModalButton.addEventListener('click', e=>{
+                let changeTodoPriorityModal = document.createElement('aside')
+                changeTodoPriorityModal.style.display = 'grid'
+                let changeTodoPriorityModalHeader = document.createElement('h3')
+                changeTodoPriorityModalHeader.innerText = "Change Todo Priority"
+                changeTodoPriorityModal.appendChild(changeTodoPriorityModalHeader)
+                let changeTodoPriorityModalLabel = document.createElement('label')
+                changeTodoPriorityModalLabel.innerText = "New Todo Priority: "
+                let changeTodoPriorityModalInput = document.createElement('input')
+                changeTodoPriorityModalInput.type = 'number'
+                changeTodoPriorityModalInput.id = 'changeTodoPriorityModalInput'
+                changeTodoPriorityModalLabel.appendChild(changeTodoPriorityModalInput)
+                changeTodoPriorityModalLabel.setAttribute('for', 'changeTodoPriorityModalInput')
+                changeTodoPriorityModal.appendChild(changeTodoPriorityModalLabel)
+                //buttons to submit and cancel
+                let changeTodoPriorityModalButtonSection = document.createElement('section')
+                let changeTodoPriorityModalSubmitButton = document.createElement('button')
+                changeTodoPriorityModalSubmitButton.type = 'button'
+                changeTodoPriorityModalSubmitButton.innerText="Submit Change"
+                let changeTodoPriorityModalCancelButton = document.createElement('button')
+                changeTodoPriorityModalCancelButton.type = 'button'
+                changeTodoPriorityModalCancelButton.innerText = 'Cancel'
+
+                changeTodoPriorityModalButtonSection.appendChild(changeTodoPriorityModalSubmitButton)
+                changeTodoPriorityModalButtonSection.appendChild(changeTodoPriorityModalCancelButton)
+
+                changeTodoPriorityModal.appendChild(changeTodoPriorityModalButtonSection)
+                //listeners for submit and cancel
+                changeTodoPriorityModalSubmitButton.addEventListener('click', e=>{
+                    todo.changePriority(changeTodoPriorityModalInput.value)
+                    changeTodoPriorityModal.remove()
+                    viewProject(projectIndex)
+                })
+                changeTodoPriorityModalCancelButton.addEventListener('click', e=>{
+                    changeTodoPriorityModal.remove()
+                })
+                mainProjectArea.appendChild(changeTodoPriorityModal)
+            })
 
 
             newTodoItem.appendChild(newTodoPriority)
@@ -478,6 +612,7 @@ export const UIController =(function(){
             noteUlContainer.innerText = 'Todo Notes:'
             noteDisplayContainer.appendChild(noteUlContainer)
             if(todo.notes.length<1){noteUlContainer.innerText+='none'}
+            //loop that builds note elements
             for(let i = 0; i<todo.notes.length; i++){
                 let tempNote = document.createElement('li')
                 tempNote.innerText = todo.notes[i]
@@ -531,25 +666,16 @@ export const UIController =(function(){
                     newNoteValueModalCancelButton.addEventListener('click', e=>{
                         document.querySelector('#newNoteValueModal').remove()
                     })
-                    //event listener for delete note
 
-
-
-                    //put this following in an event listener on a submit button
-                    // todo.notes[i].changeNote()
                 })
                 tempNoteDeleteButton.addEventListener('click', e=>{
                     todo.deleteNote(i)
                     viewProject(projectIndex)
                 })
-
-
-
-
-
-
-
             }
+
+
+
             //note button for users to add notes duh
             let addNoteButton = document.createElement('button')
             addNoteButton.type = 'button'
