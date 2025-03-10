@@ -88,12 +88,20 @@ const todoApp = (function(){
             this.name = newName
             saveToStorage()
         }
+        deleteChecklistItem(index){
+            this.checklist.splice(index,1)
+            saveToStorage()
+        }
     }
 
     class Checklist{
         constructor(description, checked=false){
             this.description = description
             this.checked = checked
+        }
+        changeDescription(newDescription){
+            this.description = newDescription
+            saveToStorage()
         }
     }
 
