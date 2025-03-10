@@ -85,22 +85,16 @@ li {
     width: 100%;
 }
 
-/* main>div>section:first-child {
-    position: sticky;
-    top:1px;
-}
-main>div>section:nth-child(2) {
-    position: sticky;
-    top: 63px;
-}
-main>div>section:first-child, 
-main>div>section:nth-child(2) {
-    background: white;
-} */
-
 #buildProjectIdentifier {
     position: sticky;
     top: 1px;
     background-color: lightgray;
     margin-top: 0px;
 }
+
+
+/*There's some weird interaction happening when todos allow for the project to be bigger than the viewport and it shrinks the nav/sidebar which I don't want*/
+*{
+    overflow: auto;
+}
+
