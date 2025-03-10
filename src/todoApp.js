@@ -29,7 +29,7 @@ const todoApp = (function(){
         constructor(name, description='none', priority=0, dueDate, notes=[], checklist=[], complete=false){
             this.name = name
             this.description = description
-            this.priority = priority
+            this.priority = Number(priority)
             //need to pass a string 'year-month-day', otherwise if the value being passed in is an empty string then set the date to the next day
             this.dueDate = dueDate === '' ? `${new Date(Date.now()).getFullYear()}-${new Date(Date.now()).getMonth()+1}-${new Date(Date.now()).getDate()+1}` : dueDate
             this.notes = notes
@@ -70,6 +70,22 @@ const todoApp = (function(){
             }else{
                 this.complete = false
             }
+            saveToStorage()
+        }
+        changePriority(newPriorityValue){
+            this.priority = Number(newPriorityValue)
+            saveToStorage()
+        }
+        changeDuedate(newDate){
+            this.dueDate= newDate
+            saveToStorage()
+        }
+        changeDescription(newDescription){
+            this.description=newDescription
+            saveToStorage()
+        }
+        changeName(newName){
+            this.name = newName
             saveToStorage()
         }
     }
