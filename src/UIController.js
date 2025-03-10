@@ -8,12 +8,8 @@ export const UIController =(function(){
     let newProjectButton = document.querySelector('#createNewProject')
     let infoButton = document.querySelector('#infoButton')
     let wipeProjectsButton = document.querySelector('#deleteAllProjectsButton')
-    //target newProjectModal which pre exists inside our html template, and target its specific input fields and buttons
-    let newProjectModal = document.querySelector('#newProjectModal') 
     let newProjectNameInput = document.querySelector('#newProjectName')
     let newProjectDescriptionInput = document.querySelector('#newProjectDescription')
-    let newProjectModalSaveButton = document.querySelector('#saveNewProject')
-    let newProjectModalCancelButton = document.querySelector('#cancelNewProject')
     let newProjectNameLabel = document.querySelector('#newProjectNameLabel')
 
     //invocations on load/refresh
@@ -64,18 +60,13 @@ export const UIController =(function(){
         navProjectArea.innerHTML=''
     }
 
-    //variable that helps us keep track of which project is actively being viewed
-    // let activeViewedProject;
-        //not sure if i need it for now
+
     //delegate listener on #navProjects for project li's when clicked (use dataset attribute)
     navProjectArea.addEventListener('click', (e)=>{
         //if what you're clicking on doesn't have a data-index attribute then do nothing
         if(!e.target.dataset.projectIndex){return}
         //otherwise, invoke viewProject function giving the function that data-index attribute value
         viewProject(e.target.dataset.projectIndex)
-        //change the value of activeViewedProject
-        // activeViewedProject = Number(e.target.dataset.projectIndex)
-        
     })
 
 
@@ -91,57 +82,82 @@ export const UIController =(function(){
         mainProjectArea.appendChild(explainerContainer)
     }
 
+    //event listener that builds new project modal and displays it to the user
+    newProjectButton.addEventListener('click', e=>{
+        let newProjectModal = document.createElement('aside')
+        newProjectModal.style.display = 'grid'
+        let newProjectModalHeader = document.createElement('h3')
+        newProjectModalHeader.innerText = "New Project"
+        newProjectModal.appendChild(newProjectModalHeader)
+        let newProjectModalLabel = document.createElement('label')
+        newProjectModalLabel.innerText = "Project Name: "
+        let newProjectModalInput = document.createElement('input')
+        newProjectModalInput.id = 'newProjectModalInput'
+        //validate that it's atleast 3 characters long
+        newProjectModalLabel.appendChild(newProjectModalInput)
+        newProjectModalLabel.setAttribute('for', 'newProjectModalInput')
+        newProjectModal.appendChild(newProjectModalLabel)
+        let newProjectModalDescriptionLabel = document.createElement('label')
+        newProjectModalDescriptionLabel.innerText = 'Description: '
+        let newProjectModalDescriptionInput = document.createElement('input')
+        newProjectModalDescriptionInput.placeholder = "Minimum 3 characters"
+        newProjectModalDescriptionLabel.appendChild(newProjectModalDescriptionInput)
+        newProjectModalDescriptionInput.id = 'newProjectModalDescriptionInput'
+        newProjectModalDescriptionLabel.setAttribute('for', 'newProjectModalDescriptionInput')
+        newProjectModal.appendChild(newProjectModalDescriptionLabel)
 
-    //event listener for 'save' button which generates a new project
-    newProjectModalSaveButton.addEventListener('click', ()=>{
-        if(newProjectNameInput.value.length>2){
-        //triggers createProject from todoApp
-            todoApp.createProject(newProjectNameInput.value, newProjectDescriptionInput.value)
-            //hide modal
-            newProjectModal.style.display = 'none'
-            //wipe input fields
-            newProjectNameInput.value = ''
-            newProjectDescriptionInput.value = ''
-            //new project is rendered into sidebar
-            wipeNavProjects()
-            //regenerate list of projects in side nav
-            populateNavProjects()
-        }else{            
-            newProjectNameLabel.querySelector('input').style.borderColor = 'red'
-            setTimeout(() => {
-                let nameLengthError = document.createElement('span')
-                nameLengthError.innerText = 'Project Name must be at least 3 characters long'
-                nameLengthError.style.display = 'block'
-                nameLengthError.style.color = 'red'
-                newProjectNameLabel.after(nameLengthError)
-            }, 100);
-            //after 3 seconds remove the error message and styling
-            setTimeout(() => {
-                newProjectNameLabel.querySelector('input').style.borderColor = ''
-                newProjectModal.querySelector('span').remove()
-            }, 3000);
-        }
+        //buttons to submit new project or cancel making a new project
+        let newProjectModalButtonSection = document.createElement('section')
+        let newProjectModalSubmitButton = document.createElement('button')
+        newProjectModalSubmitButton.innerText = 'Submit'
+        newProjectModalSubmitButton.type = 'button'
+        let newProjectModalCancelButton = document.createElement('button')
+        newProjectModalCancelButton.type = 'button'
+        newProjectModalCancelButton.innerText = 'Cancel'
+        newProjectModalButtonSection.appendChild(newProjectModalSubmitButton)
+        newProjectModalButtonSection.appendChild(newProjectModalCancelButton)
+
+        //listeners for submit and cancel button, including validation of name length of atleast 3
+        newProjectModalSubmitButton.addEventListener('click', e=>{
+            if(newProjectModalInput.value.length>2){
+                todoApp.createProject(newProjectModalInput.value)
+                newProjectModal.remove()
+                wipeNavProjects()
+                populateNavProjects()
+            }else{
+                let newProjectModalSubmitErrorWarning = document.createElement('span')
+                newProjectModalSubmitErrorWarning.innerText = "Minimum 3 character length needed"
+
+                setTimeout(() => {
+                    newProjectModalDescriptionInput.border = '1px solid red'
+                    newProjectModalDescriptionLabel.after.appendChild(newProjectModalSubmitErrorWarnig)
+                }, 5);
+                setTimeout(()=>{
+                    newProjectModalSubmitErrorWarning.remove()
+                    newProjectModalDescriptionInput.border = ''
+
+                },  3000)
+            }
+        })
+        newProjectModalCancelButton.addEventListener('click', e=>{
+            newProjectModal.remove()
+        })
+
+
+
+
+
+
+
+
+
+
+        newProjectModal.appendChild(newProjectModalButtonSection)
+        mainProjectArea.appendChild(newProjectModal)
     })
 
-    //event listener for cancel button, which again wipes input fields, and hides modal
-    newProjectModalCancelButton.addEventListener('click', ()=>{
-        newProjectNameInput.value = ''
-        newProjectDescriptionInput.value = ''
-        //hide modal
-        newProjectModal.style.display = 'none'
 
-    })
 
-    //click to show create new project modal
-    newProjectButton.addEventListener('click', ()=>{
-        if(newProjectModal.style.display !== 'grid'){
-            newProjectModal.style.display = 'grid'
-        }else{
-            newProjectNameInput.value = ''
-            newProjectDescriptionInput.value = ''
-            newProjectModal.style.display = 'none'
-        }
-    })
 
     // wipeProjectsButton listener
     wipeProjectsButton.addEventListener('click', ()=>{
@@ -319,6 +335,7 @@ export const UIController =(function(){
 
         //create todo area div that will hold the add todo button and the rendered todo elements
         let projectTodoArea = document.createElement('section')
+        projectTodoArea.style.border = '1px solid pink'
         //button that allows users to add todo's to their projects, listener for this button will follow the creation of todo elements
         let createTodoButton = document.createElement('button')
         createTodoButton.type = 'button'
