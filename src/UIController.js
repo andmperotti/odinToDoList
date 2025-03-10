@@ -42,8 +42,6 @@ export const UIController =(function(){
         drawExplainer()
     })
 
-
-
     //listeners on side nav project delete buttons
     function createSideProjectDeleteButtons(){
         navProjectArea.addEventListener('click', e=>{
@@ -54,12 +52,10 @@ export const UIController =(function(){
             })  
         }
 
-
     //function to wipe side nav project list, used before repopulating list when a project has been added or deleted
     function wipeNavProjects(){
         navProjectArea.innerHTML=''
     }
-
 
     //delegate listener on #navProjects for project li's when clicked (use dataset attribute)
     navProjectArea.addEventListener('click', (e)=>{
@@ -68,7 +64,6 @@ export const UIController =(function(){
         //otherwise, invoke viewProject function giving the function that data-index attribute value
         viewProject(e.target.dataset.projectIndex)
     })
-
 
     function drawExplainer(){
         let explainerContainer = document.createElement('div')
@@ -157,9 +152,6 @@ export const UIController =(function(){
         mainProjectArea.appendChild(newProjectModal)
     })
 
-
-
-
     // wipeProjectsButton listener
     wipeProjectsButton.addEventListener('click', ()=>{
         let userWipeConfirm = prompt("Are you sure you want to wipe )everything?(true/false) ")
@@ -174,14 +166,7 @@ export const UIController =(function(){
         }
     })
 
-
-
-
-
-
-
-
-    //time to remake everything
+    //function that renders a project in the main element, this is invoked via listners on projects in the sidebar
     function viewProject(projectIndex){
         //wipe project view area in case a project was being shown (lastChild because it was appended after the hidden modals)
         mainProjectArea.removeChild(mainProjectArea.lastChild)
@@ -203,7 +188,6 @@ export const UIController =(function(){
         changeProjectTitleButton.innerText = 'Change Name'
         projectTitleArea.appendChild(changeProjectTitleButton)
         buildProjectIdentifier.appendChild(projectTitleArea)
-
 
         changeProjectTitleButton.addEventListener('click', e=>{
             //if this modal exists remove it
@@ -273,7 +257,6 @@ export const UIController =(function(){
             })
         })
 
-
         //create project descriptiion container using a div to hold text output and button
         let projectDescriptionArea = document.createElement('section')
         //create paragraph element which tells user their projects description
@@ -288,7 +271,7 @@ export const UIController =(function(){
         projectDescriptionArea.appendChild(changeProjectDescriptionButton)
         buildProjectIdentifier.appendChild(projectDescriptionArea)
         buildProject.appendChild(buildProjectIdentifier)
-        //event listener ont hat button to change project description
+        //event listener on that button to change project description
         changeProjectDescriptionButton.addEventListener('click', e=>{
             if(document.querySelector('#changeProjectDescriptionModal')){
                 document.querySelector('#changeProjectDescriptionModal').remove()
@@ -349,14 +332,27 @@ export const UIController =(function(){
         createTodoButton.style.position = 'absolute'
         createTodoButton.style.bottom = '1%'
         createTodoButton.style.right = '1%'
-        createTodoButton.style.backgroundColor = 'lime'
+        createTodoButton.style.backgroundColor = 'orange'
+        if(todoApp.projects[projectIndex].todos.length<1){
+            createTodoButton.style.position = 'static'
+            createTodoButton.style.bottom = ''
+            createTodoButton.style.right = ''
+            createTodoButton.style.backgroundColor = 'lime'
+            createTodoButton.style.marginTop = '30px'
 
+
+        }
 
         //create a ul where todo items will be inserted, a todo container if you must describe it
         let buildProjectTodos = document.createElement('ul')
         buildProjectTodos.style.display = 'grid'
         buildProjectTodos.style.gap = '10px'
         buildProjectTodos.style.padding = '3%'
+        buildProjectTodos.style.backgroundColor = 'purple'
+        if(todoApp.projects[projectIndex].todos.length<1){
+            buildProjectTodos.style.backgroundColor = ''
+
+        }
         projectTodoArea.appendChild(buildProjectTodos)
         buildProject.appendChild(projectTodoArea)
 
@@ -461,14 +457,13 @@ export const UIController =(function(){
 
         })
 
-
-
-
         //build todo items
         function buildTodoItem(todo, index){
             let newTodoItem = document.createElement('li')
             newTodoItem.style.border = '1px solid pink'
             newTodoItem.dataset.todoItemIndex = index
+            
+            
             let newTodoName = document.createElement('h4')
             newTodoName.innerText = `Todo Name: ${todo.name}`
             //button to change name:
@@ -512,14 +507,8 @@ export const UIController =(function(){
                 changeTodoNameModal.appendChild(changeTodoNameModalButtonSection)
                 mainProjectArea.appendChild(changeTodoNameModal)
             })
-
-
-
-
-
-
-
             newTodoItem.appendChild(newTodoName)
+
             let newTodoDescription = document.createElement('p')
             newTodoDescription.innerText = `Todo Description: ${todo.description || 'none '}`
             //button to change description:
@@ -568,11 +557,8 @@ export const UIController =(function(){
 
                 mainProjectArea.appendChild(changeTodoDescriptionModal)
             })
-
-
-
-
             newTodoItem.appendChild(newTodoDescription)
+
             let newTodoDuedate = document.createElement('p')
             newTodoDuedate.innerText = `Todo Due Date:${todo.dueDate}`
             //button to change due date:
@@ -620,10 +606,8 @@ export const UIController =(function(){
 
                 mainProjectArea.appendChild(changeTodoDuedateModal)
             })                
-
-
-
             newTodoItem.appendChild(newTodoDuedate)
+
             let newTodoPriority = document.createElement('p')
             newTodoPriority.innerText = `Todo Priority: ${todo.priority} `
             //button to change todo priority:
@@ -669,8 +653,6 @@ export const UIController =(function(){
                 })
                 mainProjectArea.appendChild(changeTodoPriorityModal)
             })
-
-
             newTodoItem.appendChild(newTodoPriority)
             if(todo.priority<3){
                 newTodoItem.style.backgroundColor = 'lightgreen'
@@ -682,6 +664,7 @@ export const UIController =(function(){
             
             //container for notes, followed by for loop that will build note elements (li)
             let noteDisplayContainer = document.createElement('section')
+            noteDisplayContainer.classList.add('noteContainer')
             noteDisplayContainer.style.border = '1px solid grey'
             let noteUlContainer = document.createElement('ul')
             noteUlContainer.innerText = 'Todo Notes:'
@@ -752,9 +735,6 @@ export const UIController =(function(){
                     viewProject(projectIndex)
                 })
             }
-
-
-
             //note button for users to add notes duh
             let addNoteButton = document.createElement('button')
             addNoteButton.type = 'button'
@@ -800,13 +780,13 @@ export const UIController =(function(){
                     addNoteModal.remove()
                 })
             })
-
             //note section into temp todo item
             newTodoItem.appendChild(noteDisplayContainer)
 
 
             //generate checklist items
             let checklistContainer = document.createElement('section')
+            checklistContainer.classList.add('checklistContainer')
             checklistContainer.style.border = '1px solid grey'
             let checklistUlContainer = document.createElement('ul')
             checklistUlContainer.innerText = `Checklist items: `
@@ -889,7 +869,6 @@ export const UIController =(function(){
 
                 checklistUlContainer.appendChild(tempChecklistItem)
             }
-
             checklistContainer.appendChild(checklistUlContainer)
             let addChecklistItemButton = document.createElement("button")
             addChecklistItemButton.type = 'button'
@@ -959,12 +938,6 @@ export const UIController =(function(){
                     viewProject(projectIndex)
                 }
             })
-
-
-
-
-
-
             //add toggle todo, so users can complete or uncomplete a todo
             let toggleTodoButton = document.createElement('button')
             toggleTodoButton.type = 'button'
@@ -980,14 +953,6 @@ export const UIController =(function(){
             })
             //add button to button container of div
             todoButtonContainer.appendChild(toggleTodoButton)
-
-
-
-
-
-
-
-
             newTodoItem.appendChild(todoButtonContainer)
 
             //return temp todo item, as this function will be called by a for loop that appends these todos (li's) into a list (ul)

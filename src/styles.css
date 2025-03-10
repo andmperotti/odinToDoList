@@ -98,3 +98,12 @@ li {
     overflow: auto;
 }
 
+.note,
+.checklist {
+    margin: 10px;
+}
+
+.noteContainer,
+.checklistContainer {
+    margin: 30px;
+}
