@@ -443,6 +443,53 @@ export const UIController =(function(){
             let newTodoName = document.createElement('h4')
             newTodoName.innerText = `Todo Name: ${todo.name}`
             //button to change name:
+            let changeTodoNameButton = document.createElement('button')
+            changeTodoNameButton.type = 'button'
+            changeTodoNameButton.innerText = 'Change'
+            newTodoName.appendChild(changeTodoNameButton)
+            //listener on changeTodoNameButton that creates the modal and allows the user to enter and change the todo name value
+            changeTodoNameButton.addEventListener('click', e=>{
+                let changeTodoNameModal = document.createElement('aside')
+                changeTodoNameModal.style.display= 'grid'
+                let changeTodoNameModalHeader = document.createElement('h3')
+                changeTodoNameModalHeader.innerText = "Change Name"
+                changeTodoNameModal.appendChild(changeTodoNameModalHeader)
+                let changeTodoNameModalLabel = document.createElement('label')
+                changeTodoNameModalLabel.innerText = "New Name: "
+                let changeTodoNameModalInput = document.createElement('input')
+                changeTodoNameModalInput.id = 'changeTodoNameModalInput'
+                changeTodoNameModalLabel.appendChild(changeTodoNameModalInput)
+                changeTodoNameModalLabel.setAttribute('for', 'changeTodoNameModalInput')
+                changeTodoNameModal.appendChild(changeTodoNameModalLabel)
+                //buttons to allow users to change todo name or cancel changing the name
+                let changeTodoNameModalButtonSection = document.createElement('section')
+                let changeTodoNameModalSubmitButton = document.createElement('button')
+                changeTodoNameModalSubmitButton.type = 'button'
+                changeTodoNameModalSubmitButton.innerText = 'Submit'
+                changeTodoNameModalButtonSection.appendChild(changeTodoNameModalSubmitButton)
+                let changeTodoNameModalCancelButton = document.createElement('button')
+                changeTodoNameModalCancelButton.type = 'button'
+                changeTodoNameModalCancelButton.innerText = 'Cancel'
+                changeTodoNameModalButtonSection.appendChild(changeTodoNameModalCancelButton)
+                //listeners on submit and cancel button
+                changeTodoNameModalSubmitButton.addEventListener('click', e=>{
+                    todo.changeName(changeTodoNameModalInput.value)
+                    changeTodoNameModal.remove()
+                    viewProject(projectIndex)
+                })
+                changeTodoNameModalCancelButton.addEventListener('click', e=>{
+                    changeTodoNameModal.remove()
+                })
+
+
+                changeTodoNameModal.appendChild(changeTodoNameModalButtonSection)
+                mainProjectArea.appendChild(changeTodoNameModal)
+            })
+
+
+
+
+
 
 
             newTodoItem.appendChild(newTodoName)
