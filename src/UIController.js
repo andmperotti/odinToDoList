@@ -660,6 +660,7 @@ export const UIController =(function(){
                 //event listeners on the submit and cancel button
                 newChecklistModalSubmitButton.addEventListener('click', e=>{
                     todo.createChecklistItem(newChecklistModalInput.value)
+                    newChecklistModal.remove()
                     viewProject(projectIndex)
                 })
                 newChecklistModalCancelButton.addEventListener('click', e=>{
