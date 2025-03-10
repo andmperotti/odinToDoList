@@ -1,3 +1,5 @@
+
+
 body {
     width: 100%;
     height: 100vh;
@@ -14,11 +16,14 @@ body {
 header {
     grid-area: header;
     border-bottom: 1px solid gray;
+    text-align: center;
+
 }
 
 nav {
     grid-area: nav;
     border-right: 1px solid gray;
+
 }
 
 main {
@@ -53,13 +58,49 @@ li {
     list-style-type: none;
 }
 
-#bottomNavDiv {
+#infoButton {
     position: absolute;
+    display: block;
+    width: 100%;
     bottom: 1px;
-    left: 25px;
+}
+
+#navProjects{
+    display: grid;
 }
 
 #navProjects li {
     border: 1px solid pink;
     margin: 5px;
+}
+
+#navSection {
+    position: sticky; /*works*/
+    top: 1px;
+    height: 85vh;
+}
+
+#createNewProject,
+#deleteAllProjectsButton {
+    width: 100%;
+}
+
+/* main>div>section:first-child {
+    position: sticky;
+    top:1px;
+}
+main>div>section:nth-child(2) {
+    position: sticky;
+    top: 63px;
+}
+main>div>section:first-child, 
+main>div>section:nth-child(2) {
+    background: white;
+} */
+
+#buildProjectIdentifier {
+    position: sticky;
+    top: 1px;
+    background-color: lightgray;
+    margin-top: 0px;
 }

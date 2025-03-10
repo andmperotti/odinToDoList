@@ -189,6 +189,9 @@ export const UIController =(function(){
         let currentProject = todoApp.projects[projectIndex]
         //create div element for this project to be displayed
         let buildProject = document.createElement('div')
+        //container for title and description sections 
+        let buildProjectIdentifier = document.createElement('section')
+        buildProjectIdentifier.id = 'buildProjectIdentifier'
         //build a div that holds the project title, and changeprojecttitle button
         let projectTitleArea = document.createElement('section')
         //create h3 which wraps projects title, give it content, append it to div temp project variable
@@ -199,7 +202,7 @@ export const UIController =(function(){
         changeProjectTitleButton.type = 'button'
         changeProjectTitleButton.innerText = 'Change Name'
         projectTitleArea.appendChild(changeProjectTitleButton)
-        buildProject.appendChild(projectTitleArea)
+        buildProjectIdentifier.appendChild(projectTitleArea)
 
 
         changeProjectTitleButton.addEventListener('click', e=>{
@@ -283,7 +286,8 @@ export const UIController =(function(){
         changeProjectDescriptionButton.type = 'button'
         changeProjectDescriptionButton.innerText = 'Change Description'
         projectDescriptionArea.appendChild(changeProjectDescriptionButton)
-        buildProject.appendChild(projectDescriptionArea)
+        buildProjectIdentifier.appendChild(projectDescriptionArea)
+        buildProject.appendChild(buildProjectIdentifier)
         //event listener ont hat button to change project description
         changeProjectDescriptionButton.addEventListener('click', e=>{
             if(document.querySelector('#changeProjectDescriptionModal')){
@@ -342,6 +346,7 @@ export const UIController =(function(){
         createTodoButton.type = 'button'
         createTodoButton.innerText = 'Add Todo'
         projectTodoArea.appendChild(createTodoButton)
+        createTodoButton.style.marginTop = '15px'
 
         //create a ul where todo items will be inserted, a todo container if you must describe it
         let buildProjectTodos = document.createElement('ul')
