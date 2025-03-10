@@ -20,7 +20,7 @@ export const UIController =(function(){
     function populateNavProjects(){
         for(let i= 0;  i<todoApp.projects.length; i++){
             let tempProject = document.createElement('li')
-            tempProject.textContent = todoApp.projects[i].title
+            tempProject.innerText = `${todoApp.projects[i].title} `
             tempProject.style.listStyleType = 'none'
             tempProject.style.color = "red"
             tempProject.style.fontWeight = "bold"
@@ -340,16 +340,22 @@ export const UIController =(function(){
 
         //create todo area div that will hold the add todo button and the rendered todo elements
         let projectTodoArea = document.createElement('section')
-        projectTodoArea.style.border = '1px solid pink'
+        // projectTodoArea.style.border = '1px solid pink'
         //button that allows users to add todo's to their projects, listener for this button will follow the creation of todo elements
         let createTodoButton = document.createElement('button')
         createTodoButton.type = 'button'
         createTodoButton.innerText = 'Add Todo'
         projectTodoArea.appendChild(createTodoButton)
-        createTodoButton.style.marginTop = '15px'
+        createTodoButton.style.position = 'absolute'
+        createTodoButton.style.bottom = '1%'
+        createTodoButton.style.right = '1%'
+        createTodoButton.style.backgroundColor = 'lime'
+
 
         //create a ul where todo items will be inserted, a todo container if you must describe it
         let buildProjectTodos = document.createElement('ul')
+        buildProjectTodos.style.display = 'grid'
+        buildProjectTodos.style.gap = '10px'
         buildProjectTodos.style.padding = '3%'
         projectTodoArea.appendChild(buildProjectTodos)
         buildProject.appendChild(projectTodoArea)
@@ -515,7 +521,7 @@ export const UIController =(function(){
 
             newTodoItem.appendChild(newTodoName)
             let newTodoDescription = document.createElement('p')
-            newTodoDescription.innerText = `Todo Description: ${todo.description ||'none '}`
+            newTodoDescription.innerText = `Todo Description: ${todo.description || 'none '}`
             //button to change description:
             let changeTodoDescriptionButton = document.createElement('button')
             changeTodoDescriptionButton.type = 'button'
@@ -676,6 +682,7 @@ export const UIController =(function(){
             
             //container for notes, followed by for loop that will build note elements (li)
             let noteDisplayContainer = document.createElement('section')
+            noteDisplayContainer.style.border = '1px solid grey'
             let noteUlContainer = document.createElement('ul')
             noteUlContainer.innerText = 'Todo Notes:'
             noteDisplayContainer.appendChild(noteUlContainer)
@@ -683,15 +690,19 @@ export const UIController =(function(){
             //loop that builds note elements
             for(let i = 0; i<todo.notes.length; i++){
                 let tempNote = document.createElement('li')
-                tempNote.innerText = todo.notes[i]
+                tempNote.classList.add('note')
+                let tempNoteContent = document.createElement('p')
+                tempNoteContent.innerText = todo.notes[i]
+                tempNote.appendChild(tempNoteContent)
                 let tempNoteChangeButton = document.createElement('button')
                 tempNoteChangeButton.type = 'button'
                 tempNoteChangeButton.innerText = 'Change'
                 let tempNoteDeleteButton = document.createElement('button')
                 tempNoteDeleteButton.type = 'button'
-                tempNoteDeleteButton.innerText = 'X'
+                tempNoteDeleteButton.innerText = 'Delete'
                 tempNote.appendChild(tempNoteChangeButton)
                 tempNote.appendChild(tempNoteDeleteButton)
+                tempNote.style.border = '1px solid black'
 
                 noteUlContainer.appendChild(tempNote)
 
@@ -796,9 +807,13 @@ export const UIController =(function(){
 
             //generate checklist items
             let checklistContainer = document.createElement('section')
+            checklistContainer.style.border = '1px solid grey'
             let checklistUlContainer = document.createElement('ul')
+            checklistUlContainer.innerText = `Checklist items: `
             for(let i = 0; i<todo.checklist.length; i++){
                 let tempChecklistItem = document.createElement('li')
+                tempChecklistItem.dataset.checklistIndex = i
+                tempChecklistItem.classList.add('checklist')
                 let tempChecklistItemLabel = document.createElement('label')
                 tempChecklistItemLabel.innerText = todo.checklist[i].description
                 let tempChecklistItemCheck = document.createElement('input')
@@ -814,6 +829,64 @@ export const UIController =(function(){
                     viewProject(projectIndex)
                 })
                 tempChecklistItem.appendChild(tempChecklistItemLabel)
+
+                //buttons to edit or delete checlist items
+                let tempChecklistItemChangeButton = document.createElement('button')
+                tempChecklistItemChangeButton.type= 'button'
+                tempChecklistItemChangeButton.innerText = 'Change'
+                let tempChecklistItemDeleteButton = document.createElement('button')
+                tempChecklistItemDeleteButton.type = 'button'
+                tempChecklistItemDeleteButton.innerText = 'Delete'
+                let tempChecklistItemButtonContainer = document.createElement('section')
+                tempChecklistItemButtonContainer.appendChild(tempChecklistItemChangeButton)
+                tempChecklistItemButtonContainer.appendChild(tempChecklistItemDeleteButton)
+                tempChecklistItem.appendChild(tempChecklistItemButtonContainer)
+                tempChecklistItem.style.border = '1px solid black'
+                //event listeners for change and delete checklist item buttons
+                tempChecklistItemChangeButton.addEventListener('click', e=>{
+                    //modal to change value
+                    let changeChecklistModal = document.createElement('aside')
+                    changeChecklistModal.style.display = 'grid'
+                    let changeChecklistModalHeader = document.createElement('h3')
+                    changeChecklistModalHeader.innerText = 'New Checklist Value'
+                    changeChecklistModal.appendChild(changeChecklistModalHeader)
+                    let changeChecklistModalLabel = document.createElement('label')
+                    changeChecklistModalLabel.innerText = "New Value: "
+                    let changeChecklistModalInput = document.createElement('input')
+                    changeChecklistModalLabel.appendChild(changeChecklistModalInput)
+                    changeChecklistModal.appendChild(changeChecklistModalLabel)
+                    let changeChecklistModalButtonContainer = document.createElement('section')
+                    let changeChecklistModalSubmitButton = document.createElement('button')
+                    changeChecklistModalSubmitButton.type = 'button'
+                    changeChecklistModalSubmitButton.innerText = 'Save'
+                    changeChecklistModalButtonContainer.appendChild(changeChecklistModalSubmitButton)
+                    let changeChecklistModalCancelButton = document.createElement('button')
+                    changeChecklistModalCancelButton.type = 'button'
+                    changeChecklistModalCancelButton.innerText = 'Cancel'
+                    changeChecklistModalButtonContainer.appendChild(changeChecklistModalCancelButton)
+
+                    changeChecklistModal.appendChild(changeChecklistModalButtonContainer)
+
+                    mainProjectArea.appendChild(changeChecklistModal)
+                    //event listneres on change checklist value modal
+                    changeChecklistModalSubmitButton.addEventListener('click', e=>{
+                        todo.checklist[i].changeDescription(changeChecklistModalInput.value)
+                        changeChecklistModal.remove()
+                        viewProject(projectIndex)
+                    })
+                    changeChecklistModalCancelButton.addEventListener('click', e=>{
+                        changeChecklistModal.remove()
+                    })
+
+                })
+                tempChecklistItemDeleteButton.addEventListener('click', e=>{
+                    todo.deleteChecklistItem(i)
+                    viewProject(projectIndex)
+                })
+
+
+
+
                 checklistUlContainer.appendChild(tempChecklistItem)
             }
 
