@@ -23,10 +23,18 @@ const todoApp = (function(){
             this.description=newDescription
             saveToStorage()
         }
+        toggleTodo(todoIndex){
+            if(this.todos[todoIndex].complete === 'true'){
+                this.todos[todoIndex].complete = 'false'
+            }else{
+                this.todos[todoIndex].complete = 'true'
+            }
+            saveToStorage()
+        }
     }
 
     class Todo{
-        constructor(name, description='none', priority=0, dueDate, notes=[], checklist=[], complete=false){
+        constructor(name, description='none', priority=0, dueDate, notes=[], checklist=[], complete='false'){
             this.name = name
             this.description = description
             this.priority = Number(priority)
@@ -65,10 +73,13 @@ const todoApp = (function(){
             saveToStorage()
         }
         toggleTodo(todoIndex){
-            if(this.complete === false){
-                this.complete = true
+            if(this.complete === 'false'){
+                this.complete = 'true'
+                console.log(typeof this.complete)
             }else{
-                this.complete = false
+                this.complete = 'false'
+                console.log(typeof this.complete)
+
             }
             saveToStorage()
         }
@@ -76,7 +87,7 @@ const todoApp = (function(){
             this.priority = Number(newPriorityValue)
             saveToStorage()
         }
-        changeDuedate(newDate){
+        changeDueDate(newDate){
             this.dueDate= newDate
             saveToStorage()
         }
