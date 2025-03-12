@@ -23,14 +23,6 @@ const todoApp = (function(){
             this.description=newDescription
             saveToStorage()
         }
-        toggleTodo(todoIndex){
-            if(this.todos[todoIndex].complete === 'true'){
-                this.todos[todoIndex].complete = 'false'
-            }else{
-                this.todos[todoIndex].complete = 'true'
-            }
-            saveToStorage()
-        }
     }
 
     class Todo{
@@ -75,11 +67,8 @@ const todoApp = (function(){
         toggleTodo(todoIndex){
             if(this.complete === 'false'){
                 this.complete = 'true'
-                console.log(typeof this.complete)
             }else{
                 this.complete = 'false'
-                console.log(typeof this.complete)
-
             }
             saveToStorage()
         }
@@ -153,12 +142,12 @@ const todoApp = (function(){
             convertedProjects.forEach((project, projectIndex)=>{
               //iterate over each todo pojo object in the todos property which is an array, and create a temp variable which is a newly built instance of Todo using this pojo todo, then swap out the old pojo for the Todo class instance using splice
                 project.todos.forEach((todo, todoIndex)=>{
-                    let tempTodo = new Todo(todo.name, todo.description, todo.priority, todo.dueDate, todo.notes, todo.checklist)
+                    let tempTodo = new Todo(todo.name, todo.description, todo.priority, todo.dueDate, todo.notes, todo.checklist, todo.complete)
                     project.todos.splice(todoIndex, 1, tempTodo)
                 //iterate over each checklist pojo and do the same as above to create Checklist class instances and replace the stored pojos with the Checklist class instances
-                    todo.checklist.forEach((checkitem, checkitemIndex)=>{
-                        let tempCheckitem = new Checklist(checkitem.description, checkitem.checked)
-                        todo.checklist.splice(checkitemIndex, 1 , tempCheckitem)
+                    todo.checklist.forEach((checkItem, checkItemIndex)=>{
+                        let tempCheckItem = new Checklist(checkItem.description, checkItem.checked)
+                        todo.checklist.splice(checkItemIndex, 1 , tempCheckItem)
                     })
                 })
             })

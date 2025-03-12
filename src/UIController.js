@@ -937,21 +937,11 @@ export const UIController =(function(){
             let toggleTodoButton = document.createElement('button')
             toggleTodoButton.type = 'button'
             toggleTodoButton.innerText = 'Toggle Todo'
-
-            
             //event listener for this toggle button
-
             toggleTodoButton.addEventListener('click', e=>{
                 todo.toggleTodo(todoIndex)
-                viewProject(projectIndex)
+                viewProject(projectIndex)                
             })
-
-            // toggleTodoButton.addEventListener('click', e=>{
-            //     todoApp.projects[projectIndex].toggleTodo(todoIndex)
-            //     viewProject(projectIndex)
-            //     console.log(typeof todo.complete)
-            // })
-            
             //style todo text decoration if todo is complete
             if(todo.complete==='true'){
                 newTodoItem.style.textDecoration = 'line-through'
