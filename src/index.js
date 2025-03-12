@@ -1,5 +1,4 @@
-import "./styles.css"
-import { UIController } from './UIController.js'
+import "./styles.css";
+import { UIController } from "./UIController.js";
 
-
-window.UIController = UIController
+window.UIController = UIController;
