@@ -8,11 +8,6 @@ export const UIController = (function () {
   let newProjectButton = document.querySelector("#createNewProject");
   let infoButton = document.querySelector("#infoButton");
   let wipeProjectsButton = document.querySelector("#deleteAllProjectsButton");
-  let newProjectNameInput = document.querySelector("#newProjectName");
-  let newProjectDescriptionInput = document.querySelector(
-    "#newProjectDescription"
-  );
-  let newProjectNameLabel = document.querySelector("#newProjectNameLabel");
 
   //invocations on load/refresh
   populateNavProjects();
@@ -38,7 +33,7 @@ export const UIController = (function () {
   }
 
   //event listener for info button which invokes drawExplainer
-  infoButton.addEventListener("click", (e) => {
+  infoButton.addEventListener("click", () => {
     mainProjectArea.lastChild.remove();
     drawExplainer();
   });
@@ -84,7 +79,7 @@ export const UIController = (function () {
   }
 
   //event listener that builds new project modal and displays it to the user
-  newProjectButton.addEventListener("click", (e) => {
+  newProjectButton.addEventListener("click", () => {
     let newProjectModal = document.createElement("aside");
     newProjectModal.style.display = "grid";
     let newProjectModalHeader = document.createElement("h3");
@@ -124,7 +119,7 @@ export const UIController = (function () {
     newProjectModalButtonSection.appendChild(newProjectModalCancelButton);
 
     //listeners for submit and cancel button, including validation of name length of at least 3
-    newProjectModalSubmitButton.addEventListener("click", (e) => {
+    newProjectModalSubmitButton.addEventListener("click", () => {
       if (newProjectModalNameInput.value.length > 2) {
         todoApp.createProject(newProjectModalNameInput.value);
         newProjectModal.remove();
@@ -146,7 +141,7 @@ export const UIController = (function () {
         }, 3000);
       }
     });
-    newProjectModalCancelButton.addEventListener("click", (e) => {
+    newProjectModalCancelButton.addEventListener("click", () => {
       newProjectModal.remove();
     });
 
@@ -193,7 +188,7 @@ export const UIController = (function () {
     projectTitleArea.appendChild(changeProjectTitleButton);
     buildProjectIdentifier.appendChild(projectTitleArea);
 
-    changeProjectTitleButton.addEventListener("click", (e) => {
+    changeProjectTitleButton.addEventListener("click", () => {
       //if this modal exists remove it
       if (document.querySelector("#changeProjectTitleModal")) {
         document.querySelector("#changeProjectTitleModal").remove();
@@ -236,7 +231,7 @@ export const UIController = (function () {
       changeProjectTitleModal.appendChild(changeProjectTitleButtonDiv);
       mainProjectArea.appendChild(changeProjectTitleModal);
       //event listeners for changeProjectTitleButton and cancelChangeProjectTitleButton
-      changeProjectTitleButton.addEventListener("click", (e) => {
+      changeProjectTitleButton.addEventListener("click", () => {
         if (newProjectModalTitleInput.value.length > 2) {
           todoApp.projects[projectIndex].changeProjectTitle(
             newProjectModalTitleInput.value
@@ -262,7 +257,7 @@ export const UIController = (function () {
           }, 3000);
         }
       });
-      cancelChangeProjectTitleButton.addEventListener("click", (e) => {
+      cancelChangeProjectTitleButton.addEventListener("click", () => {
         changeProjectTitleModal.remove();
       });
     });
@@ -282,7 +277,7 @@ export const UIController = (function () {
     buildProjectIdentifier.appendChild(projectDescriptionArea);
     buildProject.appendChild(buildProjectIdentifier);
     //event listener on that button to change project description
-    changeProjectDescriptionButton.addEventListener("click", (e) => {
+    changeProjectDescriptionButton.addEventListener("click", () => {
       if (document.querySelector("#changeProjectDescriptionModal")) {
         document.querySelector("#changeProjectDescriptionModal").remove();
       }
@@ -331,14 +326,14 @@ export const UIController = (function () {
       mainProjectArea.appendChild(changeProjectDescriptionModal);
 
       //event listeners on the save and cancel buttons
-      changeProjectDescriptionSaveButton.addEventListener("click", (e) => {
+      changeProjectDescriptionSaveButton.addEventListener("click", () => {
         todoApp.projects[projectIndex].changeProjectDescription(
           changeProjectDescriptionInput.value
         );
         changeProjectDescriptionModal.remove();
         viewProject(projectIndex);
       });
-      changeProjectDescriptionCancelButton.addEventListener("click", (e) => {
+      changeProjectDescriptionCancelButton.addEventListener("click", () => {
         changeProjectDescriptionModal.remove();
       });
     });
@@ -376,7 +371,7 @@ export const UIController = (function () {
     buildProject.appendChild(projectTodoArea);
 
     //listener on the createTodoButton, builds newTodoModal and displays it to user, includes buttons with own listeners to actually build todos
-    createTodoButton.addEventListener("click", (e) => {
+    createTodoButton.addEventListener("click", () => {
       //check if this modal exists, if so remove it
       let existingModal = document.querySelector("#newTodoModalAside");
       if (existingModal) {
@@ -446,7 +441,7 @@ export const UIController = (function () {
       newTodoModal.style.display = "grid";
 
       //listener code for save new todo, and cancel buttons
-      saveNewTodoButton.addEventListener("click", (e) => {
+      saveNewTodoButton.addEventListener("click", () => {
         if (newTodoNameInput.value.length > 2) {
           currentProject.createTodo(
             newTodoNameInput.value,
@@ -473,7 +468,7 @@ export const UIController = (function () {
         }
       });
 
-      cancelNewTodoButton.addEventListener("click", (e) => {
+      cancelNewTodoButton.addEventListener("click", () => {
         newTodoModal.remove();
       });
     });
@@ -492,7 +487,7 @@ export const UIController = (function () {
       changeTodoNameButton.innerText = "Change";
       newTodoName.appendChild(changeTodoNameButton);
       //listener on changeTodoNameButton that creates the modal and allows the user to enter and change the todo name value
-      changeTodoNameButton.addEventListener("click", (e) => {
+      changeTodoNameButton.addEventListener("click", () => {
         let changeTodoNameModal = document.createElement("aside");
         changeTodoNameModal.style.display = "grid";
         let changeTodoNameModalHeader = document.createElement("h3");
@@ -524,12 +519,12 @@ export const UIController = (function () {
           changeTodoNameModalCancelButton
         );
         //listeners on submit and cancel button
-        changeTodoNameModalSubmitButton.addEventListener("click", (e) => {
+        changeTodoNameModalSubmitButton.addEventListener("click", () => {
           todo.changeName(changeTodoNameModalInput.value);
           changeTodoNameModal.remove();
           viewProject(projectIndex);
         });
-        changeTodoNameModalCancelButton.addEventListener("click", (e) => {
+        changeTodoNameModalCancelButton.addEventListener("click", () => {
           changeTodoNameModal.remove();
         });
         changeTodoNameModal.appendChild(changeTodoNameModalButtonSection);
@@ -547,7 +542,7 @@ export const UIController = (function () {
       changeTodoDescriptionButton.innerText = "Change";
       newTodoDescription.appendChild(changeTodoDescriptionButton);
       //listener on changeTodoDescriptionButton to show modal
-      changeTodoDescriptionButton.addEventListener("click", (e) => {
+      changeTodoDescriptionButton.addEventListener("click", () => {
         let changeTodoDescriptionModal = document.createElement("aside");
         changeTodoDescriptionModal.style.display = "grid";
         let changeTodoDescriptionModalHeader = document.createElement("h3");
@@ -590,20 +585,14 @@ export const UIController = (function () {
         );
 
         //listeners for buttons
-        changeTodoDescriptionModalSubmitButton.addEventListener(
-          "click",
-          (e) => {
-            todo.changeDescription(changeTodoDescriptionModalInput.value);
-            changeTodoDescriptionModal.remove();
-            viewProject(projectIndex);
-          }
-        );
-        changeTodoDescriptionModalCancelButton.addEventListener(
-          "click",
-          (e) => {
-            changeTodoDescriptionModal.remove();
-          }
-        );
+        changeTodoDescriptionModalSubmitButton.addEventListener("click", () => {
+          todo.changeDescription(changeTodoDescriptionModalInput.value);
+          changeTodoDescriptionModal.remove();
+          viewProject(projectIndex);
+        });
+        changeTodoDescriptionModalCancelButton.addEventListener("click", () => {
+          changeTodoDescriptionModal.remove();
+        });
 
         mainProjectArea.appendChild(changeTodoDescriptionModal);
       });
@@ -617,7 +606,7 @@ export const UIController = (function () {
       changeTodoDueDateButton.innerText = "Change";
       newTodoDueDate.appendChild(changeTodoDueDateButton);
       //listener on change due date button that shows modal
-      changeTodoDueDateButton.addEventListener("click", (e) => {
+      changeTodoDueDateButton.addEventListener("click", () => {
         let changeTodoDueDateModal = document.createElement("aside");
         changeTodoDueDateModal.style.display = "grid";
         let changeTodoDueDateModalHeader = document.createElement("h3");
@@ -654,12 +643,12 @@ export const UIController = (function () {
         changeTodoDueDateModal.appendChild(changeTodoDueDateModalButtonSection);
 
         //listeners on buttons
-        changeTodoDueDateModalSubmitButton.addEventListener("click", (e) => {
+        changeTodoDueDateModalSubmitButton.addEventListener("click", () => {
           todo.changeDueDate(changeTodoDueDateModalInput.value);
           changeTodoDueDateModal.remove();
           viewProject(projectIndex);
         });
-        changeTodoDueDateModalCancelButton.addEventListener("click", (e) => {
+        changeTodoDueDateModalCancelButton.addEventListener("click", () => {
           changeTodoDueDateModal.remove();
         });
 
@@ -674,7 +663,7 @@ export const UIController = (function () {
       changeTodoPriorityModalButton.type = "button";
       changeTodoPriorityModalButton.innerText = "Change";
       newTodoPriority.appendChild(changeTodoPriorityModalButton);
-      changeTodoPriorityModalButton.addEventListener("click", (e) => {
+      changeTodoPriorityModalButton.addEventListener("click", () => {
         let changeTodoPriorityModal = document.createElement("aside");
         changeTodoPriorityModal.style.display = "grid";
         let changeTodoPriorityModalHeader = document.createElement("h3");
@@ -714,12 +703,12 @@ export const UIController = (function () {
           changeTodoPriorityModalButtonSection
         );
         //listeners for submit and cancel
-        changeTodoPriorityModalSubmitButton.addEventListener("click", (e) => {
+        changeTodoPriorityModalSubmitButton.addEventListener("click", () => {
           todo.changePriority(changeTodoPriorityModalInput.value);
           changeTodoPriorityModal.remove();
           viewProject(projectIndex);
         });
-        changeTodoPriorityModalCancelButton.addEventListener("click", (e) => {
+        changeTodoPriorityModalCancelButton.addEventListener("click", () => {
           changeTodoPriorityModal.remove();
         });
         mainProjectArea.appendChild(changeTodoPriorityModal);
@@ -763,7 +752,7 @@ export const UIController = (function () {
         noteUlContainer.appendChild(tempNote);
 
         //event listeners for change and delete buttons for each note
-        tempNoteChangeButton.addEventListener("click", (e) => {
+        tempNoteChangeButton.addEventListener("click", () => {
           if (document.querySelector("#newNoteValueModal")) {
             document.querySelector("#newNoteValueModal").remove();
           }
@@ -798,16 +787,16 @@ export const UIController = (function () {
           newNoteValueModal.appendChild(newNoteValueModalButtonSection);
           mainProjectArea.appendChild(newNoteValueModal);
           //event listeners for newNoteValueModal submit and cancel
-          newNoteValueModalSubmitButton.addEventListener("click", (e) => {
+          newNoteValueModalSubmitButton.addEventListener("click", () => {
             todo.changeNote(newNoteValueModalInput.value, i);
             document.querySelector("#newNoteValueModal").remove();
             viewProject(projectIndex);
           });
-          newNoteValueModalCancelButton.addEventListener("click", (e) => {
+          newNoteValueModalCancelButton.addEventListener("click", () => {
             document.querySelector("#newNoteValueModal").remove();
           });
         });
-        tempNoteDeleteButton.addEventListener("click", (e) => {
+        tempNoteDeleteButton.addEventListener("click", () => {
           todo.deleteNote(i);
           viewProject(projectIndex);
         });
@@ -818,7 +807,7 @@ export const UIController = (function () {
       addNoteButton.innerText = "Add Note";
       noteDisplayContainer.appendChild(addNoteButton);
       //event listener that creates note modal so users can add a new note
-      addNoteButton.addEventListener("click", (e) => {
+      addNoteButton.addEventListener("click", () => {
         if (document.querySelector("#addNoteModal")) {
           document.querySelector("#addNoteModal").remove();
         }
@@ -848,12 +837,12 @@ export const UIController = (function () {
         mainProjectArea.appendChild(addNoteModal);
 
         //event listeners for submit and cancel buttons:
-        addNoteModalSubmitButton.addEventListener("click", (e) => {
+        addNoteModalSubmitButton.addEventListener("click", () => {
           todo.addNote(addNoteInput.value);
           addNoteModal.remove();
           viewProject(projectIndex);
         });
-        addNoteModalCancelButton.addEventListener("click", (e) => {
+        addNoteModalCancelButton.addEventListener("click", () => {
           addNoteModal.remove();
         });
       });
@@ -880,7 +869,7 @@ export const UIController = (function () {
           tempChecklistItemCheck.setAttribute("checked", true);
         }
         //even listeners on the check boxes to change the checked value
-        tempChecklistItemCheck.addEventListener("click", (e) => {
+        tempChecklistItemCheck.addEventListener("click", () => {
           todo.toggleChecklistItem(i);
           viewProject(projectIndex);
         });
@@ -904,7 +893,7 @@ export const UIController = (function () {
         tempChecklistItem.appendChild(tempChecklistItemButtonContainer);
         tempChecklistItem.style.border = "1px solid black";
         //event listeners for change and delete checklist item buttons
-        tempChecklistItemChangeButton.addEventListener("click", (e) => {
+        tempChecklistItemChangeButton.addEventListener("click", () => {
           //modal to change value
           let changeChecklistModal = document.createElement("aside");
           changeChecklistModal.style.display = "grid";
@@ -937,18 +926,18 @@ export const UIController = (function () {
 
           mainProjectArea.appendChild(changeChecklistModal);
           //event listeners on change checklist value modal
-          changeChecklistModalSubmitButton.addEventListener("click", (e) => {
+          changeChecklistModalSubmitButton.addEventListener("click", () => {
             todo.checklist[i].changeDescription(
               changeChecklistModalInput.value
             );
             changeChecklistModal.remove();
             viewProject(projectIndex);
           });
-          changeChecklistModalCancelButton.addEventListener("click", (e) => {
+          changeChecklistModalCancelButton.addEventListener("click", () => {
             changeChecklistModal.remove();
           });
         });
-        tempChecklistItemDeleteButton.addEventListener("click", (e) => {
+        tempChecklistItemDeleteButton.addEventListener("click", () => {
           todo.deleteChecklistItem(i);
           viewProject(projectIndex);
         });
@@ -962,7 +951,7 @@ export const UIController = (function () {
       addChecklistItemButton.id = "addChecklistItemButton";
       checklistContainer.appendChild(addChecklistItemButton);
       //event listener for add checklist item button, shows a modal, modal has buttons to submit or cancel creation
-      addChecklistItemButton.addEventListener("click", (e) => {
+      addChecklistItemButton.addEventListener("click", () => {
         if (document.querySelector("#newChecklistModal")) {
           document.querySelector("#newChecklistModal").remove();
         }
@@ -994,12 +983,12 @@ export const UIController = (function () {
         );
         newChecklistModal.appendChild(newChecklistModalButtonSection);
         //event listeners on the submit and cancel button
-        newChecklistModalSubmitButton.addEventListener("click", (e) => {
+        newChecklistModalSubmitButton.addEventListener("click", () => {
           todo.createChecklistItem(newChecklistModalInput.value);
           newChecklistModal.remove();
           viewProject(projectIndex);
         });
-        newChecklistModalCancelButton.addEventListener("click", (e) => {
+        newChecklistModalCancelButton.addEventListener("click", () => {
           newChecklistModal.remove();
         });
 
@@ -1015,7 +1004,7 @@ export const UIController = (function () {
       deleteTodoButton.innerText = "Delete Todo";
       todoButtonContainer.appendChild(deleteTodoButton);
       //event listener for delete todo button
-      deleteTodoButton.addEventListener("click", (e) => {
+      deleteTodoButton.addEventListener("click", () => {
         let userConfirmationTodoDelete = prompt(
           "Are you sure you want to delete this todo? (yes/no)"
         );
@@ -1031,7 +1020,7 @@ export const UIController = (function () {
       toggleTodoButton.type = "button";
       toggleTodoButton.innerText = "Toggle Todo";
       //event listener for this toggle button
-      toggleTodoButton.addEventListener("click", (e) => {
+      toggleTodoButton.addEventListener("click", () => {
         todo.toggleTodo(todoIndex);
         viewProject(projectIndex);
       });

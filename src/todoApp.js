@@ -92,7 +92,7 @@ const todoApp = (function () {
       }
       saveToStorage();
     }
-    toggleTodo(todoIndex) {
+    toggleTodo() {
       if (this.complete === "false") {
         this.complete = "true";
       } else {
@@ -114,10 +114,6 @@ const todoApp = (function () {
     }
     changeName(newName) {
       this.name = newName;
-      saveToStorage();
-    }
-    deleteChecklistItem(index) {
-      this.checklist.splice(index, 1);
       saveToStorage();
     }
   }
@@ -171,7 +167,7 @@ const todoApp = (function () {
         );
       }
       //iterate over each Project instance in our convertedProjects array
-      convertedProjects.forEach((project, projectIndex) => {
+      convertedProjects.forEach((project) => {
         //iterate over each todo pojo object in the todos property which is an array, and create a temp variable which is a newly built instance of Todo using this pojo todo, then swap out the old pojo for the Todo class instance using splice
         project.todos.forEach((todo, todoIndex) => {
           let tempTodo = new Todo(
